@@ -101,10 +101,12 @@ class GameScene: SKScene {
         
         if let firstTouchPoint = firstTouchPoint {
             
-            if abs(firstTouchPoint.x - lastTouchPoint.x) > 1 {
-                buddy.setDestination(destination: lastTouchPoint)
+            let direction = lastTouchPoint.x - firstTouchPoint.x
+            
+            if abs(direction) > 1 {
+                buddy.setDestination(touchPoint: lastTouchPoint, direction: direction)
             } else {
-                buddy.jump()
+//                buddy.jump()
             }
         }
     }

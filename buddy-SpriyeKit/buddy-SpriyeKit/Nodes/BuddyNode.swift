@@ -24,10 +24,12 @@ class BuddyNode: SKSpriteNode {
     ]
     
     
+    ///Point which defines touch point on screen.
+    private var touchPoint: CGPoint!
     ///Point which defines walking direction
-    private var destination: CGPoint!
+    private var directionPoint: CGFloat = 0.0
     ///Defines how much walking speed is slowed down.
-    private let easings: CGFloat = 0.02
+    private let easings: CGFloat = 0.01
     
     
     ///Creates a new buddy node.
@@ -38,7 +40,7 @@ class BuddyNode: SKSpriteNode {
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 1.0, size: buddy.size)
             
-//            buddy.physicsBody?.isDynamic = true
+            buddy.physicsBody?.isDynamic = true
             buddy.physicsBody?.allowsRotation = false
             
             //Adding contactTestBitMask for buddy.
@@ -49,23 +51,26 @@ class BuddyNode: SKSpriteNode {
         return buddy
     }
     
+    private var isWalking: Bool = false
+    private var isJumping: Bool = false
     
     ///Updates skater on the screen.
-    public func update(deltaTime: TimeInterval){ //, itemLocation: CGPoint){
-        
-        
+    public func update(deltaTime: TimeInterval){
         
         //Cheks if buddy needs to walk.
-        if abs(destination.x - position.x) < 2 {
+        if !isWalking {
             
             physicsBody?.velocity.dx = 0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
-            
-            
+
+            if isJumping {
+                position.y += 100
+                isJumping = false
+            }
+
+        //Else - Adds walking action.
         } else {
-            
-            //Adds walking action.
             if action(forKey: walkingActionKey) == nil {
                 let walkingAction = SKAction.repeatForever(
                     SKAction.animate(with: buddyWalkingFrame,
@@ -76,62 +81,49 @@ class BuddyNode: SKSpriteNode {
                 run(walkingAction, withKey: walkingActionKey)
             }
             
-            ///The distance from buddy to the `touchPoint`.
-            let distance = sqrt(pow((destination.x - position.x), 2) + pow((destination.y - position.y), 2))
+            let direction = frame.width * easings
             
-            //Sets the buddy speed.
-            if distance > 0.1 {
-                let directionX = destination.x - position.x
-//                let directionY = destination.y - position.y
-                
-                position.x += directionX * easings
-                //            position.y += directionY * easings
-            } else {
-                position.x = destination.x
-            }
-            
-            if destination.x < position.x {
-                xScale = -1
-            } else {
+            //Should move to left
+            if directionPoint > 0 {
+                position.x += direction
                 xScale = 1
+                
+            //Else - Should move to right
+            } else {
+                position.x -= direction
+                xScale = -1
             }
+
         }
+        
             
-            
-            
-        
-       
-        
-        
-        
-        
-        
-        
-        
-       
-        
+    
     }
     
     
     ///Stops buddy at current position.
     public func stopWalking(){
-        self.destination = self.position
+        isWalking = false
     }
     
     ///Makes buddy to jump.
     public func jump(){
-        self.destination.y += 200
+        isJumping = true
+        isWalking = false
     }
     
     ///Sets destination point after touch action happens.
-    public func setDestination(destination: CGPoint){
-        self.destination = destination
+    public func setDestination(touchPoint: CGPoint, direction: CGFloat){
+        isWalking = true
+        self.touchPoint = touchPoint
+        directionPoint = direction
     }
     
     ///Updates destiantion and position, after buddy is initiated.
     public func updatePosition(point: CGPoint){
+        isWalking = false
         position = point
-        destination = point
+        touchPoint = point
     }
     
     
