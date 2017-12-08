@@ -24,8 +24,6 @@ class BuddyNode: SKSpriteNode {
     ]
     
     
-    ///Point which defines touch point on screen.
-    private var touchPoint: CGPoint!
     ///Point which defines walking direction
     private var directionPoint: CGFloat = 0.0
     ///Defines how much walking speed is slowed down.
@@ -121,9 +119,8 @@ class BuddyNode: SKSpriteNode {
     }
     
     ///Sets destination point after touch action happens.
-    public func setDestination(touchPoint: CGPoint, direction: CGFloat){
+    public func setDestination(to direction: CGFloat){
         isWalking = true
-        self.touchPoint = touchPoint
         directionPoint = direction
     }
     
@@ -131,7 +128,6 @@ class BuddyNode: SKSpriteNode {
     public func updatePosition(point: CGPoint){
         isWalking = false
         position = point
-        touchPoint = point
     }
     
     

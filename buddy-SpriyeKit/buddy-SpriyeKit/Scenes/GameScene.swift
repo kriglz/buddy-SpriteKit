@@ -48,7 +48,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsBody?.contactTestBitMask = BuddyCategory
         self.physicsWorld.contactDelegate = self
-//        self.physicsWorld.gravity = CGVector.init(dx: 0.1, dy: -1.0)
         
         
         
@@ -117,8 +116,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let direction = lastTouchPoint.x - firstTouchPoint.x
             
-            if abs(direction) > 1 {
-                buddy.setDestination(touchPoint: lastTouchPoint, direction: direction)
+            if abs(direction) > 2 {
+                buddy.setDestination(to: direction)
             } else {
                 buddy.jump()
             }
