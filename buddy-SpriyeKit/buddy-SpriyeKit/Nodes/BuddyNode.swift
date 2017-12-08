@@ -27,7 +27,7 @@ class BuddyNode: SKSpriteNode {
     ///Point which defines walking direction
     private var destination: CGPoint!
     ///Defines how much walking speed is slowed down.
-    private let easings: CGFloat = 0.01
+    private let easings: CGFloat = 0.02
     
     
     ///Creates a new buddy node.
@@ -112,9 +112,15 @@ class BuddyNode: SKSpriteNode {
         
     }
     
+    
+    ///Stops buddy at current position.
+    public func stopWalking(){
+        self.destination = self.position
+    }
+    
     ///Makes buddy to jump.
     public func jump(){
-        self.destination.y += 50
+        self.destination.y += 200
     }
     
     ///Sets destination point after touch action happens.

@@ -101,10 +101,10 @@ class GameScene: SKScene {
         
         if let firstTouchPoint = firstTouchPoint {
             
-            if firstTouchPoint.x - lastTouchPoint.x > 1 {
+            if abs(firstTouchPoint.x - lastTouchPoint.x) > 1 {
                 buddy.setDestination(destination: lastTouchPoint)
             } else {
-                
+                buddy.jump()
             }
         }
     }
@@ -128,6 +128,8 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        buddy.stopWalking()
         
         firstTouchPoint = nil
     }
