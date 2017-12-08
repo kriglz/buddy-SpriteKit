@@ -67,7 +67,7 @@ class BuddyNode: SKSpriteNode {
                     
                     let jumpUpVector = CGVector(dx: position.x, dy: position.y + size.height)
                     let buddyPoint = CGPoint(x: size.width / 2, y: size.height * 0.9)
-                    let jumpAction = SKAction.applyForce(jumpUpVector, at: buddyPoint, duration: 0.1)
+                    let jumpAction = SKAction.applyForce(jumpUpVector, at: buddyPoint, duration: 0.05)
                 
                     run(jumpAction)
                 }
