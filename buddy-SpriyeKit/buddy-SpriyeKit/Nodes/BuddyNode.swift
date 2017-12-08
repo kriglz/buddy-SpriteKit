@@ -57,23 +57,22 @@ class BuddyNode: SKSpriteNode {
         //Cheks if buddy needs to walk.
         if !isWalking {
             
-            physicsBody?.velocity.dx = 0
+            //Sets walking action to nil.
+            physicsBody?.velocity.dx = 0.0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
 
             if isJumping {
                 
-                let jumpUpVector = CGVector(dx: position.x, dy: position.y + size.height)
-                let jumpDownVector = CGVector(dx: position.x, dy: -position.y - size.height)
+                //Limits height of jump.
+                if position.y < size.height {
+                    
+                    let jumpUpVector = CGVector(dx: position.x, dy: position.y + size.height)
+                    let buddyPoint = CGPoint(x: size.width / 2, y: size.height * 0.9)
+                    let jumpAction = SKAction.applyForce(jumpUpVector, at: buddyPoint, duration: 0.1)
                 
-//                run( SKAction.sequence(
-//                    [SKAction.applyForce(jumpUpVector , duration: 1.0),
-//                    SKAction.wait(forDuration: 1.0),
-//                    SKAction.applyForce(jumpDownVector , duration: 1.0)]
-//                ))
-    
-                run(SKAction.applyForce(jumpUpVector , duration: 1.0))
-
+                    run(jumpAction)
+                }
                 
                 isJumping = false
             }
