@@ -92,24 +92,44 @@ class GameScene: SKScene {
 //        }
 //    }
     
+    
+    ///Set point by first touch event.
+    private var firstTouchPoint: CGPoint?
+    
+    ///Checks if touch gesture was tap (for jump) or drag (for walk).
+    private func jumpOrWalk(to lastTouchPoint: CGPoint){
+        
+        if let firstTouchPoint = firstTouchPoint {
+            
+            if firstTouchPoint.x - lastTouchPoint.x > 1 {
+                buddy.setDestination(destination: lastTouchPoint)
+            } else {
+                
+            }
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
         
-//        if let touchPoint = touchPoint {
-//            buddy.setDestination(destination: touchPoint)
-//        }
+        if let touchPoint = touchPoint {
+            firstTouchPoint = touchPoint
+        }
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
         
-        
         if let touchPoint = touchPoint {
-            buddy.setDestination(destination: touchPoint)
+            
+            jumpOrWalk(to: touchPoint)
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        firstTouchPoint = nil
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -27,7 +27,7 @@ class BuddyNode: SKSpriteNode {
     ///Point which defines walking direction
     private var destination: CGPoint!
     ///Defines how much walking speed is slowed down.
-    private let easings: CGFloat = 0.1
+    private let easings: CGFloat = 0.01
     
     
     ///Creates a new buddy node.
@@ -38,6 +38,7 @@ class BuddyNode: SKSpriteNode {
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 1.0, size: buddy.size)
             
+//            buddy.physicsBody?.isDynamic = true
             buddy.physicsBody?.allowsRotation = false
             
             //Adding contactTestBitMask for buddy.
@@ -79,7 +80,7 @@ class BuddyNode: SKSpriteNode {
             let distance = sqrt(pow((destination.x - position.x), 2) + pow((destination.y - position.y), 2))
             
             //Sets the buddy speed.
-            if distance > 1 {
+            if distance > 0.1 {
                 let directionX = destination.x - position.x
 //                let directionY = destination.y - position.y
                 
@@ -109,6 +110,11 @@ class BuddyNode: SKSpriteNode {
         
        
         
+    }
+    
+    ///Makes buddy to jump.
+    public func jump(){
+        self.destination.y += 50
     }
     
     ///Sets destination point after touch action happens.
