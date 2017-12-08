@@ -9,13 +9,8 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
-//    var entities = [GKEntity]()
-//    var graphs = [String : GKGraph]()
-    
-//    private var label : SKLabelNode?
-//    private var spinnyNode : SKShapeNode?
     
     private var lastUpdateTime : TimeInterval = 0
 
@@ -39,6 +34,25 @@ class GameScene: SKScene {
         
         //Initializes a buddy.
         spawnBuddy()
+        
+        
+        //Adding WorldFrame
+        var worldFrame = frame
+        worldFrame.origin.x = 10 //-100
+        worldFrame.origin.y = 10 //-100
+        worldFrame.size.height -= 20
+        worldFrame.size.width -= 20
+        
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
+        
+        self.physicsBody?.categoryBitMask = WorldCategory
+        self.physicsBody?.contactTestBitMask = BuddyCategory
+        self.physicsWorld.contactDelegate = self
+//        self.physicsWorld.gravity = CGVector.init(dx: 0.1, dy: -1.0)
+        
+        
+        
+        
         
         // Get label node from scene and store it for use later
 //        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -106,7 +120,7 @@ class GameScene: SKScene {
             if abs(direction) > 1 {
                 buddy.setDestination(touchPoint: lastTouchPoint, direction: direction)
             } else {
-//                buddy.jump()
+                buddy.jump()
             }
         }
     }
@@ -115,7 +129,9 @@ class GameScene: SKScene {
         let touchPoint = touches.first?.location(in: self)
         
         if let touchPoint = touchPoint {
+            
             firstTouchPoint = touchPoint
+            jumpOrWalk(to: touchPoint)
         }
         
     }
@@ -160,6 +176,22 @@ class GameScene: SKScene {
         
         self.lastUpdateTime = currentTime
     }
+    
+    ///Contact beginning delegate
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        //Removes node, when it hits worldframe.
+        if contact.bodyA.categoryBitMask == WorldCategory {
+
+            contact.bodyB.node?.removeAllActions()
+            
+        } else if contact.bodyB.categoryBitMask == WorldCategory {
+
+            contact.bodyA.node?.removeAllActions()
+            
+        }
+    }
+    
     
     ///Creates a new buddy.
     private func spawnBuddy(){

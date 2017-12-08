@@ -29,7 +29,7 @@ class BuddyNode: SKSpriteNode {
     ///Point which defines walking direction
     private var directionPoint: CGFloat = 0.0
     ///Defines how much walking speed is slowed down.
-    private let easings: CGFloat = 0.01
+    private let easings: CGFloat = 0.012
     
     
     ///Creates a new buddy node.
@@ -37,17 +37,14 @@ class BuddyNode: SKSpriteNode {
         let buddy = BuddyNode(imageNamed: "buddyStill")
         
         if let buddyTexture = buddy.texture {
-            
-            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 1.0, size: buddy.size)
-            
-            buddy.physicsBody?.isDynamic = true
+            //Adding physics body of shape of still buddy.
+            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddy.size)
             buddy.physicsBody?.allowsRotation = false
             
             //Adding contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory
             buddy.physicsBody?.contactTestBitMask = WorldCategory
         }
-        
         return buddy
     }
     
@@ -65,7 +62,19 @@ class BuddyNode: SKSpriteNode {
             texture = SKTexture(imageNamed: "buddyStill")
 
             if isJumping {
-                position.y += 100
+                
+                let jumpUpVector = CGVector(dx: position.x, dy: position.y + size.height)
+                let jumpDownVector = CGVector(dx: position.x, dy: -position.y - size.height)
+                
+//                run( SKAction.sequence(
+//                    [SKAction.applyForce(jumpUpVector , duration: 1.0),
+//                    SKAction.wait(forDuration: 1.0),
+//                    SKAction.applyForce(jumpDownVector , duration: 1.0)]
+//                ))
+    
+                run(SKAction.applyForce(jumpUpVector , duration: 1.0))
+
+                
                 isJumping = false
             }
 
