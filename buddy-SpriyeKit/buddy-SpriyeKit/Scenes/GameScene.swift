@@ -30,12 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
 
-        //Setting up camera.
-        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        cameraNode.xScale = 1/3
-        cameraNode.yScale = 1.0
-        camera = cameraNode
-        addChild(cameraNode)
+        
         
         
         
@@ -46,6 +41,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Initializes a buddy.
         spawnBuddy()
+        
+        
+        //Setting up camera.
+        cameraNode.position = CGPoint(x: buddy.position.x, y: size.height / 2)
+        cameraNode.xScale = 1.0/xScaleForSceneSize
+        cameraNode.yScale = 1.0
+        camera = cameraNode
+        addChild(cameraNode)
+        
         
         
         //Adding WorldFrame
@@ -130,9 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if abs(direction) > 2 {
                 buddy.setDestination(to: direction)
                 
-                print(buddy.position.x, "buddy", cameraNode.position.x, "camera")
-                
-                if buddy.position.x > size.width / 6 && buddy.position.x < size.width * 5 / 6 {
+                if buddy.position.x > size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
                     
                     cameraNode.run(SKAction.move(to: CGPoint(
                         x: buddy.position.x,
@@ -177,25 +179,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        //Called before each frame is rendered
         
-        // Initialize _lastUpdateTime if it has not already been
+        //Initialize _lastUpdateTime if it has not already been.
         if (self.lastUpdateTime == 0) {
             self.lastUpdateTime = currentTime
         }
         
-        // Calculate time since last update
+        //Calculate time since last update.
         let dt = currentTime - self.lastUpdateTime
-        
-      
-        
-        buddy.update(deltaTime: dt)//, itemLocation: buddy.position.x + 1.0)
+
+        //Updates the buddy behaviour.
+        buddy.update(deltaTime: dt)
         
         
         
         
         self.lastUpdateTime = currentTime
     }
+    
+    
+    
+    
     
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
@@ -213,6 +218,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    
+    
+    
+    
     ///Creates a new buddy.
     private func spawnBuddy(){
         
@@ -223,9 +232,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             currentBuddy.physicsBody = nil
         }
         
+        
+        
+        
         //Creates a new buddy.
         buddy = BuddyNode.newInstance()
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * 0.2)
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * 0.1 + buddy.size.height / 2)
         buddy.updatePosition(point: buddyInitPosition)
         buddy.zPosition = 10
         

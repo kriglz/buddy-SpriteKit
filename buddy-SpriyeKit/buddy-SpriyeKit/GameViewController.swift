@@ -19,7 +19,7 @@ class GameViewController: UIViewController {
         
         /// Main game scene.
 //        let sceneNode = MenuScene(size: view.frame.size)
-        let gameWorldSize = CGSize.init(width: view.frame.size.width * 3, height: view.frame.size.height)
+        let gameWorldSize = CGSize.init(width: view.frame.size.width * xScaleForSceneSize, height: view.frame.size.height)
         let sceneNode = GameScene(size: gameWorldSize)
         
         // Present the scene
@@ -28,7 +28,7 @@ class GameViewController: UIViewController {
             
             view.ignoresSiblingOrder = true
             
-            view.showsPhysics = true
+//            view.showsPhysics = true
             view.showsFPS = true
             view.showsNodeCount = true
         }

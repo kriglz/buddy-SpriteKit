@@ -20,14 +20,13 @@ class BackgroundNode: SKNode {
         physicsBody?.categoryBitMask = FloorCategory
         physicsBody?.contactTestBitMask = BuddyCategory
         
-        
-        
-        
+
         let groundGrassSize = CGSize(width: size.width, height: size.height * 0.12)
         let groundGrassRect = CGRect(origin: CGPoint(), size: groundGrassSize)
         
         let groundGrass = SKShapeNode(rect: groundGrassRect)
         groundGrass.fillColor = .white
+        groundGrass.strokeColor = .clear
         groundGrass.fillTexture = SKTexture(imageNamed: "ground")
         groundGrass.zPosition = 10
         
