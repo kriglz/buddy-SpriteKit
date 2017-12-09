@@ -36,6 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         //Setting up scene background.
+        backgroundColor = .lightGray
         background.setup(size: size)
         addChild(background)
         
@@ -54,12 +55,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adding WorldFrame
         let worldFrame = frame
-//        worldFrame.origin.x = -size.width / 2
-//        worldFrame.origin.y = 0
 
-        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
-        
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsBody?.contactTestBitMask = BuddyCategory
         self.physicsWorld.contactDelegate = self
