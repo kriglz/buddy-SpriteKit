@@ -135,7 +135,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     
                     cameraNode.run(SKAction.move(to: CGPoint(
                         x: buddy.position.x,
-                        y: cameraNode.position.y), duration: 0.5))
+                        y: cameraNode.position.y), duration: 0.2))
                     
                 }
             } else {
@@ -234,9 +234,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance()
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * 0.1 + buddy.size.height / 2)
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 - 30)
         buddy.updatePosition(point: buddyInitPosition)
-        buddy.zPosition = 10
+        buddy.zPosition = 100
         
         addChild(buddy)
     }

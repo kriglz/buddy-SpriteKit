@@ -63,7 +63,7 @@ class BuddyNode: SKSpriteNode {
             if isJumping {
                 
                 //Limits height of jump.
-                if position.y < size.height {
+                if position.y < 350.0 { //up to like middle of the screen
                 
                     let jumpUpVector = CGVector(dx: 0.0, dy: position.y + size.height)
                     let buddyPoint = CGPoint(x: size.width / 2, y: size.height * 0.9)
