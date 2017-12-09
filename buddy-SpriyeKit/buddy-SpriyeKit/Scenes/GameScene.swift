@@ -15,8 +15,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var lastUpdateTime : TimeInterval = 0
 
     private var buddy: BuddyNode!
+    private var background = BackgroundNode()
+    private let cameraNode = SKCameraNode()
 
-    
     
     
     
@@ -27,21 +28,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func sceneDidLoad() {
-
         self.lastUpdateTime = 0
+
+        //Setting up camera.
+        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        cameraNode.xScale = 1/3
+        cameraNode.yScale = 1.0
+        camera = cameraNode
+        addChild(cameraNode)
         
-        self.backgroundColor = .green
+        
+        
+        
+        //Setting up scene background.
+        background.setup(size: size)
+        addChild(background)
         
         //Initializes a buddy.
         spawnBuddy()
         
         
         //Adding WorldFrame
-        var worldFrame = frame
-        worldFrame.origin.x = 10 //-100
-        worldFrame.origin.y = 10 //-100
-        worldFrame.size.height -= 20
-        worldFrame.size.width -= 20
+        let worldFrame = frame
+//        worldFrame.origin.x = -size.width / 2
+//        worldFrame.origin.y = 0
+
         
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         
@@ -118,6 +129,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if abs(direction) > 2 {
                 buddy.setDestination(to: direction)
+                
+                print(buddy.position.x, "buddy", cameraNode.position.x, "camera")
+                
+                if buddy.position.x > size.width / 6 && buddy.position.x < size.width * 5 / 6 {
+                    
+                    cameraNode.run(SKAction.move(to: CGPoint(
+                        x: buddy.position.x,
+                        y: cameraNode.position.y), duration: 0.5))
+                    
+                }
             } else {
                 buddy.jump()
             }
@@ -204,7 +225,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance()
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.width / 2)
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * 0.2)
         buddy.updatePosition(point: buddyInitPosition)
         buddy.zPosition = 10
         

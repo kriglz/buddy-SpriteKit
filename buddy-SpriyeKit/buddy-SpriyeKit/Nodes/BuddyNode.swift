@@ -41,7 +41,7 @@ class BuddyNode: SKSpriteNode {
             
             //Adding contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory
-            buddy.physicsBody?.contactTestBitMask = WorldCategory
+            buddy.physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
         }
         return buddy
     }
@@ -64,8 +64,8 @@ class BuddyNode: SKSpriteNode {
                 
                 //Limits height of jump.
                 if position.y < size.height {
-                    
-                    let jumpUpVector = CGVector(dx: position.x, dy: position.y + size.height)
+                
+                    let jumpUpVector = CGVector(dx: 0.0, dy: position.y + size.height)
                     let buddyPoint = CGPoint(x: size.width / 2, y: size.height * 0.9)
                     let jumpAction = SKAction.applyForce(jumpUpVector, at: buddyPoint, duration: 0.05)
                 
