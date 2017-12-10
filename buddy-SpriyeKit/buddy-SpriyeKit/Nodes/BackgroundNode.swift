@@ -33,7 +33,7 @@ class BackgroundNode: SKNode {
         
         addChild(groundGrass)
         
-        
+        print(size.height * yForMountains)
         
         
         
@@ -53,48 +53,39 @@ class BackgroundNode: SKNode {
         
         
         
-        //Init of ground level horizon surface.
-        let darkHorizonSize = CGSize(width: size.width, height: size.height * yForDarkHorizon + 30)
-        let darkHorizonoOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon) - 30)
-        let darkHorizonRect = CGRect(origin: darkHorizonoOrigin, size: darkHorizonSize)
-        
-        let darkHorizon = SKShapeNode(rect: darkHorizonRect)
-        darkHorizon.fillColor = .white
-        darkHorizon.strokeColor = .clear
-        darkHorizon.fillTexture = SKTexture(imageNamed: "groundHorizon")
-        darkHorizon.zPosition = 3
-        
-        addChild(darkHorizon)
-        
-        
         
         
         //Init of mountains.
         let mountainsSize = CGSize(width: size.width, height: size.height * yForMountains)
-        let mountainsOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon + yForDarkHorizon) - 20)
+        let mountainsOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon) - 20)
         let mountainsSizeRect = CGRect(origin: mountainsOrigin, size: mountainsSize)
         
         let mountains = SKShapeNode(rect: mountainsSizeRect)
         mountains.fillColor = .white
         mountains.strokeColor = .clear
         mountains.fillTexture = SKTexture(imageNamed: "mountains")
-        mountains.zPosition = 2
+        mountains.zPosition = 3
         
         addChild(mountains)
         
+        let mountainsBack = SKShapeNode(rect: mountainsSizeRect)
+        mountainsBack.fillColor = .white
+        mountainsBack.strokeColor = .clear
+        mountainsBack.fillTexture = SKTexture(imageNamed: "mountainsBack")
+        mountainsBack.zPosition = 2
         
+        addChild(mountainsBack) 
+
         
         
         //Init of sky.
-        let skySize = CGSize(width: size.width, height: size.height * yForSky)
-        let skyOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon + yForDarkHorizon))
+        let skySize = CGSize(width: size.width, height: size.height * (yForSky + yForMountains))
+        let skyOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon))
         let skynRect = CGRect(origin: skyOrigin, size: skySize)
         
         let sky = SKShapeNode(rect: skynRect)
-//        sky.fillColor = .white
-        sky.fillColor = UIColor.init(red: 240/255, green: 249/255, blue: 255/255, alpha: 1.0)
+        sky.fillColor = UIColor.init(red: 255/255, green: 254/255, blue: 240/255, alpha: 1.0)
         sky.strokeColor = .clear
-//        sky.fillTexture = SKTexture(imageNamed: "sky")
         sky.zPosition = 1
         
         addChild(sky)

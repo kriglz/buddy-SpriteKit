@@ -13,8 +13,7 @@ let BuddyCategory: UInt32 = 0x1 << 2
 let FloorCategory: UInt32 = 0x1 << 3
 let xScaleForSceneSize: CGFloat = 3.0
 
-let yForGrass: CGFloat = 0.2
-let yForGrassHorizon: CGFloat = 0.35
-let yForDarkHorizon: CGFloat = 0.1
-let yForMountains: CGFloat = 0.2
-let yForSky: CGFloat = 1.0 - yForGrass - yForDarkHorizon - yForMountains //0.15 now
+let yForGrass: CGFloat = 0.25
+let yForGrassHorizon: CGFloat = 0.13
+let yForMountains: CGFloat = 0.15
+let yForSky: CGFloat = 1.0 - yForGrass - yForMountains //0.40 now
