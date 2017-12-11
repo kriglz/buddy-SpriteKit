@@ -189,6 +189,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         
+        background.update(currentTime)
+        
+        
+        
         
         self.lastUpdateTime = currentTime
     }

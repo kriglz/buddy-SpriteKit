@@ -10,6 +10,18 @@ import SpriteKit
 
 class BackgroundNode: SKNode {
     
+    var groundGrass: SKSpriteNode!
+    var groundGrassNext: SKSpriteNode!
+    
+    var horizonGrass: SKSpriteNode!
+    var horizonGrassNext: SKSpriteNode!
+    
+    var mountains: SKSpriteNode!
+    var mountainsNext: SKSpriteNode!
+    
+    var mountainsBack: SKSpriteNode!
+    var mountainsBackNext: SKSpriteNode!
+    
     public func setup(size: CGSize){
         
         let yPositionOfFloor = size.height * yForGrass - 30
@@ -21,62 +33,71 @@ class BackgroundNode: SKNode {
         physicsBody?.contactTestBitMask = BuddyCategory
         
 
+        
+        
         //Init of ground grass - the walking surface.
         let groundGrassSize = CGSize(width: size.width, height: size.height * yForGrass)
-        let groundGrassRect = CGRect(origin: CGPoint(), size: groundGrassSize)
         
-        let groundGrass = SKShapeNode(rect: groundGrassRect)
-        groundGrass.fillColor = .white
-        groundGrass.strokeColor = .clear
-        groundGrass.fillTexture = SKTexture(imageNamed: "ground")
+        groundGrass = SKSpriteNode(texture: SKTexture(imageNamed: "ground"))
+        groundGrass.size = groundGrassSize
+        groundGrass.position = CGPoint(x: groundGrass.size.width / 2, y: groundGrass.size.height / 2)
         groundGrass.zPosition = 10
-        
-        
         addChild(groundGrass)
         
-        print(size.height * yForMountains)
+        groundGrassNext = groundGrass.copy() as! SKSpriteNode
+        groundGrass.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
+        groundGrassNext.zPosition = groundGrass.zPosition
+        addChild(groundGrassNext)
+
         
         
-        
-        //Init of horizon grass .
+        //Init of horizon grass.
         let horizonGrassSize = CGSize(width: size.width, height: size.height * yForGrassHorizon + 20)
-        let horizonGrassOrigin = CGPoint(x: CGPoint().x, y: size.height * yForGrass - 20)
-        let horizonGrassRect = CGRect(origin: horizonGrassOrigin, size: horizonGrassSize)
         
-        let horizonGrass = SKShapeNode(rect: horizonGrassRect)
-        horizonGrass.fillColor = .white
-        horizonGrass.strokeColor = .clear
-        horizonGrass.fillTexture = SKTexture(imageNamed: "horizonGrass")
-        horizonGrass.zPosition = 4
-        
+        horizonGrass = SKSpriteNode(texture: SKTexture(imageNamed: "horizonGrass"))
+        horizonGrass.size = horizonGrassSize
+        horizonGrass.position = CGPoint(x: horizonGrass.size.width / 2, y: size.height * yForGrass + horizonGrass.size.height / 2 - 20)
+        horizonGrass.zPosition = 8
         addChild(horizonGrass)
         
-        
+        horizonGrassNext = horizonGrass.copy() as! SKSpriteNode
+        horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
+        horizonGrassNext.zPosition = horizonGrass.zPosition
+        addChild(horizonGrassNext)
         
         
         
         
         //Init of mountains.
         let mountainsSize = CGSize(width: size.width, height: size.height * yForMountains)
-        let mountainsOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon) - 20)
-        let mountainsSizeRect = CGRect(origin: mountainsOrigin, size: mountainsSize)
         
-        let mountains = SKShapeNode(rect: mountainsSizeRect)
-        mountains.fillColor = .white
-        mountains.strokeColor = .clear
-        mountains.fillTexture = SKTexture(imageNamed: "mountains")
-        mountains.zPosition = 3
-        
+        mountains = SKSpriteNode(texture: SKTexture(imageNamed: "mountains"))
+        mountains.size = mountainsSize
+        mountains.position = CGPoint(x: mountains.size.width / 2, y: mountains.size.height / 2 + size.height * (yForGrass + yForGrassHorizon) - 20)
+        mountains.zPosition = 6
         addChild(mountains)
         
-        let mountainsBack = SKShapeNode(rect: mountainsSizeRect)
-        mountainsBack.fillColor = .white
-        mountainsBack.strokeColor = .clear
-        mountainsBack.fillTexture = SKTexture(imageNamed: "mountainsBack")
-        mountainsBack.zPosition = 2
+        mountainsNext = mountains.copy() as! SKSpriteNode
+        mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
+        mountainsNext.zPosition = mountains.zPosition
+        addChild(mountainsNext)
         
-        addChild(mountainsBack) 
+        
+        mountainsBack = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
+        mountainsBack.size = mountains.size
+        mountainsBack.position = mountains.position
+        mountainsBack.zPosition = 4
+        addChild(mountainsBack)
+        
+        mountainsBackNext = mountainsBack.copy() as! SKSpriteNode
+        mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
+        mountainsBackNext.zPosition = mountainsBack.zPosition
+        addChild(mountainsBackNext)
 
+        
+        
+        
+        //Below stuff is not moving yet.
         
         
         //Init of sky.
@@ -177,6 +198,58 @@ class BackgroundNode: SKNode {
       
         
     }
+    
+    var deltaTime : TimeInterval = 0
+    var lastFrameTime : TimeInterval = 0
+
+    
+    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: Float){
+        
+        var newPosition = CGPoint.zero
+        
+        //Loop cycle for both sprite and dublicate
+        for spriteToMove in [sprite, nextSprite]{
+            
+            //Move sprite to the left based on speed
+            newPosition = spriteToMove.position
+            newPosition.x -= CGFloat(speed * Float(deltaTime))
+            spriteToMove.position = newPosition
+            
+            //If the sprite is noq offscreen (i. e. rightmost edge is farther left than scen's leftmost edge)
+            if spriteToMove.frame.maxX < self.frame.minX {
+                
+                //Shift it over so that it's now to the immediate right of the other sprite.
+                //Two sprite are leap=frogging each other as tehy both move.
+                
+                spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width * 2, y: spriteToMove.position.y)
+            }
+        }
+        
+        
+       
+    }
+    
+    
+    func update(_ currentTime: TimeInterval){
+        
+        //Updates the delta time value.
+        if lastFrameTime <= 0 {
+            lastFrameTime = currentTime
+        }
+        
+        deltaTime = currentTime - lastFrameTime
+        
+        //Sets the last frame time to current time.
+        lastFrameTime = currentTime
+        
+        
+        moveSprite(sprite: groundGrass, nextSprite: groundGrassNext, speed: 150.0)
+        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
+        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
+        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
+    }
+
+  
     
     
 }
