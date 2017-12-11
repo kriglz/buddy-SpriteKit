@@ -31,6 +31,7 @@ class BackgroundNode: SKNode {
         groundGrass.fillTexture = SKTexture(imageNamed: "ground")
         groundGrass.zPosition = 10
         
+        
         addChild(groundGrass)
         
         print(size.height * yForMountains)
@@ -90,11 +91,20 @@ class BackgroundNode: SKNode {
         
         addChild(sky)
         
+        //Init sun in the sky.
+        let sunSize = CGSize(width: size.height * yForGrass * 1.68, height: size.height * yForGrass)
+        let sunOrigin = CGPoint(x: CGPoint().x, y: size.height - size.height * yForGrass)
+        let sunRect = CGRect(origin: sunOrigin, size: sunSize)
         
+        let sun = SKShapeNode(rect: sunRect)
+        sun.fillColor = .white
+        sun.strokeColor = .clear
+        sun.fillTexture = SKTexture(imageNamed: "skySun")
+        sun.zPosition = 4
         
+        addChild(sun)
         
-        
-        
+       
         
         
 //        let grassLine = SKShapeNode(rect: CGRect(x: size.width / 2, y: size.height / 2, width: 200, height: 30))

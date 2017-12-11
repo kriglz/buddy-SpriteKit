@@ -19,8 +19,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let cameraNode = SKCameraNode()
 
     
-    
-    
+    private let controlButtons = ControlButtons()
+
     
     
     
@@ -29,11 +29,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-
-        
-        
-        
-        
         
         //Setting up scene background.
         backgroundColor = .lightGray
@@ -52,7 +47,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cameraNode)
         
         
-        
         //Adding WorldFrame
         let worldFrame = frame
 
@@ -62,8 +56,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         
-        
-        
+        //Adds control buttons to the scene.
+        controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
+//        controlButtons.position.x =  buddy.position.x
+        addChild(controlButtons)
         
         // Get label node from scene and store it for use later
 //        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -135,7 +131,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     
                     cameraNode.run(SKAction.move(to: CGPoint(
                         x: buddy.position.x,
-                        y: cameraNode.position.y), duration: 0.2))
+                        y: cameraNode.position.y), duration: 0.1))
+                 
+                    
                     
                 }
             } else {

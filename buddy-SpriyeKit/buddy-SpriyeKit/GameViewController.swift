@@ -12,6 +12,8 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +23,7 @@ class GameViewController: UIViewController {
 //        let sceneNode = MenuScene(size: view.frame.size)
         let gameWorldSize = CGSize.init(width: view.frame.size.width * xScaleForSceneSize, height: view.frame.size.height)
         let sceneNode = GameScene(size: gameWorldSize)
+        
         
         // Present the scene
         if let view = self.view as! SKView? {
@@ -32,6 +35,9 @@ class GameViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+        
+        
+      
         
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content

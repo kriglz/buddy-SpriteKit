@@ -13,6 +13,7 @@
 		8946D1121FD8F65A0049084F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8946D1101FD8F65A0049084F /* Main.storyboard */; };
 		8946D1141FD8F65A0049084F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8946D1131FD8F65A0049084F /* Assets.xcassets */; };
 		8946D1171FD8F65A0049084F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8946D1151FD8F65A0049084F /* LaunchScreen.storyboard */; };
+		895A62D11FDF02EA004A78C5 /* ControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895A62D01FDF02EA004A78C5 /* ControlButton.swift */; };
 		898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE30C1FDA1746001CF189 /* BuddyNode.swift */; };
 		898CE30F1FDA1888001CF189 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE30E1FDA1888001CF189 /* Constants.swift */; };
 		898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE3101FDB65BA001CF189 /* BackgroundNode.swift */; };
@@ -27,6 +28,7 @@
 		8946D1131FD8F65A0049084F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8946D1161FD8F65A0049084F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8946D1181FD8F65A0049084F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		895A62D01FDF02EA004A78C5 /* ControlButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButton.swift; sourceTree = "<group>"; };
 		898CE30C1FDA1746001CF189 /* BuddyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyNode.swift; sourceTree = "<group>"; };
 		898CE30E1FDA1888001CF189 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		898CE3101FDB65BA001CF189 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 		8946D11F1FD8F6700049084F /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
 			);
@@ -174,6 +177,7 @@
 			files = (
 				898CE30F1FDA1888001CF189 /* Constants.swift in Sources */,
 				898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */,
+				895A62D11FDF02EA004A78C5 /* ControlButton.swift in Sources */,
 				8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */,
 				898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */,
 				8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */,
