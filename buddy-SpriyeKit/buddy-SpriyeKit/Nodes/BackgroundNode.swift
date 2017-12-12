@@ -15,21 +15,20 @@ enum Direction {
 
 class BackgroundNode: SKNode {
     
-    var direction: Direction = .left {
-        didSet{
+    var direction: Direction = .left
+    {
+        didSet {
             switch direction {
             case .left:
-//                groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
 
             case .right:
-//                groundGrassNext.position = CGPoint(x: groundGrass.position.x - groundGrass.size.width, y: groundGrass.position.y)
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
-                
+
             }
         }
     }
@@ -45,6 +44,10 @@ class BackgroundNode: SKNode {
     var mountainsBack: SKSpriteNode!
     var mountainsBackNext: SKSpriteNode!
     
+    
+    
+    
+    ///Initialize the background nodes.
     public func setup(size: CGSize){
         
         //Init of horizon grass.
@@ -52,16 +55,14 @@ class BackgroundNode: SKNode {
         
         horizonGrass = SKSpriteNode(texture: SKTexture(imageNamed: "horizonGrass"))
         horizonGrass.size = horizonGrassSize
-        horizonGrass.position = CGPoint(x: horizonGrass.size.width / 2, y: size.height * yForGrass + horizonGrass.size.height / 2 - 20)
+        horizonGrass.position = CGPoint(x: size.width / 2, y: size.height * yForGrass + horizonGrass.size.height / 2 - 20)
         horizonGrass.zPosition = 8
         addChild(horizonGrass)
         
         horizonGrassNext = horizonGrass.copy() as! SKSpriteNode
-        horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
+//        horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
         horizonGrassNext.zPosition = horizonGrass.zPosition
         addChild(horizonGrassNext)
-        
-        
         
         
         //Init of mountains.
@@ -91,11 +92,8 @@ class BackgroundNode: SKNode {
         addChild(mountainsBackNext)
 
         
-        
-        
         //Below stuff is not moving yet.
-        
-        
+
         //Init of sky.
         let skySize = CGSize(width: size.width, height: size.height * (yForSky + yForMountains))
         let skyOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon))
@@ -116,11 +114,92 @@ class BackgroundNode: SKNode {
         sun.position = CGPoint(x: sun.size.width / 3, y: size.height - size.height * yForGrass)
         sun.zPosition = 2
         addChild(sun)
+    }
+    
+
+
+    
+    
+    
+    ///Sets the movement direction and speed.
+    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: Float){
+        
+        let delta = CGFloat(speed * Float(deltaTime))
+
+        
+        //Loop cycle for both sprite and dublicate
+        for spriteToMove in [sprite, nextSprite] {
+            
+            //Move sprite to the left based on speed
+            var newPosition: CGPoint = CGPoint.zero
+            newPosition = spriteToMove.position
+            
+            
+            
+            switch direction {
+                
+            case .left:
+                
+                newPosition.x -= delta
+                spriteToMove.position = newPosition
+            
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if (spriteToMove == sprite && spriteToMove.frame.maxX < 0.0) || (spriteToMove == nextSprite && spriteToMove.frame.minX < 0.0) {
+                    
+                    //Shift it over so that it's now to the immediate right of the other sprite.
+                    //Two sprite are leap-frogging each other as tehy both move.
+                    
+                    spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
+                }
+                
+            case .right:
+                
+                newPosition.x += delta
+                spriteToMove.position = newPosition 
+                
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if (spriteToMove == sprite && spriteToMove.frame.minX > spriteToMove.size.width) || (spriteToMove == nextSprite && spriteToMove.frame.minX > 0.0){
+                    
+                    //Shift it over so that it's now to the immediate right of the other sprite.
+                    //Two sprite are leap-frogging each other as tehy both move.
+                    
+                    spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    var deltaTime : TimeInterval = 0
+    var lastFrameTime : TimeInterval = 0
+    
+    
+    
+    ///Updates the movemnet of the background.
+    func update(_ currentTime: TimeInterval){
+        
+        //Updates the delta time value.
+        if lastFrameTime <= 0 {
+            lastFrameTime = currentTime
+        }
+        
+        deltaTime = currentTime - lastFrameTime
+        
+        //Sets the last frame time to current time.
+        lastFrameTime = currentTime
         
         
-       
-        
-        
+        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
+//        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
+//        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
+    }
+}
+
+
+
+
 //        let grassLine = SKShapeNode(rect: CGRect(x: size.width / 2, y: size.height / 2, width: 200, height: 30))
 //        grassLine.physicsBody = SKPhysicsBody.init(rectangleOf: CGSize(width: 200, height: 30))
 //        grassLine.fillColor = .orange
@@ -183,84 +262,3 @@ class BackgroundNode: SKNode {
 //                                                             warpGeometryGrid6],
 //                                                                         times: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0])!)
 //        effectNode.run(warpAction)
-        
-       
-
-        
-        
-      
-        
-    }
-    
-    var deltaTime : TimeInterval = 0
-    var lastFrameTime : TimeInterval = 0
-
-    
-    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: Float){
-        
-        var newPosition = CGPoint.zero
-        
-        //Loop cycle for both sprite and dublicate
-        for spriteToMove in [sprite, nextSprite]{
-            
-            //Move sprite to the left based on speed
-            newPosition = spriteToMove.position
-            
-            switch direction {
-                
-            case .left:
-                newPosition.x -= CGFloat(speed * Float(deltaTime))
-                spriteToMove.position = newPosition
-                
-                
-                
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if spriteToMove.frame.maxX < 0.0 {
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap=frogging each other as tehy both move.
-                    
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
-                }
-                
-            case .right:
-                
-                newPosition.x += CGFloat(speed * Float(deltaTime))
-                spriteToMove.position = newPosition
-                
-                
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if spriteToMove.frame.minX > 1.0 {
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap=frogging each other as tehy both move.
-                    
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
-                }
-            }
-        }
-    }
-    
-    
-    func update(_ currentTime: TimeInterval){
-        
-        //Updates the delta time value.
-        if lastFrameTime <= 0 {
-            lastFrameTime = currentTime
-        }
-        
-        deltaTime = currentTime - lastFrameTime
-        
-        //Sets the last frame time to current time.
-        lastFrameTime = currentTime
-        
-        
-        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
-        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
-        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
-    }
-
-  
-    
-    
-}
