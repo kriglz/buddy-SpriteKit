@@ -60,6 +60,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
         controlButtons.position.x += buddy.position.x - cameraNode.xScale * size.width / 2
         addChild(controlButtons)
+        //Sets the actions for control buttons.
+        controlButtons.buttonAction = {
+            
+            if controlButtons.isPressed {
+                
+//                if controlButtons.button ==
+                
+            }
+            
+            if self.buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && self.buddy.position.x < selfsize.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+                
+                
+                cameraNode.position.x = buddy.position.x
+                controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
+            }
+        }
         
         // Get label node from scene and store it for use later
 //        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -120,19 +136,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Checks if touch gesture was tap (for jump) or drag (for walk).
     private func jumpOrWalk(to lastTouchPoint: CGPoint){
         
-        if let firstTouchPoint = firstTouchPoint {
-            
-            let direction = lastTouchPoint.x - firstTouchPoint.x
-            
-            if abs(direction) > 2 {
-                buddy.setDestination(to: direction)
+//        if let firstTouchPoint = firstTouchPoint {
+//
+//            let direction = lastTouchPoint.x - firstTouchPoint.x
+        
+//            if abs(direction) > 2 {
+//                buddy.setDestination(to: direction)
                 
                 
-                if buddy.position.x > size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-                    
-                    
-                    cameraNode.position.x = buddy.position.x
-                    controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
+        
                     
 //                    cameraNode.run(SKAction.move(to: CGPoint(
 //                        x: buddy.position.x,
@@ -140,11 +152,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                  
                     
                     
-                }
-            } else {
-                buddy.jump()
-            }
-        }
+//                }
+//            } else {
+//                buddy.jump()
+//            }
+//        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -152,10 +164,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let touchPoint = touchPoint {
             
-            firstTouchPoint = touchPoint
-            jumpOrWalk(to: touchPoint)
+            controlButtons.touchBegan(at: touchPoint)
+            
+            if controlButtons.isPressed {
+                
+                firstTouchPoint = touchPoint
+                
+            }
         }
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -163,15 +179,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let touchPoint = touchPoint {
             
-            jumpOrWalk(to: touchPoint)
+            controlButtons.touchMoved(to: touchPoint)
+            
+            if !controlButtons.isPressed {
+                
+            }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPoint = touches.first?.location(in: self)
         
-        buddy.stopWalking()
+        if let touchPoint = touchPoint {
+            
+            controlButtons.touchEnded(at: touchPoint)
+            
+            if !controlButtons.isPressed {
+                
+                firstTouchPoint = nil
+            }
+        }
         
-        firstTouchPoint = nil
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
