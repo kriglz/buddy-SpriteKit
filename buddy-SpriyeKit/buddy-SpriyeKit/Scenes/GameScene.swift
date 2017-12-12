@@ -58,7 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adds control buttons to the scene.
         controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
-//        controlButtons.position.x =  buddy.position.x
+        controlButtons.position.x += buddy.position.x - cameraNode.xScale * size.width / 2
         addChild(controlButtons)
         
         // Get label node from scene and store it for use later
@@ -127,11 +127,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if abs(direction) > 2 {
                 buddy.setDestination(to: direction)
                 
+                
                 if buddy.position.x > size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
                     
-                    cameraNode.run(SKAction.move(to: CGPoint(
-                        x: buddy.position.x,
-                        y: cameraNode.position.y), duration: 0.1))
+                    
+                    cameraNode.position.x = buddy.position.x
+                    controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
+                    
+//                    cameraNode.run(SKAction.move(to: CGPoint(
+//                        x: buddy.position.x,
+//                        y: cameraNode.position.y), duration: 0.1))
                  
                     
                     
@@ -188,9 +193,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.update(deltaTime: dt)
         
         
-        background.direction = .right
-        background.update(currentTime)
-        
+//        background.direction = .left
+//        background.update(currentTime)
+//
         
         
         
