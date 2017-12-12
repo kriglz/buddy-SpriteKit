@@ -152,11 +152,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.update(deltaTime: dt)
         
         
-        background.direction = .left
+        
+        
+        background.direction = .right
         background.update(currentTime)
 
         
-        
+
         
         self.lastUpdateTime = currentTime
     }

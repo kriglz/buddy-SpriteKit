@@ -60,7 +60,6 @@ class BackgroundNode: SKNode {
         addChild(horizonGrass)
         
         horizonGrassNext = horizonGrass.copy() as! SKSpriteNode
-//        horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
         horizonGrassNext.zPosition = horizonGrass.zPosition
         addChild(horizonGrassNext)
         
@@ -70,16 +69,16 @@ class BackgroundNode: SKNode {
         
         mountains = SKSpriteNode(texture: SKTexture(imageNamed: "mountains"))
         mountains.size = mountainsSize
-        mountains.position = CGPoint(x: mountains.size.width / 2, y: mountains.size.height / 2 + size.height * (yForGrass + yForGrassHorizon) - 20)
+        mountains.position = CGPoint(x: size.width / 2, y: mountains.size.height / 2 + size.height * (yForGrass + yForGrassHorizon) - 20)
         mountains.zPosition = 6
         addChild(mountains)
         
         mountainsNext = mountains.copy() as! SKSpriteNode
-        mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
         mountainsNext.zPosition = mountains.zPosition
         addChild(mountainsNext)
         
         
+        //Init of mountiansBack.
         mountainsBack = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
         mountainsBack.size = mountains.size
         mountainsBack.position = mountains.position
@@ -87,7 +86,6 @@ class BackgroundNode: SKNode {
         addChild(mountainsBack)
         
         mountainsBackNext = mountainsBack.copy() as! SKSpriteNode
-        mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
         mountainsBackNext.zPosition = mountainsBack.zPosition
         addChild(mountainsBackNext)
 
@@ -192,8 +190,8 @@ class BackgroundNode: SKNode {
         
         
         moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
-//        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
-//        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
+        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
+        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
     }
 }
 
