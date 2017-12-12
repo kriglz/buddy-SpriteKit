@@ -17,6 +17,7 @@
 		898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE30C1FDA1746001CF189 /* BuddyNode.swift */; };
 		898CE30F1FDA1888001CF189 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE30E1FDA1888001CF189 /* Constants.swift */; };
 		898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898CE3101FDB65BA001CF189 /* BackgroundNode.swift */; };
+		89B6BA581FE0486200AC5CB1 /* FloorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B6BA571FE0486200AC5CB1 /* FloorNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		898CE30C1FDA1746001CF189 /* BuddyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyNode.swift; sourceTree = "<group>"; };
 		898CE30E1FDA1888001CF189 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		898CE3101FDB65BA001CF189 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
+		89B6BA571FE0486200AC5CB1 /* FloorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			children = (
 				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
+				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
 			);
 			path = Nodes;
@@ -177,6 +180,7 @@
 			files = (
 				898CE30F1FDA1888001CF189 /* Constants.swift in Sources */,
 				898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */,
+				89B6BA581FE0486200AC5CB1 /* FloorNode.swift in Sources */,
 				895A62D11FDF02EA004A78C5 /* ControlButton.swift in Sources */,
 				8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */,
 				898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */,

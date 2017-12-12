@@ -19,14 +19,13 @@ class BackgroundNode: SKNode {
         didSet{
             switch direction {
             case .left:
-                groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
+//                groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
 
             case .right:
-                groundGrassNext.position = CGPoint(x: groundGrass.position.x - groundGrass.size.width, y: groundGrass.position.y)
-                print(groundGrassNext.frame.minX)
+//                groundGrassNext.position = CGPoint(x: groundGrass.position.x - groundGrass.size.width, y: groundGrass.position.y)
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
@@ -35,8 +34,7 @@ class BackgroundNode: SKNode {
         }
     }
     
-    var groundGrass: SKSpriteNode!
-    var groundGrassNext: SKSpriteNode!
+    
     
     var horizonGrass: SKSpriteNode!
     var horizonGrassNext: SKSpriteNode!
@@ -48,33 +46,6 @@ class BackgroundNode: SKNode {
     var mountainsBackNext: SKSpriteNode!
     
     public func setup(size: CGSize){
-        
-        let yPositionOfFloor = size.height * yForGrass - 30
-        let startPoint = CGPoint(x: 0, y: yPositionOfFloor)
-        let endPoint = CGPoint(x: size.width, y: yPositionOfFloor)
-        
-        physicsBody = SKPhysicsBody(edgeFrom: startPoint, to: endPoint)
-        physicsBody?.categoryBitMask = FloorCategory
-        physicsBody?.contactTestBitMask = BuddyCategory
-        
-
-        
-        
-        //Init of ground grass - the walking surface.
-        let groundGrassSize = CGSize(width: size.width, height: size.height * yForGrass)
-        
-        groundGrass = SKSpriteNode(texture: SKTexture(imageNamed: "ground"))
-        groundGrass.size = groundGrassSize
-        groundGrass.position = CGPoint(x: groundGrass.size.width / 2, y: groundGrass.size.height / 2)
-        groundGrass.zPosition = 10
-        addChild(groundGrass)
-        
-        groundGrassNext = groundGrass.copy() as! SKSpriteNode
-        groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
-        groundGrassNext.zPosition = groundGrass.zPosition
-        addChild(groundGrassNext)
-
-        
         
         //Init of horizon grass.
         let horizonGrassSize = CGSize(width: size.width, height: size.height * yForGrassHorizon + 20)
@@ -236,6 +207,7 @@ class BackgroundNode: SKNode {
             newPosition = spriteToMove.position
             
             switch direction {
+                
             case .left:
                 newPosition.x -= CGFloat(speed * Float(deltaTime))
                 spriteToMove.position = newPosition
@@ -252,16 +224,10 @@ class BackgroundNode: SKNode {
                 }
                 
             case .right:
-
                 
                 newPosition.x += CGFloat(speed * Float(deltaTime))
                 spriteToMove.position = newPosition
                 
-                
-                if spriteToMove == groundGrass {
-                    print(groundGrass.frame.minX, "spritetomove")
-                    print(groundGrass.frame.minX)
-                }
                 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.minX > 1.0 {
@@ -272,12 +238,7 @@ class BackgroundNode: SKNode {
                     spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
                 }
             }
-            
-            
         }
-        
-        
-       
     }
     
     
@@ -294,7 +255,6 @@ class BackgroundNode: SKNode {
         lastFrameTime = currentTime
         
         
-        moveSprite(sprite: groundGrass, nextSprite: groundGrassNext, speed: 150.0)
         moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
         moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
         moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
