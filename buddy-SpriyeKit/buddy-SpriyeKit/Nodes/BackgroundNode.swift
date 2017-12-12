@@ -8,7 +8,32 @@
 
 import SpriteKit
 
+enum Direction {
+    case left
+    case right
+}
+
 class BackgroundNode: SKNode {
+    
+    var direction: Direction = .left {
+        didSet{
+            switch direction {
+            case .left:
+                groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
+                horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
+                mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
+                mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
+
+            case .right:
+                groundGrassNext.position = CGPoint(x: groundGrass.position.x - groundGrass.size.width, y: groundGrass.position.y)
+                print(groundGrassNext.frame.minX)
+                horizonGrassNext.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
+                mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
+                mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
+                
+            }
+        }
+    }
     
     var groundGrass: SKSpriteNode!
     var groundGrassNext: SKSpriteNode!
@@ -45,7 +70,7 @@ class BackgroundNode: SKNode {
         addChild(groundGrass)
         
         groundGrassNext = groundGrass.copy() as! SKSpriteNode
-        groundGrass.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
+        groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
         groundGrassNext.zPosition = groundGrass.zPosition
         addChild(groundGrassNext)
 
@@ -114,16 +139,13 @@ class BackgroundNode: SKNode {
         
         //Init sun in the sky.
         let sunSize = CGSize(width: size.height * yForGrass * 1.68, height: size.height * yForGrass)
-        let sunOrigin = CGPoint(x: CGPoint().x, y: size.height - size.height * yForGrass)
-        let sunRect = CGRect(origin: sunOrigin, size: sunSize)
         
-        let sun = SKShapeNode(rect: sunRect)
-        sun.fillColor = .white
-        sun.strokeColor = .clear
-        sun.fillTexture = SKTexture(imageNamed: "skySun")
-        sun.zPosition = 4
-        
+        let sun = SKSpriteNode(texture: SKTexture(imageNamed: "skySun"))
+        sun.size = sunSize
+        sun.position = CGPoint(x: sun.size.width / 3, y: size.height - size.height * yForGrass)
+        sun.zPosition = 2
         addChild(sun)
+        
         
        
         
@@ -212,17 +234,46 @@ class BackgroundNode: SKNode {
             
             //Move sprite to the left based on speed
             newPosition = spriteToMove.position
-            newPosition.x -= CGFloat(speed * Float(deltaTime))
-            spriteToMove.position = newPosition
             
-            //If the sprite is noq offscreen (i. e. rightmost edge is farther left than scen's leftmost edge)
-            if spriteToMove.frame.maxX < self.frame.minX {
+            switch direction {
+            case .left:
+                newPosition.x -= CGFloat(speed * Float(deltaTime))
+                spriteToMove.position = newPosition
                 
-                //Shift it over so that it's now to the immediate right of the other sprite.
-                //Two sprite are leap=frogging each other as tehy both move.
                 
-                spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width * 2, y: spriteToMove.position.y)
+                
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if spriteToMove.frame.maxX < 0.0 {
+                    
+                    //Shift it over so that it's now to the immediate right of the other sprite.
+                    //Two sprite are leap=frogging each other as tehy both move.
+                    
+                    spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
+                }
+                
+            case .right:
+
+                
+                newPosition.x += CGFloat(speed * Float(deltaTime))
+                spriteToMove.position = newPosition
+                
+                
+                if spriteToMove == groundGrass {
+                    print(groundGrass.frame.minX, "spritetomove")
+                    print(groundGrass.frame.minX)
+                }
+                
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if spriteToMove.frame.minX > 1.0 {
+                    
+                    //Shift it over so that it's now to the immediate right of the other sprite.
+                    //Two sprite are leap=frogging each other as tehy both move.
+                    
+                    spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
+                }
             }
+            
+            
         }
         
         

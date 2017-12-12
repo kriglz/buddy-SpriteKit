@@ -188,7 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.update(deltaTime: dt)
         
         
-        
+        background.direction = .right
         background.update(currentTime)
         
         
