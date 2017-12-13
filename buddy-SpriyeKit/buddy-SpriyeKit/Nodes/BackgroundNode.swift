@@ -19,13 +19,14 @@ class BackgroundNode: SKNode {
     var direction: Direction = .left
     {
         didSet {
+            
             switch direction {
-            case .left:
+            case .right:
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
 
-            case .right:
+            case .left:
                 horizonGrassNext.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
                 mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
@@ -139,8 +140,6 @@ class BackgroundNode: SKNode {
         
         update(time as! TimeInterval)
         
-       
-        
     }
     
     
@@ -162,7 +161,7 @@ class BackgroundNode: SKNode {
             
             switch direction {
                 
-            case .left:
+            case .right:
                 
                 newPosition.x -= delta
                 spriteToMove.position = newPosition
@@ -176,7 +175,7 @@ class BackgroundNode: SKNode {
                     spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
                 }
                 
-            case .right:
+            case .left:
                 
                 newPosition.x += delta
                 spriteToMove.position = newPosition 
