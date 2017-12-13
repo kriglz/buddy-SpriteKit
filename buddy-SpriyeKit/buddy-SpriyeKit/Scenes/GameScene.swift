@@ -62,8 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adds control buttons to the scene.
         controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
-        controlButtons.position.x += buddy.position.x - cameraNode.xScale * size.width / 2
         addChild(controlButtons)
+        
         //Sets the actions for control buttons.
         controlButtons.buttonAction = {
             

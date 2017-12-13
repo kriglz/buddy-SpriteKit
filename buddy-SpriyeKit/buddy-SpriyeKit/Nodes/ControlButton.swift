@@ -27,13 +27,13 @@ class ControlButtons: SKNode {
         
         goLeftButton = SKSpriteNode(texture: goLeftButtonTexture)
         let margin: CGFloat = 15.0
-        goLeftButton.position = CGPoint(x: margin + goLeftButton.size.width / 2, y: margin + goLeftButton.size.height / 2)
+        goLeftButton.position = CGPoint(x: margin + goLeftButton.size.width / 2 + position.x - size.width / 2, y: margin + goLeftButton.size.height / 2)
         goLeftButton.zPosition = 1000
         goLeftButton.alpha = alphaDefault
         addChild(goLeftButton)
         
         goRightButton = SKSpriteNode(texture: goRightButtonTexture)
-        goRightButton.position = CGPoint(x: size.width - margin - goLeftButton.size.width / 2, y: margin + goLeftButton.size.height / 2)
+        goRightButton.position = CGPoint(x: size.width - margin - goLeftButton.size.width / 2 + position.x - size.width / 2, y: margin + goLeftButton.size.height / 2)
         goRightButton.zPosition = 1000
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
