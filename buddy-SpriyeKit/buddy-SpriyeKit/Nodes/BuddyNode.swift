@@ -50,6 +50,7 @@ class BuddyNode: SKSpriteNode {
     }
     
     private(set) var isWalking: Bool = false
+    private(set) var walkingSpeed: CGFloat = 0.0
     
     ///Updates skater on the screen.
     public func update(deltaTime: TimeInterval){
@@ -76,6 +77,8 @@ class BuddyNode: SKSpriteNode {
             }
             
             let delta = frame.width * easings
+            
+            walkingSpeed = delta
             
             //Should move to left
             switch direction {

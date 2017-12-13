@@ -47,20 +47,23 @@ class BackgroundNode: SKNode {
     var mountainsBack: SKSpriteNode!
     var mountainsBackNext: SKSpriteNode!
     
+    var buddysSpeed: CGFloat = 0.0
     
     
-    @objc func printNot(){
-        print("no was sent")
-    }
-    
-    
+
+
     
     ///Initialize the background nodes.
     public func setup(size: CGSize){
         
-        //Notification observer for camera movement.
-        NotificationCenter.default.addObserver(self, selector: #selector(printNot), name: NSNotification.Name(rawValue: cameraMoveNotificationKey), object: nil)
-
+        //Makes background nodes observe notification about camera movements.
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+            object: nil,
+            queue: nil,
+            using: moveTheBackground)
+        
+     
         
         //Init of horizon grass.
         let horizonGrassSize = CGSize(width: size.width, height: size.height * yForGrassHorizon + 20)
@@ -127,14 +130,25 @@ class BackgroundNode: SKNode {
     }
     
 
-
+    @objc func moveTheBackground( notification: Notification) -> Void {
+        
+        guard let buddyDirection = notification.userInfo!["DirectionToMove"], let buddySpeed = notification.userInfo!["BuddySpeed"], let time = notification.userInfo!["Time"] else { return }
+        
+        direction = buddyDirection as! Direction
+        buddysSpeed = buddySpeed as! CGFloat
+        
+        update(time as! TimeInterval)
+        
+       
+        
+    }
     
     
     
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: Float){
+    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: CGFloat){
         
-        let delta = CGFloat(speed * Float(deltaTime))
+        let delta = speed * CGFloat(deltaTime)
 
         
         //Loop cycle for both sprite and dublicate
@@ -204,11 +218,16 @@ class BackgroundNode: SKNode {
         lastFrameTime = currentTime
         
         
-        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 10.0)
-        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 3.0)
-        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 1.0)
+        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0 ) //buddysSpeed / 3.0)
+        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 10.0 ) //buddysSpeed / 10.0)
+        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 1.0 ) //buddysSpeed / 20.0)
     }
 }
+
+
+
+
+
 
 
 

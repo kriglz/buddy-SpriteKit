@@ -173,7 +173,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.position.x = point.x
         
         //Sends noficication that camera has moved.
-        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
+              "BuddySpeed": buddy.walkingSpeed,
+              "Time": lastUpdateTime])
     }
 
     
