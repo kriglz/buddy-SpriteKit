@@ -60,7 +60,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         //Adds control buttons to the scene.
-        controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
+        controlButtons.setup()
+        controlButtons.centerOnPoint(point: buddy.position)
         addChild(controlButtons)
         
       
@@ -76,12 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //                controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
     //            }
     
-    
-//    private func makeBuddyToWalk() {
-//        controlButtons.buttonAction = {
-//
-//        }
-//    }
+
     
     
     
@@ -128,10 +124,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        if buddy.isWalking {
+        let touchPoint = touches.first?.location(in: self)
+
+        if let touchPoint = touchPoint {
+            controlButtons.touchEnded(at: touchPoint)
             
-            buddy.walk( .none)
+            if buddy.isWalking {
+                
+                buddy.walk( .none)
+            }
         }
     }
     
@@ -157,8 +158,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         //Updates the buddy behaviour.
         buddy.update(deltaTime: dt)
-        
-        
+        centerCameraOnPoint(point: buddy.position)
+        controlButtons.centerOnPoint(point: buddy.position)
         
         
         background.direction = .right
@@ -169,6 +170,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.lastUpdateTime = currentTime
     }
+
+    
+    func centerCameraOnPoint(point: CGPoint){
+        cameraNode.position.x = point.x
+    }
+    
     
     
     
