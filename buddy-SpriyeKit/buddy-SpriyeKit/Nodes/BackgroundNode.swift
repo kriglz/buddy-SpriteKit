@@ -49,9 +49,18 @@ class BackgroundNode: SKNode {
     
     
     
+    @objc func printNot(){
+        print("no was sent")
+    }
+    
+    
     
     ///Initialize the background nodes.
     public func setup(size: CGSize){
+        
+        //Notification observer for camera movement.
+        NotificationCenter.default.addObserver(self, selector: #selector(printNot), name: NSNotification.Name(rawValue: cameraMoveNotificationKey), object: nil)
+
         
         //Init of horizon grass.
         let horizonGrassSize = CGSize(width: size.width, height: size.height * yForGrassHorizon + 20)

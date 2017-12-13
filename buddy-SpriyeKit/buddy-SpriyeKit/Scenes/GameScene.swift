@@ -64,20 +64,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.centerOnPoint(point: buddy.position)
         addChild(controlButtons)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(printNot), name: NSNotification.Name(rawValue: cameraMoveNotificationKey), object: nil)
-
-      
     }
 
-    @objc func printNot(){
-        print("no was sent")
-    }
-    
 
-    
-
-    
-    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
