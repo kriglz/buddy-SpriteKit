@@ -55,18 +55,16 @@ class BuddyNode: SKSpriteNode {
     public func update(deltaTime: TimeInterval){
         
         //Cheks if buddy needs to walk.
-        if direction == .none {
+        if !isWalking {
             
             //Sets walking action to nil.
-            isWalking = false
+//            isWalking = false
             physicsBody?.velocity.dx = 0.0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
 
         //Else - Adds walking action.
         } else {
-            isWalking = true
-            
             if action(forKey: walkingActionKey) == nil {
                 let walkingAction = SKAction.repeatForever(
                     SKAction.animate(with: buddyWalkingFrame,
@@ -98,6 +96,11 @@ class BuddyNode: SKSpriteNode {
     ///Sets destination point after touch action happens.
     public func walk(_ towards: Direction){
         direction = towards
+        if direction == .none {
+            isWalking = false
+        } else {
+            isWalking = true
+        }
     }
     
     ///Updates destiantion and position, after buddy is initiated.

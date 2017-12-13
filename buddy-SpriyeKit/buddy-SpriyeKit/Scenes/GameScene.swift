@@ -64,18 +64,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.centerOnPoint(point: buddy.position)
         addChild(controlButtons)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(printNot), name: NSNotification.Name(rawValue: cameraMoveNotificationKey), object: nil)
+
       
     }
 
+    @objc func printNot(){
+        print("no was sent")
+    }
     
 
-    
-    //            if self.buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && self.buddy.position.x < selfsize.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-    //
-    //
-    //                cameraNode.position.x = buddy.position.x
-    //                controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
-    //            }
     
 
     
@@ -144,6 +142,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+
+    
     
     override func update(_ currentTime: TimeInterval) {
         //Called before each frame is rendered
@@ -155,28 +155,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Calculate time since last update.
         let dt = currentTime - self.lastUpdateTime
-
+        
+        
         //Updates the buddy behaviour.
         buddy.update(deltaTime: dt)
-        centerCameraOnPoint(point: buddy.position)
-        controlButtons.centerOnPoint(point: buddy.position)
         
+        //Updates camera and control buttons position if buddy has moved.
+        if buddy.isWalking {
+            
+            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+                
+                centerCameraOnPoint(point: buddy.position)
+                controlButtons.centerOnPoint(point: buddy.position)
+                
+                
+            }
+//            background.direction = .right
+//            background.update(currentTime)
+        }
         
-        background.direction = .right
-        background.update(currentTime)
 
-        
-
-        
         self.lastUpdateTime = currentTime
     }
 
     
     func centerCameraOnPoint(point: CGPoint){
+        
         cameraNode.position.x = point.x
+        
+        //Sends noficication that camera has moved.
+        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: self)
     }
-    
-    
+
     
     
     
