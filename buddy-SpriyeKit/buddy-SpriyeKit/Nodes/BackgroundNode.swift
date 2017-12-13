@@ -11,6 +11,7 @@ import SpriteKit
 enum Direction {
     case left
     case right
+    case none
 }
 
 class BackgroundNode: SKNode {
@@ -29,6 +30,8 @@ class BackgroundNode: SKNode {
                 mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
                 mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
 
+            case .none:
+                break
             }
         }
     }
@@ -163,6 +166,9 @@ class BackgroundNode: SKNode {
                     
                     spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
                 }
+                
+            case .none:
+                break
             }
         }
     }
@@ -189,9 +195,9 @@ class BackgroundNode: SKNode {
         lastFrameTime = currentTime
         
         
-        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0)
-        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 50.0)
-        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 25.0)
+        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 10.0)
+        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 3.0)
+        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 1.0)
     }
 }
 

@@ -19,7 +19,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var floor = FloorNode()
     private let cameraNode = SKCameraNode()
 
-    
     private let controlButtons = ControlButtons()
 
     
@@ -64,31 +63,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.setup(size: CGSize(width: cameraNode.xScale * size.width, height: cameraNode.yScale * size.height), position: buddy.position)
         addChild(controlButtons)
         
-        //Sets the actions for control buttons.
-        controlButtons.buttonAction = {
-            
-        
-            
-//            if self.buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && self.buddy.position.x < selfsize.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-//
-//
-//                cameraNode.position.x = buddy.position.x
-//                controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
-//            }
-        }
+      
     }
 
     
 
     
+    //            if self.buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && self.buddy.position.x < selfsize.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+    //
+    //
+    //                cameraNode.position.x = buddy.position.x
+    //                controlButtons.position.x = buddy.position.x - cameraNode.xScale * size.width / 2
+    //            }
+    
+    
+//    private func makeBuddyToWalk() {
+//        controlButtons.buttonAction = {
+//
+//        }
+//    }
     
     
     
-    
-    
-    
-    ///Set point by first touch event.
-    private var firstTouchPoint: CGPoint?
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
@@ -97,13 +93,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             controlButtons.touchBegan(at: touchPoint)
             
-            if controlButtons.isPressed {
+            switch controlButtons.direction {
+            case .left:
+                buddy.walk( .left)
                 
-                firstTouchPoint = touchPoint
-                
+            case .right:
+                buddy.walk( .right)
+
+            case .none:
+                buddy.walk( .none)
             }
         }
     }
+
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
@@ -112,28 +114,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             controlButtons.touchMoved(to: touchPoint)
             
-            if !controlButtons.isPressed {
+            switch controlButtons.direction {
+            case .left:
+                buddy.walk( .left)
                 
+            case .right:
+                buddy.walk( .right)
+                
+            case .none:
+                buddy.walk( .none)
             }
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touchPoint = touches.first?.location(in: self)
         
-        if let touchPoint = touchPoint {
+        if buddy.isWalking {
             
-            controlButtons.touchEnded(at: touchPoint)
-            
-            if !controlButtons.isPressed {
-                
-                firstTouchPoint = nil
-            }
+            buddy.walk( .none)
         }
-        
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if buddy.isWalking {
+            
+            buddy.walk( .none)
+        }
     }
     
     
@@ -196,9 +203,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             currentBuddy.removeAllActions()
             currentBuddy.physicsBody = nil
         }
-        
-        
-        
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance()

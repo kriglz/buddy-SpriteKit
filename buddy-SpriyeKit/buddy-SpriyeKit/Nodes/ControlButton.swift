@@ -19,8 +19,7 @@ class ControlButtons: SKNode {
     private let goRightButtonTexture = SKTexture(imageNamed: "buttonRight")
     
     
-    private(set) var isPressed = false
-    var buttonAction: (() -> ())?
+   
 
     
     public func setup(size: CGSize, position: CGPoint){
@@ -44,27 +43,39 @@ class ControlButtons: SKNode {
     
     
     
-    private func setButton(for point: CGPoint) {
+    private func getButton(for point: CGPoint) {
 
-        ///Point which is touch point converted to button coordinate system.
-        var point = goLeftButton.convert(point, from: parent!)
+        ///Point which is touch point converted to left button coordinate system.
+        var pointLeft = goLeftButton.convert(point, from: parent!)
+        
         //Adding button origin and half size to make point and button coordinate systems completely equal.
-        point.x += goLeftButton.frame.origin.x + goLeftButton.size.width / 2
-        point.y += goLeftButton.frame.origin.y + goLeftButton.size.height / 2
+        pointLeft.x += goLeftButton.frame.origin.x + goLeftButton.size.width / 2
+        pointLeft.y += goLeftButton.frame.origin.y + goLeftButton.size.height / 2
        
+
+        ///Point which is touch point converted to left button coordinate system.
+        var pointRight = goRightButton.convert(point, from: parent!)
+        
+        //Adding button origin and half size to make point and button coordinate systems completely equal.
+        pointRight.x += goRightButton.frame.origin.x + goRightButton.size.width / 2
+        pointRight.y += goRightButton.frame.origin.y + goRightButton.size.height / 2
+        
+        
+        
+        
         //Checks if either one button was touched.
         //Only one button can be touched at a time.
-        if goLeftButton.frame.contains(point) {
-            button = goLeftButton
+        if goLeftButton.frame.contains(pointLeft) {
+            direction = .left
             goLeftButton.alpha = alphaPressed
             goRightButton.alpha = alphaDefault
 
-        } else if goRightButton.frame.contains(point) {
-            button = goRightButton
+        } else if goRightButton.frame.contains(pointRight) {
+            direction = .right
             goRightButton.alpha = alphaPressed
             goLeftButton.alpha = alphaDefault
         } else {
-            button = nil
+            direction = .none
             goRightButton.alpha = alphaDefault
             goLeftButton.alpha = alphaDefault
             
@@ -72,45 +83,23 @@ class ControlButtons: SKNode {
     }
     
     ///Node which describes selected button.
-    var button: SKSpriteNode?
-    
+    var direction: Direction = .none
+  
     
     public func touchBegan(at point: CGPoint){
-        setButton(for: point)
         
-        if button != nil {
-//            if buttonIsPressed {
-//                //Cancel the last click.
-//                buttonIsPressed = false
-//
-//            } else {
-                isPressed = true
-                
-                if buttonAction != nil {
-                    buttonAction!()
-                }
-//            }
-        }
+        getButton(for: point)
     }
     
     public func touchMoved(to point: CGPoint){
-        setButton(for: point)
         
-        if button != nil {
-            if isPressed {
-                if buttonAction != nil {
-                    buttonAction!()
-                }
-            }
-        }
+        getButton(for: point)
     }
     
     public func touchEnded(at point: CGPoint){
-        
-        isPressed = false
+        direction = .none
         goRightButton.alpha = alphaDefault
         goLeftButton.alpha = alphaDefault
-        
     }
 }
 
