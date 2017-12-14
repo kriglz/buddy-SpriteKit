@@ -152,9 +152,9 @@ class BackgroundNode: SKNode {
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
-        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / 6.0)
-        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 12.0)
-        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 14.0)
+        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / 1.9)
+        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 1.5)
+        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 1.4)
     }
     
     
@@ -173,7 +173,7 @@ class BackgroundNode: SKNode {
             
             switch direction {
                 
-            case .right:
+            case .left:
                 
                 newPosition.x -= byDeltaX
                 spriteToMove.position = newPosition
@@ -187,7 +187,7 @@ class BackgroundNode: SKNode {
                     spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
                 }
                 
-            case .left:
+            case .right:
                 
                 newPosition.x += byDeltaX
                 spriteToMove.position = newPosition 
