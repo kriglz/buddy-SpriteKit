@@ -25,14 +25,15 @@ class BuddyNode: SKSpriteNode {
   
     
     ///Creates a new buddy node.
-    public static func newInstance() -> BuddyNode {
+    public static func newInstance(size: CGSize) -> BuddyNode {
         let buddy = BuddyNode(imageNamed: "buddyStill")
         
         if let buddyTexture = buddy.texture {
             //Adding physics body of shape of still buddy.
-            let biggerSize = CGSize(width: buddy.size.width * 1.2, height: buddy.size.height * 1.2)
-            buddy.size = biggerSize
-            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: biggerSize)
+            let buddySize = CGSize(width: size.width / 8.15, height: size.height / 2.65)
+            buddy.size = buddySize
+            
+            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)
             buddy.physicsBody?.allowsRotation = false
             
             //Adding contactTestBitMask for buddy.

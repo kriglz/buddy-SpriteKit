@@ -22,7 +22,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let cameraNode = SKCameraNode()
     private let controlButtons = ControlButtons()
 
-    
+    lazy var margin: CGFloat = size.width / 10.35
+
     
     
     
@@ -61,8 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         //Adds control buttons to the scene.
-        controlButtons.setup()
-        controlButtons.centerOnPoint(point: buddy.position)
+        controlButtons.setup(size: size)
+        controlButtons.centerOnPoint(point: buddy.position, with: margin)
         addChild(controlButtons)
     }
 
@@ -91,7 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
                 
                 centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: buddy.position)
+                controlButtons.centerOnPoint(point: buddy.position, with: margin)
             }
         }
         
@@ -209,7 +210,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //Creates a new buddy.
-        buddy = BuddyNode.newInstance()
+        buddy = BuddyNode.newInstance(size: size)
         let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 - 30)
         buddy.updatePosition(point: buddyInitPosition)
         buddy.zPosition = 100

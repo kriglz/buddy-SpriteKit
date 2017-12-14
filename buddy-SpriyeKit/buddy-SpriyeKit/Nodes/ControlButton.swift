@@ -22,14 +22,19 @@ class ControlButtons: SKNode {
    
 
     
-    public func setup(){
+    public func setup(size: CGSize){
+        
+        let buttonSize = CGSize(width: size.width / 17.74, height: size.height / 10.51)
         
         goLeftButton = SKSpriteNode(texture: goLeftButtonTexture)
+        goLeftButton.size = buttonSize
         goLeftButton.zPosition = 1000
         goLeftButton.alpha = alphaDefault
         addChild(goLeftButton)
+
         
         goRightButton = SKSpriteNode(texture: goRightButtonTexture)
+        goRightButton.size = buttonSize
         goRightButton.zPosition = 1000
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
@@ -99,9 +104,9 @@ class ControlButtons: SKNode {
         goLeftButton.alpha = alphaDefault
     }
     
-    public func centerOnPoint(point: CGPoint){
-        let marginX: CGFloat = 115.0
-        let marginY: CGFloat = 15.0
+    public func centerOnPoint(point: CGPoint, with margin: CGFloat){
+        let marginX: CGFloat = margin
+        let marginY: CGFloat = margin / 7.7
 
         goLeftButton.position = CGPoint(x: point.x - marginX - goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
