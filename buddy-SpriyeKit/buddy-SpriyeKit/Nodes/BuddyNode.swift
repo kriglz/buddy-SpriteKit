@@ -30,7 +30,9 @@ class BuddyNode: SKSpriteNode {
         
         if let buddyTexture = buddy.texture {
             //Adding physics body of shape of still buddy.
-            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddy.size)
+            let biggerSize = CGSize(width: buddy.size.width * 1.2, height: buddy.size.height * 1.2)
+            buddy.size = biggerSize
+            buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: biggerSize)
             buddy.physicsBody?.allowsRotation = false
             
             //Adding contactTestBitMask for buddy.
@@ -102,7 +104,6 @@ class BuddyNode: SKSpriteNode {
             
             
             timeSinceLastStop += deltaTime
-//            let walkingSpeedChangeTime = Double(walkingSpeed) * deltaTime * 1.5 * Double(buddyWalkingFrame.count) / 30.0
             
             var walkingDeltaX: CGFloat {
                 if timeSinceLastStop < 0.96 {
