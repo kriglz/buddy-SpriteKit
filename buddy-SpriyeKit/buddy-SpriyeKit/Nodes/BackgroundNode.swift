@@ -16,39 +16,24 @@ enum Direction {
 
 class BackgroundNode: SKNode {
     
-    var direction: Direction = .left
-    {
-        didSet {
-            
-            switch direction {
-            case .right:
-                horizonGrassNext.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
-                mountainsNext.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
-                mountainsBackNext.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
-
-            case .left:
-                horizonGrassNext.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
-                mountainsNext.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
-                mountainsBackNext.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
-
-            case .none:
-                break
-            }
-        }
-    }
+    var direction: Direction = .none
+    
     
     
     
     var horizonGrass: SKSpriteNode!
-    var horizonGrassNext: SKSpriteNode!
+    var horizonGrassAfterFrame: SKSpriteNode!
+    var horizonGrassBeforeFrame: SKSpriteNode!
     
     var mountains: SKSpriteNode!
-    var mountainsNext: SKSpriteNode!
-    
+    var mountainsAfterFrame: SKSpriteNode!
+    var mountainsBeforeFrame: SKSpriteNode!
+
     var mountainsBack: SKSpriteNode!
-    var mountainsBackNext: SKSpriteNode!
+    var mountainsBackAfterFrame: SKSpriteNode!
+    var mountainsBackBeforeFrame: SKSpriteNode!
     
-    var buddysSpeed: CGFloat = 0.0
+    var buddysSpeed: Double = 0.0
     
     
 
@@ -75,9 +60,16 @@ class BackgroundNode: SKNode {
         horizonGrass.zPosition = 8
         addChild(horizonGrass)
         
-        horizonGrassNext = horizonGrass.copy() as! SKSpriteNode
-        horizonGrassNext.zPosition = horizonGrass.zPosition
-        addChild(horizonGrassNext)
+        horizonGrassAfterFrame = horizonGrass.copy() as! SKSpriteNode
+        horizonGrassAfterFrame.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
+        horizonGrassAfterFrame.zPosition = horizonGrass.zPosition
+        addChild(horizonGrassAfterFrame)
+        
+        horizonGrassBeforeFrame = horizonGrass.copy() as! SKSpriteNode
+        horizonGrassBeforeFrame.position = CGPoint(x: horizonGrass.position.x - horizonGrass.size.width, y: horizonGrass.position.y)
+        horizonGrassBeforeFrame.zPosition = horizonGrass.zPosition
+        addChild(horizonGrassBeforeFrame)
+        
         
         
         //Init of mountains.
@@ -89,9 +81,16 @@ class BackgroundNode: SKNode {
         mountains.zPosition = 6
         addChild(mountains)
         
-        mountainsNext = mountains.copy() as! SKSpriteNode
-        mountainsNext.zPosition = mountains.zPosition
-        addChild(mountainsNext)
+        mountainsAfterFrame = mountains.copy() as! SKSpriteNode
+        mountainsAfterFrame.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
+        mountainsAfterFrame.zPosition = mountains.zPosition
+        addChild(mountainsAfterFrame)
+        
+        mountainsBeforeFrame = mountains.copy() as! SKSpriteNode
+        mountainsBeforeFrame.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
+        mountainsBeforeFrame.zPosition = mountains.zPosition
+        addChild(mountainsBeforeFrame)
+        
         
         
         //Init of mountiansBack.
@@ -101,10 +100,17 @@ class BackgroundNode: SKNode {
         mountainsBack.zPosition = 4
         addChild(mountainsBack)
         
-        mountainsBackNext = mountainsBack.copy() as! SKSpriteNode
-        mountainsBackNext.zPosition = mountainsBack.zPosition
-        addChild(mountainsBackNext)
+        mountainsBackAfterFrame = mountainsBack.copy() as! SKSpriteNode
+        mountainsBackAfterFrame.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
+        mountainsBackAfterFrame.zPosition = mountainsBack.zPosition
+        addChild(mountainsBackAfterFrame)
 
+        mountainsBackBeforeFrame = mountainsBack.copy() as! SKSpriteNode
+        mountainsBackBeforeFrame.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
+        mountainsBackBeforeFrame.zPosition = mountainsBack.zPosition
+        addChild(mountainsBackBeforeFrame)
+        
+        
         
         //Below stuff is not moving yet.
 
@@ -136,7 +142,7 @@ class BackgroundNode: SKNode {
         guard let buddyDirection = notification.userInfo!["DirectionToMove"], let buddySpeed = notification.userInfo!["BuddySpeed"], let time = notification.userInfo!["Time"] else { return }
         
         direction = buddyDirection as! Direction
-        buddysSpeed = buddySpeed as! CGFloat
+        buddysSpeed = buddySpeed as! Double
         
         update(time as! TimeInterval)
         
@@ -145,18 +151,17 @@ class BackgroundNode: SKNode {
     
     
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, nextSprite: SKSpriteNode, speed: CGFloat){
+    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, speed: CGFloat){
         
-        let delta = speed * CGFloat(deltaTime)
+        let delta = speed * 1/60  //CGFloat(deltaTime)
 
         
         //Loop cycle for both sprite and dublicate
-        for spriteToMove in [sprite, nextSprite] {
+        for spriteToMove in [sprite, beforeSprite, afterSprite] {
             
             //Move sprite to the left based on speed
             var newPosition: CGPoint = CGPoint.zero
             newPosition = spriteToMove.position
-            
             
             
             switch direction {
@@ -167,7 +172,7 @@ class BackgroundNode: SKNode {
                 spriteToMove.position = newPosition
             
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.maxX < 0.0) || (spriteToMove == nextSprite && spriteToMove.frame.minX < 0.0) {
+                if (spriteToMove == sprite && spriteToMove.frame.maxX < 0.0) || (spriteToMove == afterSprite && spriteToMove.frame.minX < 0.0) {
                     
                     //Shift it over so that it's now to the immediate right of the other sprite.
                     //Two sprite are leap-frogging each other as tehy both move.
@@ -181,7 +186,7 @@ class BackgroundNode: SKNode {
                 spriteToMove.position = newPosition 
                 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.minX > spriteToMove.size.width) || (spriteToMove == nextSprite && spriteToMove.frame.minX > 0.0){
+                if (spriteToMove == sprite && spriteToMove.frame.minX > spriteToMove.size.width) || (spriteToMove == beforeSprite && spriteToMove.frame.minX > 0.0){
                     
                     //Shift it over so that it's now to the immediate right of the other sprite.
                     //Two sprite are leap-frogging each other as tehy both move.
@@ -217,9 +222,9 @@ class BackgroundNode: SKNode {
         lastFrameTime = currentTime
         
         
-        moveSprite(sprite: horizonGrass, nextSprite: horizonGrassNext, speed: 100.0 ) //buddysSpeed / 3.0)
-        moveSprite(sprite: mountains, nextSprite: mountainsNext, speed: 10.0 ) //buddysSpeed / 10.0)
-        moveSprite(sprite: mountainsBack, nextSprite: mountainsBackNext, speed: 1.0 ) //buddysSpeed / 20.0)
+        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, speed: 100.0 ) //buddysSpeed / 3.0)
+        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, speed: 10.0 ) //buddysSpeed / 10.0)
+        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, speed: 1.0 ) //buddysSpeed / 20.0)
     }
 }
 

@@ -26,8 +26,7 @@ class BuddyNode: SKSpriteNode {
     
     ///Point which defines walking direction
     private var direction: Direction = .none
-    ///Defines how much walking speed is slowed down.
-    private let easings: CGFloat = 0.012
+
     
     
     ///Creates a new buddy node.
@@ -50,7 +49,11 @@ class BuddyNode: SKSpriteNode {
     }
     
     private(set) var isWalking: Bool = false
-    private(set) var walkingSpeed: CGFloat = 0.0
+    private(set) var walkingSpeed: Double = 0.08
+    
+    private var timeSinceLastStop: Double = 0.0
+    ///Defines how much walking speed is slowed down.
+    private let easings: Double = 20.0
     
     ///Updates skater on the screen.
     public func update(deltaTime: TimeInterval){
@@ -59,34 +62,55 @@ class BuddyNode: SKSpriteNode {
         if !isWalking {
             
             //Sets walking action to nil.
-//            isWalking = false
             physicsBody?.velocity.dx = 0.0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
-
+            timeSinceLastStop = 0.0
+            
         //Else - Adds walking action.
         } else {
+            
             if action(forKey: walkingActionKey) == nil {
-                let walkingAction = SKAction.repeatForever(
-                    SKAction.animate(with: buddyWalkingFrame,
-                                     timePerFrame: 0.1,
+                
+                let startingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
+                                                                       timePerFrame: walkingSpeed * 1.5, // = 0.12
+                                                                       resize: false,
+                                                                       restore: false),
+                                                      count: 1)
+                
+                
+                let walkingAction = SKAction.repeatForever( SKAction.animate(with: buddyWalkingFrame,
+                                     timePerFrame: walkingSpeed,
                                      resize: false,
                                      restore: false)
                 )
-                run(walkingAction, withKey: walkingActionKey)
+                
+                
+                let actions = SKAction.sequence([startingAction, walkingAction])
+                
+                run(actions, withKey: walkingActionKey)
             }
             
-            let delta = frame.width * easings
             
-            walkingSpeed = delta
+            timeSinceLastStop += deltaTime
+            let walkingSpeedChangeTime = walkingSpeed * 1.5 * Double(buddyWalkingFrame.count)
+            
+            var walkingDeltaX: CGFloat {
+                if timeSinceLastStop < walkingSpeedChangeTime {
+                    return CGFloat(walkingSpeed) * 20
+                } else {
+                    return CGFloat(walkingSpeed) * 30
+                }
+            }
+            
             
             //Should move to left
             switch direction {
             case .left:
-                position.x -= delta
+                position.x -= walkingDeltaX
                 xScale = -1
             case .right:
-                position.x += delta
+                position.x += walkingDeltaX
                 xScale = 1
             case .none:
                 break
