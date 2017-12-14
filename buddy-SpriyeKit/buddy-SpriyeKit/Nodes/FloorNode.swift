@@ -35,6 +35,8 @@ class FloorNode: SKSpriteNode {
         groundGrass.zPosition = 10
         addChild(groundGrass)
         
+        print(groundGrassSize, "ground grass")
+        
         groundGrassNext = groundGrass.copy() as! SKSpriteNode
         groundGrassNext.position = CGPoint(x: groundGrass.position.x + groundGrass.size.width, y: groundGrass.position.y)
         groundGrassNext.zPosition = groundGrass.zPosition

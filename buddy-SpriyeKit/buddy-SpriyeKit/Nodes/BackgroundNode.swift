@@ -58,6 +58,8 @@ class BackgroundNode: SKNode {
         horizonGrass.zPosition = 8
         addChild(horizonGrass)
         
+        print(horizonGrassSize, "grass horizon")
+        
         horizonGrassAfterFrame = horizonGrass.copy() as! SKSpriteNode
         horizonGrassAfterFrame.position = CGPoint(x: horizonGrass.position.x + horizonGrass.size.width, y: horizonGrass.position.y)
         horizonGrassAfterFrame.zPosition = horizonGrass.zPosition
