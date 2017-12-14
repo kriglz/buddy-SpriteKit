@@ -13,12 +13,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     private var lastUpdateTime : TimeInterval = 0
+    private var dt: TimeInterval = 0.0
 
+    
     private var buddy: BuddyNode!
     private var background = BackgroundNode()
     private var floor = FloorNode()
     private let cameraNode = SKCameraNode()
-
     private let controlButtons = ControlButtons()
 
     
@@ -63,10 +64,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.setup()
         controlButtons.centerOnPoint(point: buddy.position)
         addChild(controlButtons)
-        
     }
 
-
+    
+    
+    ///Updates scene every 1/60 sec.
+    override func update(_ currentTime: TimeInterval) {
+        //Called before each frame is rendered
+        
+        //Initialize _lastUpdateTime if it has not already been.
+        if (self.lastUpdateTime == 0) {
+            self.lastUpdateTime = currentTime
+        }
+        
+        //Calculate time since last update.
+        dt = currentTime - self.lastUpdateTime
+        
+        
+        //Updates the buddy behaviour.
+        buddy.update(deltaTime: dt)
+        
+        //Updates camera and control buttons position if buddy has moved.
+        if buddy.isWalking {
+            
+            //Move camera only if buddy is not by the edge of the scene.
+            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+                
+                centerCameraOnPoint(point: buddy.position)
+                controlButtons.centerOnPoint(point: buddy.position)
+            }
+        }
+        
+        self.lastUpdateTime = currentTime
+    }
+    
+    
+    
+    
+    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -131,55 +166,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        //Called before each frame is rendered
-        
-        //Initialize _lastUpdateTime if it has not already been.
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
-        }
-        
-        //Calculate time since last update.
-        let dt = currentTime - self.lastUpdateTime
-        
-        
-        //Updates the buddy behaviour.
-        buddy.update(deltaTime: dt)
-        
-        //Updates camera and control buttons position if buddy has moved.
-        if buddy.isWalking {
-            
-            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-                
-                centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: buddy.position)
-                
-                
-            }
-//            background.direction = .right
-//            background.update(currentTime)
-        }
-        
-
-        self.lastUpdateTime = currentTime
-    }
-
-    
-    func centerCameraOnPoint(point: CGPoint){
-        
-        cameraNode.position.x = point.x
-        
-        //Sends noficication that camera has moved.
-        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
-              "BuddySpeed": buddy.walkingSpeed,
-              "Time": lastUpdateTime])
-    }
-
-    
-    
     
     
     ///Contact beginning delegate
@@ -187,19 +173,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Removes node, when it hits worldframe.
         if contact.bodyA.categoryBitMask == WorldCategory {
-
+            
             contact.bodyB.node?.removeAllActions()
             
         } else if contact.bodyB.categoryBitMask == WorldCategory {
-
+            
             contact.bodyA.node?.removeAllActions()
             
         }
     }
+
     
     
-    
-    
+    ///Updates camera position.
+    private func centerCameraOnPoint(point: CGPoint){
+        
+        cameraNode.position.x = point.x
+        
+        //Sends noficication that camera has moved.
+        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
+              "BuddySpeed": buddy.walkingSpeed,
+              "DeltaTime": dt])
+    }
+
     
     
     ///Creates a new buddy.
@@ -220,5 +216,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(buddy)
     }
-    
 }

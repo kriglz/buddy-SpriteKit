@@ -18,9 +18,7 @@ class BackgroundNode: SKNode {
     
     var direction: Direction = .none
     
-    
-    
-    
+
     var horizonGrass: SKSpriteNode!
     var horizonGrassAfterFrame: SKSpriteNode!
     var horizonGrassBeforeFrame: SKSpriteNode!
@@ -137,24 +135,33 @@ class BackgroundNode: SKNode {
     }
     
 
+    
+    
+    
+    ///Moves the background if notification from camera has been received.
     @objc func moveTheBackground( notification: Notification) -> Void {
         
-        guard let buddyDirection = notification.userInfo!["DirectionToMove"], let buddySpeed = notification.userInfo!["BuddySpeed"], let time = notification.userInfo!["Time"] else { return }
+        guard let buddyDirection = notification.userInfo!["DirectionToMove"],
+            let buddySpeed = notification.userInfo!["BuddySpeed"],
+            let deltaTime = notification.userInfo!["DeltaTime"] else { return }
         
         direction = buddyDirection as! Direction
         buddysSpeed = buddySpeed as! CGFloat
+        let dt = deltaTime as! TimeInterval
         
-        update(time as! TimeInterval)
         
+        let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
+        
+        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / 6.0)
+        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 12.0)
+        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 14.0)
     }
     
     
     
+    
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, speed: CGFloat){
-        
-        let delta = speed * 1/60  //CGFloat(deltaTime)
-
+    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
         
         //Loop cycle for both sprite and dublicate
         for spriteToMove in [sprite, beforeSprite, afterSprite] {
@@ -168,7 +175,7 @@ class BackgroundNode: SKNode {
                 
             case .right:
                 
-                newPosition.x -= delta
+                newPosition.x -= byDeltaX
                 spriteToMove.position = newPosition
             
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
@@ -182,7 +189,7 @@ class BackgroundNode: SKNode {
                 
             case .left:
                 
-                newPosition.x += delta
+                newPosition.x += byDeltaX
                 spriteToMove.position = newPosition 
                 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
@@ -198,33 +205,6 @@ class BackgroundNode: SKNode {
                 break
             }
         }
-    }
-    
-    
-    
-    
-    var deltaTime : TimeInterval = 0
-    var lastFrameTime : TimeInterval = 0
-    
-    
-    
-    ///Updates the movemnet of the background.
-    func update(_ currentTime: TimeInterval){
-        
-        //Updates the delta time value.
-        if lastFrameTime <= 0 {
-            lastFrameTime = currentTime
-        }
-        
-        deltaTime = currentTime - lastFrameTime
-        
-        //Sets the last frame time to current time.
-        lastFrameTime = currentTime
-        
-        
-        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, speed: 100.0 ) //buddysSpeed / 3.0)
-        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, speed: 10.0 ) //buddysSpeed / 10.0)
-        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, speed: 1.0 ) //buddysSpeed / 20.0)
     }
 }
 

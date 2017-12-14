@@ -102,12 +102,15 @@ class BuddyNode: SKSpriteNode {
             
             
             timeSinceLastStop += deltaTime
-            let walkingSpeedChangeTime = Double(walkingSpeed) * deltaTime * 1.5 * Double(buddyWalkingFrame.count) / 30.0
+//            let walkingSpeedChangeTime = Double(walkingSpeed) * deltaTime * 1.5 * Double(buddyWalkingFrame.count) / 30.0
             
             var walkingDeltaX: CGFloat {
-                if timeSinceLastStop < walkingSpeedChangeTime {
-                    return walkingSpeed * CGFloat(deltaTime) / 1.5
+                if timeSinceLastStop < 0.96 {
+                    
+                    walkingSpeed = 96.0
+                    return walkingSpeed * CGFloat(deltaTime)
                 } else {
+                    walkingSpeed = 144.0
                     return walkingSpeed * CGFloat(deltaTime)
                 }
             }

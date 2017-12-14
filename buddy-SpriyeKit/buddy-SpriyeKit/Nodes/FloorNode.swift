@@ -40,8 +40,6 @@ class FloorNode: SKSpriteNode {
         groundGrassNext.zPosition = groundGrass.zPosition
         addChild(groundGrassNext)
 
-    
-    
     }
 }
 
