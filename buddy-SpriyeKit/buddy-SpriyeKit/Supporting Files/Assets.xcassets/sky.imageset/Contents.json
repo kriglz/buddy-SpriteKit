@@ -2,17 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "skySun.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "skySun-1.png",
+      "filename" : "sky.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "skySun-2.png",
+      "filename" : "sky-1.png",
       "scale" : "3x"
     }
   ],

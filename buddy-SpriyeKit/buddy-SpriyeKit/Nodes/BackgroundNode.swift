@@ -114,24 +114,22 @@ class BackgroundNode: SKNode {
 
         //Init of sky.
         let skySize = CGSize(width: size.width, height: size.height * (yForSky + yForMountains))
-        let skyOrigin = CGPoint(x: CGPoint().x, y: size.height * (yForGrass + yForGrassHorizon))
-        let skynRect = CGRect(origin: skyOrigin, size: skySize)
         
-        let sky = SKShapeNode(rect: skynRect)
-        sky.fillColor = UIColor.init(red: 255/255, green: 254/255, blue: 240/255, alpha: 1.0)
-        sky.strokeColor = .clear
+        let sky = SKSpriteNode(texture: SKTexture(imageNamed: "sky"))
+        sky.size = skySize
+        sky.position = CGPoint(x: sky.size.width / 2, y: sky.size.height / 2 + size.height * (yForGrass + yForGrassHorizon))
         sky.zPosition = 1
         
         addChild(sky)
         
         //Init sun in the sky.
-        let sunSize = CGSize(width: size.height * yForGrass * 1.68, height: size.height * yForGrass)
-        
-        let sun = SKSpriteNode(texture: SKTexture(imageNamed: "skySun"))
-        sun.size = sunSize
-        sun.position = CGPoint(x: sun.size.width / 3, y: size.height - size.height * yForGrass)
-        sun.zPosition = 2
-        addChild(sun)
+//        let sunSize = CGSize(width: size.height * yForGrass * 1.68, height: size.height * yForGrass)
+//
+//        let sun = SKSpriteNode(texture: SKTexture(imageNamed: "skySun"))
+//        sun.size = sunSize
+//        sun.position = CGPoint(x: sun.size.width / 3, y: size.height - size.height * yForGrass)
+//        sun.zPosition = 2
+//        addChild(sun)
     }
     
 
