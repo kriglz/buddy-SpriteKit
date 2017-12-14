@@ -44,6 +44,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnBuddy()
         
         
+        if let magicEmitter = SKEmitterNode(fileNamed: "MagicParticles.sks") {
+           
+            magicEmitter.position = CGPoint(x: size.width / 2, y: size.height / 2)
+            magicEmitter.name = "MagicEmitter"
+            magicEmitter.zPosition = 10000
+            magicEmitter.targetNode = self
+            magicEmitter.particleLifetime = 0.5
+            magicEmitter.particleSpeed = 10.0
+            magicEmitter.xAcceleration = 100
+            magicEmitter.yAcceleration = 50
+            
+            addChild(magicEmitter)
+        }
+        
+        
         //Setting up camera.
         cameraNode.position = CGPoint(x: buddy.position.x, y: size.height / 2)
         cameraNode.xScale = 1.0/xScaleForSceneSize

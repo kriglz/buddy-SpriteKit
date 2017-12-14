@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89205F981FE30E6E00B07AC5 /* MagicParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89205F971FE30E6E00B07AC5 /* MagicParticles.sks */; };
 		8946D1071FD8F65A0049084F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D1061FD8F65A0049084F /* AppDelegate.swift */; };
 		8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10C1FD8F65A0049084F /* GameScene.swift */; };
 		8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10E1FD8F65A0049084F /* GameViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		89205F971FE30E6E00B07AC5 /* MagicParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicParticles.sks; sourceTree = "<group>"; };
 		8946D1031FD8F65A0049084F /* buddy-SpriyeKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "buddy-SpriyeKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8946D1061FD8F65A0049084F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8946D10C1FD8F65A0049084F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		8946D11F1FD8F6700049084F /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				89205F971FE30E6E00B07AC5 /* MagicParticles.sks */,
 				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8946D1121FD8F65A0049084F /* Main.storyboard in Resources */,
+				89205F981FE30E6E00B07AC5 /* MagicParticles.sks in Resources */,
 				8946D1141FD8F65A0049084F /* Assets.xcassets in Resources */,
 				8946D1171FD8F65A0049084F /* LaunchScreen.storyboard in Resources */,
 			);
