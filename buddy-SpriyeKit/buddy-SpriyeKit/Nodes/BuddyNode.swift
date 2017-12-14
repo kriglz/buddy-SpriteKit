@@ -49,7 +49,7 @@ class BuddyNode: SKSpriteNode {
     }
     
     private(set) var isWalking: Bool = false
-    private(set) var walkingSpeed: Double = 0.08
+    private(set) var walkingSpeed: CGFloat = 144.0 //points per sec
     
     private var timeSinceLastStop: Double = 0.0
     ///Defines how much walking speed is slowed down.
@@ -72,15 +72,17 @@ class BuddyNode: SKSpriteNode {
             
             if action(forKey: walkingActionKey) == nil {
                 
+                let frameTime = Double(walkingSpeed) * deltaTime / 30.0
+                
                 let startingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
-                                                                       timePerFrame: walkingSpeed * 1.5, // = 0.12
+                                                                       timePerFrame: frameTime * 1.5, // = 0.12
                                                                        resize: false,
                                                                        restore: false),
                                                       count: 1)
                 
                 
                 let walkingAction = SKAction.repeatForever( SKAction.animate(with: buddyWalkingFrame,
-                                     timePerFrame: walkingSpeed,
+                                     timePerFrame: frameTime,
                                      resize: false,
                                      restore: false)
                 )
@@ -93,16 +95,18 @@ class BuddyNode: SKSpriteNode {
             
             
             timeSinceLastStop += deltaTime
-            let walkingSpeedChangeTime = walkingSpeed * 1.5 * Double(buddyWalkingFrame.count)
+            
+            let walkingSpeedChangeTime = Double(walkingSpeed) * deltaTime * 1.5 * Double(buddyWalkingFrame.count) / 30.0
             
             var walkingDeltaX: CGFloat {
                 if timeSinceLastStop < walkingSpeedChangeTime {
-                    return CGFloat(walkingSpeed) * 20
+                    return walkingSpeed * CGFloat(deltaTime) / 1.5
                 } else {
-                    return CGFloat(walkingSpeed) * 30
+                    return walkingSpeed * CGFloat(deltaTime)
                 }
             }
             
+
             
             //Should move to left
             switch direction {

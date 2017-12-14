@@ -33,7 +33,7 @@ class BackgroundNode: SKNode {
     var mountainsBackAfterFrame: SKSpriteNode!
     var mountainsBackBeforeFrame: SKSpriteNode!
     
-    var buddysSpeed: Double = 0.0
+    var buddysSpeed: CGFloat = 0.0
     
     
 
@@ -142,7 +142,7 @@ class BackgroundNode: SKNode {
         guard let buddyDirection = notification.userInfo!["DirectionToMove"], let buddySpeed = notification.userInfo!["BuddySpeed"], let time = notification.userInfo!["Time"] else { return }
         
         direction = buddyDirection as! Direction
-        buddysSpeed = buddySpeed as! Double
+        buddysSpeed = buddySpeed as! CGFloat
         
         update(time as! TimeInterval)
         
