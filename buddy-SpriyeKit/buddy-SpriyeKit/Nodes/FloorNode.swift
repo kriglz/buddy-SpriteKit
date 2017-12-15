@@ -15,7 +15,7 @@ class FloorNode: SKSpriteNode {
     
     public func setup(size: CGSize){
         
-        let yPositionOfFloor = size.height * yForGrass - 30
+        let yPositionOfFloor = size.height * yForGrass - 10.0
         let startPoint = CGPoint(x: 0, y: yPositionOfFloor)
         let endPoint = CGPoint(x: size.width, y: yPositionOfFloor)
         

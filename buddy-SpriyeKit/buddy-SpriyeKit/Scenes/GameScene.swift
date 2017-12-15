@@ -21,10 +21,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var floor = FloorNode()
     private let cameraNode = SKCameraNode()
     private let controlButtons = ControlButtons()
-
+    private let particleEmitter = ParticleNode()
+    
     lazy var margin: CGFloat = size.width / 10.35
 
-    
     
     
     
@@ -43,21 +43,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Initializes a buddy.
         spawnBuddy()
         
-        
-        if let magicEmitter = SKEmitterNode(fileNamed: "MagicParticles.sks") {
-           
-            magicEmitter.position = CGPoint(x: size.width / 2, y: size.height / 2)
-            magicEmitter.name = "MagicEmitter"
-            magicEmitter.zPosition = 10000
-            magicEmitter.targetNode = self
-            magicEmitter.particleLifetime = 0.5
-            magicEmitter.particleSpeed = 10.0
-            magicEmitter.xAcceleration = 100
-            magicEmitter.yAcceleration = 50
-            
-            addChild(magicEmitter)
-        }
-        
+        //Setting up particle emitter.
+        particleEmitter.setup()
+        particleEmitter.name = "particleEmitter"
         
         //Setting up camera.
         cameraNode.position = CGPoint(x: buddy.position.x, y: size.height / 2)
@@ -109,13 +97,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 centerCameraOnPoint(point: buddy.position)
                 controlButtons.centerOnPoint(point: buddy.position, with: margin)
             }
+            
+            
+            
+            
+            switch controlButtons.direction {
+            case .left:
+                
+                if childNode(withName: "particleEmitter") == nil {
+                    addChild(particleEmitter)
+                }
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2), direction: .left)
+                
+            case .right:
+                
+                if childNode(withName: "particleEmitter") == nil {
+                    addChild(particleEmitter)
+                }
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2), direction: .right)
+                
+            default:
+                break
+            }
+            
+            
+            
+            
+        } else {
+            if childNode(withName: "particleEmitter") != nil {
+                particleEmitter.particleLifetime = 0.1
+                SKAction.sequence([ SKAction.wait(forDuration: 1.0),
+                                    SKAction.run { [weak self] in
+                                        self?.particleEmitter.removeFromParent()
+                                        self?.particleEmitter.isHidden = true
+                    }
+                    ])
+//                particleEmitter.removeFromParent()
+            }
         }
         
         self.lastUpdateTime = currentTime
     }
     
     
-    
+   
     
     
     
@@ -151,7 +176,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             switch controlButtons.direction {
             case .left:
                 buddy.walk( .left)
-                
+                                
             case .right:
                 buddy.walk( .right)
                 
@@ -226,7 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance(size: size)
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 - 30)
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2)
         buddy.updatePosition(point: buddyInitPosition)
         buddy.zPosition = 100
         

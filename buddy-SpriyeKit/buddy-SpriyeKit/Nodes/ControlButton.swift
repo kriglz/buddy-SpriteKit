@@ -40,8 +40,8 @@ class ControlButtons: SKNode {
         addChild(goRightButton)
     }
     
-    let alphaPressed: CGFloat = 0.5
-    let alphaDefault: CGFloat = 0.8
+    let alphaPressed: CGFloat = 0.3
+    let alphaDefault: CGFloat = 0.6
     
     
     

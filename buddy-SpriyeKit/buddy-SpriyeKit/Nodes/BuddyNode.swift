@@ -10,6 +10,7 @@ import SpriteKit
 
 class BuddyNode: SKSpriteNode {
     
+    
     ///String which defines walking action.
     private let walkingActionKey = "action_walking"
     private let buddyWalkingFrame = [
@@ -76,6 +77,7 @@ class BuddyNode: SKSpriteNode {
             texture = SKTexture(imageNamed: "buddyStill")
             timeSinceLastStop = 0.0
             
+            
         //Else - Adds walking action.
         } else {
             
@@ -108,7 +110,6 @@ class BuddyNode: SKSpriteNode {
             
             var walkingDeltaX: CGFloat {
                 if timeSinceLastStop < 0.96 {
-                    
                     walkingSpeed = 96.0
                     return walkingSpeed * CGFloat(deltaTime)
                 } else {
@@ -123,9 +124,11 @@ class BuddyNode: SKSpriteNode {
             case .left:
                 position.x -= walkingDeltaX
                 xScale = -1
+            
             case .right:
                 position.x += walkingDeltaX
                 xScale = 1
+                
             case .none:
                 break
             }
