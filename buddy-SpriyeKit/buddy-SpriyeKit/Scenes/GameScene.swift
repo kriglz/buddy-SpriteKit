@@ -100,10 +100,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             
-//            if action(forKey: "disappearingAction") != nil {
-//                particleEmitter.removeAllActions()
-//                particleEmitter.removeFromParent()
-//            }
+            if isEmittingOver {
+                particleEmitter.removeAllActions()
+                particleEmitter.removeFromParent()
+                isEmittingOver = false
+            }
+            
             
             particleEmitter.alpha = 1.0
  
@@ -135,14 +137,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 particleEmitter.numParticlesToEmit = 0
               
                 let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.4),
-                                                            SKAction.wait(forDuration: 0.6),
+                                                            SKAction.wait(forDuration: 0.5),
                                                             
                                                             SKAction.removeFromParent()
                 ])
                 
-                
-                particleEmitter.run(disappearingAction)//, withKey: "disappearingAction")
+                particleEmitter.run(disappearingAction)
                 particleEmitter.resetSimulation()
+                
+                isEmittingOver = true
             }
                
         }
@@ -152,7 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
    
-    
+    private var isEmittingOver: Bool = false
     
     
     
