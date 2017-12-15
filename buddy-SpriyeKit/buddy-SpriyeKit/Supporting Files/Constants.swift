@@ -15,7 +15,7 @@ let FloorCategory: UInt32 = 0x1 << 3
 
 let xScaleForSceneSize: CGFloat = 3.0
 
-let yForGrass: CGFloat = 0.2
+let yForGrass: CGFloat = 0.4
 let yForGrassHorizon: CGFloat = 0.08
 let yForMountains: CGFloat = 0.12
 let yForSky: CGFloat = 1.0 - yForGrass - yForMountains //0.40 now

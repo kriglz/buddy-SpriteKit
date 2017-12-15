@@ -88,6 +88,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Updates the buddy behaviour.
         buddy.update(deltaTime: dt)
         
+        floor.runWaves()
+
         //Updates camera and control buttons position if buddy has moved.
         if buddy.isWalking {
             
@@ -115,14 +117,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if childNode(withName: "particleEmitter") == nil {
                     addChild(particleEmitter)
                 }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2), direction: .left)
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
                 
             case .right:
                 
                 if childNode(withName: "particleEmitter") == nil {
                     addChild(particleEmitter)
                 }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2), direction: .right)
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
                 
             default:
                 break
@@ -136,8 +138,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 particleEmitter.numParticlesToEmit = 0
               
-                let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.4),
-                                                            SKAction.wait(forDuration: 0.5),
+                let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
+                                                            SKAction.wait(forDuration: 0.3),
                                                             
                                                             SKAction.removeFromParent()
                 ])
@@ -265,7 +267,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance(size: size)
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2)
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 )
         buddy.updatePosition(point: buddyInitPosition)
         buddy.zPosition = 100
         

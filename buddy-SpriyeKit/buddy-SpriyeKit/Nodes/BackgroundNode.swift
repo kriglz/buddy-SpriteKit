@@ -121,15 +121,6 @@ class BackgroundNode: SKNode {
         sky.zPosition = 1
         
         addChild(sky)
-        
-        //Init sun in the sky.
-//        let sunSize = CGSize(width: size.height * yForGrass * 1.68, height: size.height * yForGrass)
-//
-//        let sun = SKSpriteNode(texture: SKTexture(imageNamed: "skySun"))
-//        sun.size = sunSize
-//        sun.position = CGPoint(x: sun.size.width / 3, y: size.height - size.height * yForGrass)
-//        sun.zPosition = 2
-//        addChild(sun)
     }
     
 
