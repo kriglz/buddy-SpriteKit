@@ -100,7 +100,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             
+//            if action(forKey: "disappearingAction") != nil {
+//                particleEmitter.removeAllActions()
+//                particleEmitter.removeFromParent()
+//            }
             
+            particleEmitter.alpha = 1.0
+ 
             switch controlButtons.direction {
             case .left:
                 
@@ -125,15 +131,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         } else {
             if childNode(withName: "particleEmitter") != nil {
-                particleEmitter.particleLifetime = 0.1
-                SKAction.sequence([ SKAction.wait(forDuration: 1.0),
-                                    SKAction.run { [weak self] in
-                                        self?.particleEmitter.removeFromParent()
-                                        self?.particleEmitter.isHidden = true
-                    }
-                    ])
-//                particleEmitter.removeFromParent()
+                
+                particleEmitter.numParticlesToEmit = 0
+              
+                let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.4),
+                                                            SKAction.wait(forDuration: 0.6),
+                                                            
+                                                            SKAction.removeFromParent()
+                ])
+                
+                
+                particleEmitter.run(disappearingAction)//, withKey: "disappearingAction")
+                particleEmitter.resetSimulation()
             }
+               
         }
         
         self.lastUpdateTime = currentTime
