@@ -17,8 +17,7 @@ class FloorNode: SKSpriteNode {
         SKTexture(imageNamed: "wave2"),
         SKTexture(imageNamed: "wave3"),
         SKTexture(imageNamed: "wave4"),
-        SKTexture(imageNamed: "wave5"),
-        SKTexture(imageNamed: "wave6")
+        SKTexture(imageNamed: "wave5")
     ]
     
     
