@@ -29,7 +29,7 @@ class FloorNode: SKSpriteNode {
         floorSprite = SKSpriteNode(texture: waterWaveFrame[1])
         floorSprite.size = groundSize
         floorSprite.position = CGPoint(x: floorSprite.size.width / 2, y: floorSprite.size.height / 2)
-        floorSprite.zPosition = 10
+        floorSprite.zPosition = zPositionWater
         
         
         floorSprite.physicsBody = SKPhysicsBody(texture: waterWaveFrame[1], alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 7))

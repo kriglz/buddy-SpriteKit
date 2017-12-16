@@ -28,14 +28,14 @@ class ControlButtons: SKNode {
         
         goLeftButton = SKSpriteNode(texture: goLeftButtonTexture)
         goLeftButton.size = buttonSize
-        goLeftButton.zPosition = 1000
+        goLeftButton.zPosition = zPositionControl
         goLeftButton.alpha = alphaDefault
         addChild(goLeftButton)
 
         
         goRightButton = SKSpriteNode(texture: goRightButtonTexture)
         goRightButton.size = buttonSize
-        goRightButton.zPosition = 1000
+        goRightButton.zPosition = zPositionControl
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
     }

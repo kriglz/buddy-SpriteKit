@@ -18,9 +18,10 @@ class BackgroundCloudsNode: SKSpriteNode {
         if let cloudTexture = cloud.texture {
             
             //Adding physics body of shape of still buddy.
-            let cloudSize = CGSize(width: size.width / 20, height: size.height / 12)
+            let cloudSize = CGSize(width: size.width / 20, height: size.height / 16)
             cloud.size = cloudSize
             cloud.alpha = 0.8
+            cloud.zPosition = zPositionClouds
             
             cloud.physicsBody = SKPhysicsBody.init(texture: cloudTexture, alphaThreshold: 0.1, size: cloudSize)
             cloud.physicsBody?.allowsRotation = false

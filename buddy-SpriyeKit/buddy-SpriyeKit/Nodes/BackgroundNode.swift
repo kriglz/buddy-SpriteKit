@@ -57,7 +57,7 @@ class BackgroundNode: SKNode {
         horizonGrass = SKSpriteNode(texture: SKTexture(imageNamed: "horizonGrass"))
         horizonGrass.size = horizonGrassSize
         horizonGrass.position = CGPoint(x: size.width / 2, y: size.height * yForGrass + horizonGrass.size.height / 2 - 20)
-        horizonGrass.zPosition = 8
+        horizonGrass.zPosition = zPositionHorizon 
         addChild(horizonGrass)
                 
         horizonGrassAfterFrame = horizonGrass.copy() as! SKSpriteNode
@@ -78,7 +78,7 @@ class BackgroundNode: SKNode {
         mountains = SKSpriteNode(texture: SKTexture(imageNamed: "mountains"))
         mountains.size = mountainsSize
         mountains.position = CGPoint(x: size.width / 2, y: mountains.size.height / 2 + size.height * (yForGrass + yForGrassHorizon) - 20)
-        mountains.zPosition = 6
+        mountains.zPosition = zPositionMountains
         addChild(mountains)
         
         mountainsAfterFrame = mountains.copy() as! SKSpriteNode
@@ -97,7 +97,7 @@ class BackgroundNode: SKNode {
         mountainsBack = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
         mountainsBack.size = mountains.size
         mountainsBack.position = mountains.position
-        mountainsBack.zPosition = 4
+        mountainsBack.zPosition = zPositionMountains - 1.0
         addChild(mountainsBack)
         
         mountainsBackAfterFrame = mountainsBack.copy() as! SKSpriteNode
@@ -118,9 +118,10 @@ class BackgroundNode: SKNode {
         let skySize = CGSize(width: size.width, height: size.height * (yForSky + yForMountains))
         
         let sky = SKSpriteNode(texture: SKTexture(imageNamed: "sky"))
+        
         sky.size = skySize
         sky.position = CGPoint(x: sky.size.width / 2, y: sky.size.height / 2 + size.height * (yForGrass + yForGrassHorizon))
-        sky.zPosition = 1
+        sky.zPosition = zPositionSky
         
         addChild(sky)
     }

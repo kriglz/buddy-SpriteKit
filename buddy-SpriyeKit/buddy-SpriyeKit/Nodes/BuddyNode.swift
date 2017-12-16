@@ -36,6 +36,7 @@ class BuddyNode: SKSpriteNode {
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)
             buddy.physicsBody?.allowsRotation = false
+            buddy.zPosition = zPositionBuddy
             
             //Adding contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory

@@ -47,6 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Initializes a buddy.
         spawnBuddy()
+
         
         //Setting up first cloud.
         spawnCloud()
@@ -68,7 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
-        self.physicsBody?.contactTestBitMask = BuddyCategory | CloudCategory
+
         self.physicsWorld.contactDelegate = self
         
         
@@ -239,18 +240,85 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
         
-        //Removes node, when it hits worldframe.
-        if contact.bodyA.categoryBitMask == WorldCategory {
+        
+        //Checks if item was hit.
+        if contact.bodyA.categoryBitMask == BuddyCategory || contact.bodyB.categoryBitMask == BuddyCategory {
             
-            contact.bodyB.node?.removeAllActions()
+            handleBuddyCollision(contact: contact)
+            return
+        }
+        
+        //Checks if item was hit.
+        if contact.bodyA.categoryBitMask == CloudCategory || contact.bodyB.categoryBitMask == CloudCategory {
             
-        } else if contact.bodyB.categoryBitMask == WorldCategory {
-            
-            contact.bodyA.node?.removeAllActions()
-            
+            handleCloudCollision(contact: contact)
+            return
+        }
+        
+//        //Removes node, when it hits worldframe.
+//        if contact.bodyA.categoryBitMask == WorldCategory {
+//
+//            if contact.bodyB.node == buddy {
+//                contact.bodyB.node?.removeAllActions()
+//
+//            } else if contact.bodyB.node == cloud {
+//                contact.bodyB.node?.removeAllActions()
+//                contact.bodyB.node?.removeFromParent()
+//            }
+//
+//        } else if contact.bodyB.categoryBitMask == WorldCategory {
+//
+//            if contact.bodyB.node == buddy {
+//                contact.bodyA.node?.removeAllActions()
+//
+//            } else if contact.bodyB.node == cloud {
+//                contact.bodyA.node?.removeAllActions()
+//                contact.bodyA.node?.removeFromParent()
+//            }
+//        }
+    }
+
+    
+    private func handleBuddyCollision(contact: SKPhysicsContact) {
+        var otherBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask == BuddyCategory {
+            otherBody = contact.bodyB
+        } else {
+            otherBody = contact.bodyA
+        }
+        
+        switch otherBody.categoryBitMask {
+        case WorldCategory:
+            buddy.removeAllActions()
+        default:
+            break
         }
     }
 
+    private func handleCloudCollision(contact: SKPhysicsContact) {
+        var otherBody: SKPhysicsBody
+        var cloudBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask == CloudCategory {
+            
+            cloudBody = contact.bodyA
+            otherBody = contact.bodyB
+        } else {
+            otherBody = contact.bodyA
+            cloudBody = contact.bodyB
+        }
+        
+        switch otherBody.categoryBitMask {
+        case WorldCategory:
+            cloudBody.node?.removeAllActions()
+            cloudBody.node?.removeFromParent()
+            spawnCloud()
+        default:
+            break
+        }
+    }
+    
     
     
     ///Updates camera position.
@@ -280,7 +348,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy = BuddyNode.newInstance(size: size)
         let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 )
         buddy.updatePosition(point: buddyInitPosition)
-        buddy.zPosition = 100
         
         addChild(buddy)
     }
@@ -288,9 +355,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func spawnCloud(){
         //Creates a new buddy.
         cloud = BackgroundCloudsNode.newInstance(size: size)
-        let cloudInitPosition = CGPoint(x: size.width / 2 - 50.0, y: size.height / 2 + 40.0)
-        cloud.position = cloudInitPosition // updatePosition(point: cloudInitPosition)
-        cloud.zPosition = 50
+        let cloudInitPosition = CGPoint(x: size.width / 2 - 100.0, y: size.height / 2 + 80.0)
+        cloud.position = cloudInitPosition
         
         addChild(cloud)
     }
