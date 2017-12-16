@@ -13,17 +13,12 @@ class FloorNode: SKSpriteNode {
     private var floorSprite: SKSpriteNode!
     
     private let waterWaveFrame = [
-        SKTexture(imageNamed: "groundwater1"),
-        SKTexture(imageNamed: "groundwater11"),
-//        SKTexture(imageNamed: "groundwater12"),
-//        SKTexture(imageNamed: "groundwater21"),
-
-        SKTexture(imageNamed: "groundwater2"),
-
-        SKTexture(imageNamed: "groundwater3"),
-        SKTexture(imageNamed: "groundwater31"),
-        SKTexture(imageNamed: "groundwater4"),
-        SKTexture(imageNamed: "groundwater5")
+        SKTexture(imageNamed: "wave1"),
+        SKTexture(imageNamed: "wave2"),
+        SKTexture(imageNamed: "wave3"),
+        SKTexture(imageNamed: "wave4"),
+        SKTexture(imageNamed: "wave5"),
+        SKTexture(imageNamed: "wave6")
     ]
     
     
@@ -54,7 +49,7 @@ class FloorNode: SKSpriteNode {
         
         guard isWaveRunning else {
 
-            let wave = SKAction.animate(with: waterWaveFrame, timePerFrame: 0.3)
+            let wave = SKAction.animate(with: waterWaveFrame, timePerFrame: 0.4)
             let waveAction = SKAction.repeatForever(wave)
             floorSprite.run(waveAction)
             
