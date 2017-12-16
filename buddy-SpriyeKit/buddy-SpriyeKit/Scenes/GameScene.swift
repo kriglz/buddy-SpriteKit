@@ -40,8 +40,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.setup(size: size)
         addChild(floor)
         
+        
+        
+        //Updates floor node (water) to wave.
+        floor.runWaves()
+        
         //Initializes a buddy.
         spawnBuddy()
+        
         
         //Setting up particle emitter.
         particleEmitter.setup()
@@ -70,6 +76,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(controlButtons)
     }
 
+
+    
+    
     
     
     ///Updates scene every 1/60 sec.
@@ -88,7 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Updates the buddy behaviour.
         buddy.update(deltaTime: dt)
         
-        floor.runWaves()
+ 
 
         //Updates camera and control buttons position if buddy has moved.
         if buddy.isWalking {
@@ -164,6 +173,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
         
+        
         if let touchPoint = touchPoint {
             
             controlButtons.touchBegan(at: touchPoint)
@@ -222,8 +232,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             buddy.walk( .none)
         }
     }
-    
-    
+
     
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {

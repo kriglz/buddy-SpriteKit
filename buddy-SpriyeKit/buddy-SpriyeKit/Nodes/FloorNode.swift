@@ -10,12 +10,18 @@ import SpriteKit
 
 class FloorNode: SKSpriteNode {
     
-    var floorSprite: SKSpriteNode!
+    private var floorSprite: SKSpriteNode!
     
     private let waterWaveFrame = [
         SKTexture(imageNamed: "groundwater1"),
+        SKTexture(imageNamed: "groundwater11"),
+//        SKTexture(imageNamed: "groundwater12"),
+//        SKTexture(imageNamed: "groundwater21"),
+
         SKTexture(imageNamed: "groundwater2"),
+
         SKTexture(imageNamed: "groundwater3"),
+        SKTexture(imageNamed: "groundwater31"),
         SKTexture(imageNamed: "groundwater4"),
         SKTexture(imageNamed: "groundwater5")
     ]
@@ -26,33 +32,35 @@ class FloorNode: SKSpriteNode {
         //Init of ground grass - the walking surface.
         let groundSize = CGSize(width: size.width, height: size.height * yForGrass)
         
-        
-        floorSprite = SKSpriteNode(texture: SKTexture(imageNamed: "groundwater1"))
+        floorSprite = SKSpriteNode(texture: waterWaveFrame[1])
         floorSprite.size = groundSize
         floorSprite.position = CGPoint(x: floorSprite.size.width / 2, y: floorSprite.size.height / 2)
         floorSprite.zPosition = 10
         
         
-        floorSprite.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "groundwater1"), alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 7))
-        physicsBody?.isDynamic = false
+        floorSprite.physicsBody = SKPhysicsBody(texture: waterWaveFrame[1], alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 7))
         
-        physicsBody?.categoryBitMask = FloorCategory
-        physicsBody?.contactTestBitMask = BuddyCategory
+        floorSprite.physicsBody?.isDynamic = false
+        floorSprite.physicsBody?.categoryBitMask = FloorCategory
+        floorSprite.physicsBody?.contactTestBitMask = BuddyCategory
         
         addChild(floorSprite)
     }
     
+    private let runWavesKey = "runWaves"
+    private var isWaveRunning = false
+    
     public func runWaves(){
         
-        if action(forKey: "runWaves") == nil {
-            let waveAction = SKAction.repeatForever( SKAction.animate(with: waterWaveFrame,
-                                                                      timePerFrame: 0.3,
-                                                                      resize: false,
-                                                                      restore: false)
-            )
-            run(waveAction, withKey: "runWaves")
+        guard isWaveRunning else {
+
+            let wave = SKAction.animate(with: waterWaveFrame, timePerFrame: 0.3)
+            let waveAction = SKAction.repeatForever(wave)
+            floorSprite.run(waveAction)
+            
+            isWaveRunning = true
+            return
         }
-        
     }
 }
 
