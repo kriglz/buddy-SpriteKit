@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		893B55CD1FE59FB600490D35 /* BackgroundCloudsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */; };
 		8946D1071FD8F65A0049084F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D1061FD8F65A0049084F /* AppDelegate.swift */; };
 		8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10C1FD8F65A0049084F /* GameScene.swift */; };
 		8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10E1FD8F65A0049084F /* GameViewController.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCloudsNode.swift; sourceTree = "<group>"; };
 		8946D1031FD8F65A0049084F /* buddy-SpriyeKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "buddy-SpriyeKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8946D1061FD8F65A0049084F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8946D10C1FD8F65A0049084F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
+				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 				898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */,
 				8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */,
 				8946D1071FD8F65A0049084F /* AppDelegate.swift in Sources */,
+				893B55CD1FE59FB600490D35 /* BackgroundCloudsNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let cameraNode = SKCameraNode()
     private let controlButtons = ControlButtons()
     private let particleEmitter = ParticleNode()
+    private var cloud: BackgroundCloudsNode!
     
     lazy var margin: CGFloat = size.width / 10.35
 
@@ -41,13 +42,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(floor)
         
         
-        
         //Updates floor node (water) to wave.
         floor.runWaves()
         
         //Initializes a buddy.
         spawnBuddy()
         
+        //Setting up first cloud.
+        spawnCloud()
         
         //Setting up particle emitter.
         particleEmitter.setup()
@@ -66,7 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
-        self.physicsBody?.contactTestBitMask = BuddyCategory
+        self.physicsBody?.contactTestBitMask = BuddyCategory | CloudCategory
         self.physicsWorld.contactDelegate = self
         
         
@@ -281,5 +283,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.zPosition = 100
         
         addChild(buddy)
+    }
+    
+    private func spawnCloud(){
+        //Creates a new buddy.
+        cloud = BackgroundCloudsNode.newInstance(size: size)
+        let cloudInitPosition = CGPoint(x: size.width / 2 - 50.0, y: size.height / 2 + 40.0)
+        cloud.position = cloudInitPosition // updatePosition(point: cloudInitPosition)
+        cloud.zPosition = 50
+        
+        addChild(cloud)
     }
 }

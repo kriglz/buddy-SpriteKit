@@ -14,6 +14,9 @@ enum Direction {
     case none
 }
 
+
+
+
 class BackgroundNode: SKNode {
     
     var direction: Direction = .none
@@ -32,7 +35,6 @@ class BackgroundNode: SKNode {
     var mountainsBackBeforeFrame: SKSpriteNode!
     
     var buddysSpeed: CGFloat = 0.0
-    
     
 
 
