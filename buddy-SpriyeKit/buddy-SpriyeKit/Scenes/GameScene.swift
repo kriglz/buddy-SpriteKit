@@ -20,11 +20,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var background = BackgroundNode()
     private var floor = FloorNode()
     private let cameraNode = SKCameraNode()
-    private let controlButtons = ControlButtons()
-    private let particleEmitter = ParticleNode()
-    private var cloud: BackgroundCloudsNode!
     
+    private let controlButtons = ControlButtons()
     lazy var margin: CGFloat = size.width / 10.35
+
+    
+    private let particleEmitter = ParticleNode()
+    
+    private var cloud: BackgroundCloudsNode!
+    private var cloud2: BackgroundCloudsNode!
+    private var cloud3: BackgroundCloudsNode!
+
+    private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
+    
 
     
     
@@ -66,13 +74,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adding WorldFrame
         let worldFrame = frame
-
+//        worldFrame.origin.x = -100
+//        worldFrame.origin.y = -100
+//        worldFrame.size.height += 200
+//        worldFrame.size.width += 200
+        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
-
         self.physicsWorld.contactDelegate = self
         
-        
+
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin)
@@ -100,8 +111,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Updates the buddy behaviour.
         buddy.update(deltaTime: dt)
         
- 
 
+        for cloud in allClouds {
+            cloud.0.moveTheCloud(speed: cloud.1, in: size)
+        }
+
+        
         //Updates camera and control buttons position if buddy has moved.
         if buddy.isWalking {
             
@@ -237,6 +252,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     
+    
+    
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
         
@@ -254,30 +271,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             handleCloudCollision(contact: contact)
             return
         }
-        
-//        //Removes node, when it hits worldframe.
-//        if contact.bodyA.categoryBitMask == WorldCategory {
-//
-//            if contact.bodyB.node == buddy {
-//                contact.bodyB.node?.removeAllActions()
-//
-//            } else if contact.bodyB.node == cloud {
-//                contact.bodyB.node?.removeAllActions()
-//                contact.bodyB.node?.removeFromParent()
-//            }
-//
-//        } else if contact.bodyB.categoryBitMask == WorldCategory {
-//
-//            if contact.bodyB.node == buddy {
-//                contact.bodyA.node?.removeAllActions()
-//
-//            } else if contact.bodyB.node == cloud {
-//                contact.bodyA.node?.removeAllActions()
-//                contact.bodyA.node?.removeFromParent()
-//            }
-//        }
     }
 
+    
+    
+    
     
     private func handleBuddyCollision(contact: SKPhysicsContact) {
         var otherBody: SKPhysicsBody
@@ -352,12 +350,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(buddy)
     }
     
+    
+    
+    
     private func spawnCloud(){
-        //Creates a new buddy.
-        cloud = BackgroundCloudsNode.newInstance(size: size)
-        let cloudInitPosition = CGPoint(x: size.width / 2 - 100.0, y: size.height / 2 + 80.0)
-        cloud.position = cloudInitPosition
         
-        addChild(cloud)
+        //Creates a new cloud.
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+
+
+        for cloud in allClouds {
+            addChild(cloud.0)
+        }
     }
 }

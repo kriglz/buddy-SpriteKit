@@ -20,7 +20,8 @@ enum Direction {
 class BackgroundNode: SKNode {
     
     var direction: Direction = .none
-    
+    var buddysSpeed: CGFloat = 0.0
+
 
     var horizonGrass: SKSpriteNode!
     var horizonGrassAfterFrame: SKSpriteNode!
@@ -34,7 +35,6 @@ class BackgroundNode: SKNode {
     var mountainsBackAfterFrame: SKSpriteNode!
     var mountainsBackBeforeFrame: SKSpriteNode!
     
-    var buddysSpeed: CGFloat = 0.0
     
 
 
