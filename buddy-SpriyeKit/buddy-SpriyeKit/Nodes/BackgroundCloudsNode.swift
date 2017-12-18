@@ -10,6 +10,11 @@ import SpriteKit
 
 class BackgroundCloudsNode: SKSpriteNode {
 
+    ///Cloud movement direction.
+    private var direction: Direction = .right
+    
+    private var buddySpeed: CGFloat?
+    private var buddyDirection: Direction?
     
     ///Creates a new cloud node.
     public static func newInstance(size: CGSize) -> (BackgroundCloudsNode, CGFloat) {
@@ -45,16 +50,31 @@ class BackgroundCloudsNode: SKSpriteNode {
         return (cloud, cloudSpeed)
     }
     
-    
-    private var direction: Direction = .right
+
+
 
     
-    ///Moves the background if notification from camera has been received.
-    func moveTheCloud(speed: CGFloat, in frameSize: CGSize){
+    ///Moves the cloud.
+    func moveTheCloud(deltaTime: TimeInterval, speed: CGFloat, in frameSize: CGSize){
         
-        let dt: CGFloat = 1/60
+        var cloudSpeed: CGFloat = speed
         
-        let deltaX: CGFloat = speed * dt
+        //Moves clouds in different speed if camera moves too.
+        if let buddySpeed = buddySpeed,
+            let buddyDirection = buddyDirection {
+            
+            switch buddyDirection {
+            case .left:
+                cloudSpeed -= buddySpeed / 1.4
+            case .right:
+                cloudSpeed += buddySpeed / 1.4
+            default:
+                break
+            }
+        }
+
+        ///Value which shows how much x is changed every `deltaTime`.
+        let deltaX: CGFloat = cloudSpeed * CGFloat(deltaTime)
         
         //Move sprite based on speed
         var newPosition: CGPoint = CGPoint.zero
@@ -76,5 +96,20 @@ class BackgroundCloudsNode: SKSpriteNode {
         case .none:
             break
         }
-    }      
+        
+        
+        buddyDirection = nil
+        buddySpeed = nil
+    }
+    
+    
+    ///Moves the clouds relative to the camera movement.
+    @objc func moveTheClouds(notification: Notification) -> Void {
+        
+        guard let bDirection = notification.userInfo!["DirectionToMove"],
+            let bSpeed = notification.userInfo!["BuddySpeed"] else { return }
+        
+        buddyDirection = bDirection as? Direction
+        buddySpeed = bSpeed as? CGFloat
+    }
 }

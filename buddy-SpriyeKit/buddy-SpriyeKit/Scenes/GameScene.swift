@@ -27,12 +27,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private let particleEmitter = ParticleNode()
     
-    private var cloud: BackgroundCloudsNode!
-    private var cloud2: BackgroundCloudsNode!
-    private var cloud3: BackgroundCloudsNode!
-
     private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
     
+    private var isEmittingOver: Bool = false
 
     
     
@@ -74,10 +71,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adding WorldFrame
         let worldFrame = frame
-//        worldFrame.origin.x = -100
-//        worldFrame.origin.y = -100
-//        worldFrame.size.height += 200
-//        worldFrame.size.width += 200
         
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
@@ -113,7 +106,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
 
         for cloud in allClouds {
-            cloud.0.moveTheCloud(speed: cloud.1, in: size)
+            cloud.0.moveTheCloud(deltaTime: dt, speed: cloud.1, in: size)
         }
 
         
@@ -126,15 +119,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 centerCameraOnPoint(point: buddy.position)
                 controlButtons.centerOnPoint(point: buddy.position, with: margin)
             }
+
             
-            
-            
+            //Emits particles
             if isEmittingOver {
                 particleEmitter.removeAllActions()
                 particleEmitter.removeFromParent()
                 isEmittingOver = false
             }
-            
             
             particleEmitter.alpha = 1.0
  
@@ -157,10 +149,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 break
             }
             
-            
-            
-            
         } else {
+
             if childNode(withName: "particleEmitter") != nil {
                 
                 particleEmitter.numParticlesToEmit = 0
@@ -176,15 +166,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 isEmittingOver = true
             }
-               
         }
-        
         self.lastUpdateTime = currentTime
     }
     
     
    
-    private var isEmittingOver: Bool = false
     
     
     
@@ -257,25 +244,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
         
-        
         //Checks if item was hit.
         if contact.bodyA.categoryBitMask == BuddyCategory || contact.bodyB.categoryBitMask == BuddyCategory {
             
             handleBuddyCollision(contact: contact)
             return
         }
-        
-        //Checks if item was hit.
-        if contact.bodyA.categoryBitMask == CloudCategory || contact.bodyB.categoryBitMask == CloudCategory {
-            
-            handleCloudCollision(contact: contact)
-            return
-        }
     }
 
-    
-    
-    
     
     private func handleBuddyCollision(contact: SKPhysicsContact) {
         var otherBody: SKPhysicsBody
@@ -294,28 +270,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    private func handleCloudCollision(contact: SKPhysicsContact) {
-        var otherBody: SKPhysicsBody
-        var cloudBody: SKPhysicsBody
-        
-        if contact.bodyA.categoryBitMask == CloudCategory {
-            
-            cloudBody = contact.bodyA
-            otherBody = contact.bodyB
-        } else {
-            otherBody = contact.bodyA
-            cloudBody = contact.bodyB
-        }
-        
-        switch otherBody.categoryBitMask {
-        case WorldCategory:
-            cloudBody.node?.removeAllActions()
-            cloudBody.node?.removeFromParent()
-            spawnCloud()
-        default:
-            break
-        }
-    }
+   
     
     
     
@@ -352,19 +307,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
-    
+    ///Creates a new cloud.
     private func spawnCloud(){
         
-        //Creates a new cloud.
+        //Creating clouds, adding them to cloud array.
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
 
-
+        //Every cloud is added to the parent and gets a notification observer for camera movement, so that speed could be adjusted.
         for cloud in allClouds {
             addChild(cloud.0)
+            NotificationCenter.default.addObserver(
+                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+                object: nil,
+                queue: nil,
+                using: cloud.0.moveTheClouds)
         }
     }
 }
