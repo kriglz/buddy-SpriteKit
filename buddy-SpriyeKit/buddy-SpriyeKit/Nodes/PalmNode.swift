@@ -34,4 +34,37 @@ class PalmNode: SKSpriteNode {
     }
     
     
+    var direction: Direction = .none
+    var buddysSpeed: CGFloat = 0.0
+    
+    @objc func moveThePalm(notification: Notification) -> Void {
+        
+        guard let buddyDirection = notification.userInfo!["DirectionToMove"],
+            let buddySpeed = notification.userInfo!["BuddySpeed"],
+            let deltaTime = notification.userInfo!["DeltaTime"] else { return }
+        
+        direction = buddyDirection as! Direction
+        buddysSpeed = buddySpeed as! CGFloat
+        let dt = deltaTime as! TimeInterval
+        
+        
+        let deltaX: CGFloat = buddysSpeed * CGFloat(dt) / horizonSpeedConstant
+        
+        //Move sprite based on speed
+        var newPosition: CGPoint = CGPoint.zero
+        newPosition = position
+        
+        switch direction {
+        case .left:
+            newPosition.x -= deltaX
+            position = newPosition
+            
+        case .right:
+            newPosition.x += deltaX
+            position = newPosition
+            
+        case .none:
+            break
+        }
+    }
 }

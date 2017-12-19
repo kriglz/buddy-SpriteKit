@@ -23,6 +23,7 @@ let yForSky: CGFloat = 1.0 - yForGrass - yForMountains //0.40 now
 
 let cameraMoveNotificationKey = "cameraMoved"
 
+let horizonSpeedConstant = CGFloat(1.9)
 
 let zPositionSky: CGFloat = 1.0
 let zPositionClouds: CGFloat = 2.0
