@@ -343,6 +343,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for palm in allPalms {
             addChild(palm)
+            palm.swing()
             
             //Makes background nodes observe notification about camera movements.
             NotificationCenter.default.addObserver(
