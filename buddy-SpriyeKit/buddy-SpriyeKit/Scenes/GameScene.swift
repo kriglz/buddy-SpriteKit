@@ -28,6 +28,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let particleEmitter = ParticleNode()
     
     private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
+    private var allPalms = [PalmNode]()
     
     private var isEmittingOver: Bool = false
 
@@ -53,9 +54,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Initializes a buddy.
         spawnBuddy()
 
-        
-        //Setting up first cloud.
+        //Setting up clouds.
         spawnCloud()
+        
+        //Setting up palms.
+        spawnPalm()
+        
         
         //Setting up particle emitter.
         particleEmitter.setup()
@@ -325,6 +329,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 object: nil,
                 queue: nil,
                 using: cloud.0.moveTheClouds)
+        }
+    }
+    
+    private func spawnPalm(){
+        
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
+        
+        for palm in allPalms {
+            addChild(palm)
+            
+            //Makes background nodes observe notification about camera movements.
+            NotificationCenter.default.addObserver(
+                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+                object: nil,
+                queue: nil,
+                using: palm.moveThePalm)
         }
     }
 }

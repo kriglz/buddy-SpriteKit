@@ -22,6 +22,7 @@
 		89D1208C1FE312A30065B588 /* MagicParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89D1208A1FE312A30065B588 /* MagicParticles.sks */; };
 		89D1208D1FE312A30065B588 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89D1208B1FE312A30065B588 /* Assets.xcassets */; };
 		89D1208F1FE342230065B588 /* ParticleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D1208E1FE342230065B588 /* ParticleNode.swift */; };
+		89E5B25C1FE897CA0000C647 /* PalmNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E5B25B1FE897CA0000C647 /* PalmNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		89D1208A1FE312A30065B588 /* MagicParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicParticles.sks; sourceTree = "<group>"; };
 		89D1208B1FE312A30065B588 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		89D1208E1FE342230065B588 /* ParticleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleNode.swift; sourceTree = "<group>"; };
+		89E5B25B1FE897CA0000C647 /* PalmNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalmNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,14 +97,15 @@
 		8946D11F1FD8F6700049084F /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
+				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 				89D1208A1FE312A30065B588 /* MagicParticles.sks */,
 				89D1208B1FE312A30065B588 /* Assets.xcassets */,
 				89D1208E1FE342230065B588 /* ParticleNode.swift */,
-				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
+				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
+				89E5B25B1FE897CA0000C647 /* PalmNode.swift */,
 				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
-				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				89D1208F1FE342230065B588 /* ParticleNode.swift in Sources */,
 				89B6BA581FE0486200AC5CB1 /* FloorNode.swift in Sources */,
 				895A62D11FDF02EA004A78C5 /* ControlButton.swift in Sources */,
+				89E5B25C1FE897CA0000C647 /* PalmNode.swift in Sources */,
 				8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */,
 				898CE3111FDB65BA001CF189 /* BackgroundNode.swift in Sources */,
 				8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */,

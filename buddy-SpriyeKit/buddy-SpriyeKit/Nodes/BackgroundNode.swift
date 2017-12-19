@@ -37,7 +37,6 @@ class BackgroundNode: SKNode {
     
     
 
-
     
     ///Initialize the background nodes.
     public func setup(size: CGSize){
@@ -123,7 +122,7 @@ class BackgroundNode: SKNode {
         sky.position = CGPoint(x: sky.size.width / 2, y: sky.size.height / 2 + size.height * (yForGrass + yForGrassHorizon))
         sky.zPosition = zPositionSky
         
-        addChild(sky)
+        addChild(sky)        
     }
     
 
