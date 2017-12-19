@@ -132,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 isEmittingOver = false
             }
             
-            particleEmitter.alpha = 1.0
+            particleEmitter.alpha = 0.4
  
             switch controlButtons.direction {
             case .left:
