@@ -320,6 +320,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
         allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
 
         //Every cloud is added to the parent and gets a notification observer for camera movement, so that speed could be adjusted.
         for cloud in allClouds {
@@ -334,6 +336,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func spawnPalm(){
         
+        allPalms.append(PalmNode.newInstance(size: size))
+        allPalms.append(PalmNode.newInstance(size: size))
         allPalms.append(PalmNode.newInstance(size: size))
         allPalms.append(PalmNode.newInstance(size: size))
         allPalms.append(PalmNode.newInstance(size: size))

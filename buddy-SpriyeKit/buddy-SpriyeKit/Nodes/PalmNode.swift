@@ -12,6 +12,8 @@ class PalmNode: SKSpriteNode {
     
     public static func newInstance(size: CGSize) -> PalmNode {
         
+        let randomSite = arc4random_uniform(2)
+        
         let palmImageNumber = arc4random_uniform(2) + 1
         let palm = PalmNode(imageNamed: "palm\(palmImageNumber)")
         
@@ -25,7 +27,14 @@ class PalmNode: SKSpriteNode {
             palm.size = CGSize(width: sizeWidth, height: sizeHeight)
             
             let yPosition =  size.height / 2 + 10.0 + 5 * (1 - scaleConstant)
-            let xPosition = size.width / 2 + CGFloat(arc4random_uniform(200))
+            
+            var xPosition = size.width / 2
+            if randomSite == 0 {
+               xPosition += CGFloat(arc4random_uniform(200))
+            } else {
+                xPosition -= CGFloat(arc4random_uniform(200)) + 200.0
+            }
+//            let xPosition = size.width / 2 + CGFloat(arc4random_uniform(300))
             palm.position = CGPoint(x: xPosition, y: yPosition)
             palm.zPosition = zPositionPalm + scaleConstant
         }
