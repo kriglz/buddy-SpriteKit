@@ -32,6 +32,9 @@ let zPositionHorizon: CGFloat = 10.0
 let zPositionPalm: CGFloat = 20.0
 
 let zPositionWater: CGFloat = 50.0
+
 let zPositionBuddy: CGFloat = 999.0
 let zPositionControl: CGFloat = 1000.0
+
+let zPositionFish : CGFloat = 1001.0
 

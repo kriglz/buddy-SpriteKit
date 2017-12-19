@@ -29,6 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
     private var allPalms = [PalmNode]()
+    private var allFish = [FishNode]()
     
     private var isEmittingOver: Bool = false
 
@@ -59,6 +60,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Setting up palms.
         spawnPalm()
+        
+        //Setting up fish.
+        spawnFish()
         
         
         //Setting up particle emitter.
@@ -355,6 +359,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 object: nil,
                 queue: nil,
                 using: palm.moveThePalm)
+        }
+    }
+    
+    private func spawnFish(){
+        allFish.append(FishNode.newInstance(size: size))
+        
+        for fish in allFish {
+            addChild(fish)
         }
     }
 }
