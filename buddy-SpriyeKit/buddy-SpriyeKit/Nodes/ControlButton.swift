@@ -21,7 +21,10 @@ class ControlButtons: SKNode {
     ///Button to go to menu screen.
     private var menuButton: SKSpriteNode!
     private let menuButtonTexture = SKTexture(imageNamed: "buttonMenu")
-   
+    ///Defines if menu button is pressed.
+    private(set) var isMenuButtonPressed = false
+    ///Function for menu button.
+    public var menuButtonAction: (() -> ())?
 
     
     public func setup(size: CGSize){
@@ -121,6 +124,7 @@ class ControlButtons: SKNode {
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         menuButton.position = CGPoint(x: point.x + marginX + 1.5 * menuButton.size.width, y: size.height - marginY - menuButton.size.height / 2)
     }
+    
 }
 
 

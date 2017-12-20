@@ -90,6 +90,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
+        controlButtons.menuButtonAction = {
+            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
+            let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
+            menuScene.scaleMode = self.scaleMode
+            self.view?.presentScene(menuScene, transition: transition)
+            self.controlButtons.menuButtonAction = nil
+        }
         addChild(controlButtons)
     }
 

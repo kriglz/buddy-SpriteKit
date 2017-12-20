@@ -72,7 +72,7 @@ class FishNode: SKSpriteNode {
     ///Adds swim-move action to the fish.
     public func move(){
         
-        let scaleConstant = drand48() * 0.8
+        let scaleConstant = drand48()
         
         self.alpha = 0.0
         
