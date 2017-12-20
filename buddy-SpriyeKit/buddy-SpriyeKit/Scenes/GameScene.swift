@@ -402,6 +402,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let fish = FishNode().newInstance(size: size)
         
         fish.swim()
+        fish.move()
         
         addChild(fish)
     }
