@@ -36,7 +36,7 @@ class FishNode: SKSpriteNode {
                 width: (size.width / 9.6) * (0.8 + 0.5 * fishScaleConstant),
                 height: (size.height / 7.94) * (0.8 + 0.5 * fishScaleConstant))
             fish.position = CGPoint(
-                x: size.width / 2 + CGFloat(arc4random_uniform(200)),
+                x: CGFloat(arc4random_uniform(UInt32(size.width))),
                 y: size.height / 4 - 120 * fishScaleConstant)
             fish.zPosition = zPositionFish
 
@@ -71,11 +71,14 @@ class FishNode: SKSpriteNode {
     
     ///Adds swim-move action to the fish.
     public func move(){
+        
+        let scaleConstant = drand48() * 0.8
+        
         self.alpha = 0.0
         
-        let fadeInAnimation = SKAction.fadeIn(withDuration: 5)
-        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - 50,y: self.position.y - 10),
-                                                 duration: 6)
+        let fadeInAnimation = SKAction.fadeIn(withDuration: 5 * (1 + scaleConstant))
+        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - (50 * (1 + CGFloat(scaleConstant))), y: self.position.y - 10),
+                                                 duration: 5 * (1 + scaleConstant))
         let groupAction1 = SKAction.group([moveToPointAnimation,
                                            fadeInAnimation])
         
@@ -84,8 +87,8 @@ class FishNode: SKSpriteNode {
             self?.xScale *= -1
         }
         
-        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + 20, y: self.position.y - 10), duration: 3.0)
-        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 3.0)
+        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + 20 * (1 + CGFloat(scaleConstant)), y: self.position.y - 10), duration: 1.0  * (1 + scaleConstant))
+        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 1.0  * (1 + scaleConstant))
         let groupAction2 = SKAction.group([moveBackToPointAnimation,
                                           fadeOutAniamtion])
         

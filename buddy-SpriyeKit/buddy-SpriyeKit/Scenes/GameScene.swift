@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnPalm()
         
         //Setting up fish.
-        for _ in 1...2 {
+        for _ in 1...3 {
             spawnFish()
         }
         
@@ -119,6 +119,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             cloud.0.moveTheCloud(deltaTime: dt, speed: cloud.1, in: size)
         }
 
+        
+        if childNode(withName: "fish") == nil {
+            for _ in 1...2 {
+                spawnFish()
+            }
+        }
+        
         
         //Updates camera and control buttons position if buddy has moved.
         if buddy.isWalking {
@@ -403,6 +410,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         fish.swim()
         fish.move()
+        
+        fish.name = "fish"
         
         addChild(fish)
     }
