@@ -61,7 +61,6 @@ class ControlButtons: SKNode {
 
         ///Point which is touch point converted to left button coordinate system.
         var pointLeft = goLeftButton.convert(point, from: parent!)
-        
         //Adding button origin and half size to make point and button coordinate systems completely equal.
         pointLeft.x += goLeftButton.frame.origin.x + goLeftButton.size.width / 2
         pointLeft.y += goLeftButton.frame.origin.y + goLeftButton.size.height / 2
@@ -69,30 +68,67 @@ class ControlButtons: SKNode {
 
         ///Point which is touch point converted to left button coordinate system.
         var pointRight = goRightButton.convert(point, from: parent!)
-        
         //Adding button origin and half size to make point and button coordinate systems completely equal.
         pointRight.x += goRightButton.frame.origin.x + goRightButton.size.width / 2
         pointRight.y += goRightButton.frame.origin.y + goRightButton.size.height / 2
         
+        ///Point which is touch point converted to menu button coordinate system.
+        var pointMenu = menuButton.convert(point, from: parent!)
+        //Adding button origin and half size to make point and button coordinate systems completely equal.
         
+        let pointMenuFrame = CGRect(x: menuButton.frame.origin.x - menuButton.size.width / 4,
+                                    y: menuButton.frame.origin.y - menuButton.size.height / 4,
+                                    width: menuButton.size.width * 1.5,
+                                    height: menuButton.size.height * 1.5)
+        
+        pointMenu.x += pointMenuFrame.origin.x + pointMenuFrame.size.width / 2
+        pointMenu.y += pointMenuFrame.origin.y + pointMenuFrame.size.height / 2
+      
+        
+//        let testDot = SKShapeNode(circleOfRadius: 1.0)
+//        testDot.position = pointMenu
+//        testDot.strokeColor = .black
+//        testDot.fillColor = .black
+//        testDot.zPosition = 101
+//        addChild(testDot)
+//
+//       let testNode = SKShapeNode(rect: pointMenuFrame)
+//        testNode.fillColor = .blue
+//        testNode.zPosition = 100
+//        addChild(testNode)
+//
         
         
         //Checks if either one button was touched.
         //Only one button can be touched at a time.
-        if goLeftButton.frame.contains(pointLeft) {
+        if pointMenuFrame.contains(pointMenu){ //Using 1/4 bigger frame for menu point to register.
+            menuButton.alpha = alphaPressed
+            goRightButton.alpha = alphaDefault
+            goLeftButton.alpha = alphaDefault
+            
+            isMenuButtonPressed = true
+            
+        } else if goLeftButton.frame.contains(pointLeft) {
             direction = .left
             goLeftButton.alpha = alphaPressed
             goRightButton.alpha = alphaDefault
+            menuButton.alpha = alphaDefault
+            isMenuButtonPressed = false
 
         } else if goRightButton.frame.contains(pointRight) {
             direction = .right
             goRightButton.alpha = alphaPressed
             goLeftButton.alpha = alphaDefault
+            menuButton.alpha = alphaDefault
+            isMenuButtonPressed = false
+
         } else {
             direction = .none
             goRightButton.alpha = alphaDefault
             goLeftButton.alpha = alphaDefault
-            
+            menuButton.alpha = alphaDefault
+            isMenuButtonPressed = false
+
         }
     }
     
@@ -114,6 +150,12 @@ class ControlButtons: SKNode {
         direction = .none
         goRightButton.alpha = alphaDefault
         goLeftButton.alpha = alphaDefault
+        menuButton.alpha = alphaDefault
+        
+        if isMenuButtonPressed && menuButtonAction != nil {
+            menuButtonAction!()
+        }
+        
     }
     
     public func centerOnPoint(point: CGPoint, with margin: CGFloat, in size: CGSize){
