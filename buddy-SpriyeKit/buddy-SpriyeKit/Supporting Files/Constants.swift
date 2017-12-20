@@ -11,7 +11,7 @@ import UIKit
 let WorldCategory: UInt32 = 0x1 << 1
 let BuddyCategory: UInt32 = 0x1 << 2
 let FloorCategory: UInt32 = 0x1 << 3
-let CloudCategory: UInt32 = 0x1 << 4
+let FishCategory: UInt32 = 0x1 << 4
 
 
 let xScaleForSceneSize: CGFloat = 3.0
@@ -34,7 +34,7 @@ let zPositionPalm: CGFloat = 20.0
 let zPositionWater: CGFloat = 50.0
 
 let zPositionBuddy: CGFloat = 999.0
-let zPositionControl: CGFloat = 1000.0
+let zPositionFish : CGFloat = 1000.0
 
-let zPositionFish : CGFloat = 1001.0
+let zPositionControl: CGFloat = 2000.0
 

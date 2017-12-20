@@ -254,10 +254,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
         
-        //Checks if item was hit.
+        //Checks if buddy was hit.
         if contact.bodyA.categoryBitMask == BuddyCategory || contact.bodyB.categoryBitMask == BuddyCategory {
             
             handleBuddyCollision(contact: contact)
+            return
+        }
+        
+        //Checks if fish was hit.
+        if contact.bodyA.categoryBitMask == FishCategory || contact.bodyB.categoryBitMask == FishCategory {
+            
+            handleFishCollision(contact: contact)
             return
         }
     }
@@ -280,7 +287,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-   
+    private func handleFishCollision(contact: SKPhysicsContact) {
+        var otherBody: SKPhysicsBody
+        var fishBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask == FishCategory {
+            otherBody = contact.bodyB
+            fishBody = contact.bodyA
+        } else {
+            otherBody = contact.bodyA
+            fishBody = contact.bodyB
+        }
+        
+        switch otherBody.categoryBitMask {
+        case WorldCategory:
+            fishBody.node?.removeAllActions()
+            fishBody.node?.removeFromParent()
+            
+            //Release a new fish
+            spawnFish()
+            
+        default:
+            break
+        }
+    }
     
     
     

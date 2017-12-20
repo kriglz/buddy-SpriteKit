@@ -26,8 +26,15 @@ class FishNode: SKSpriteNode {
             fish.position = CGPoint(x: size.width / 2 + CGFloat(arc4random_uniform(200)), y: size.height / 3 - CGFloat(arc4random_uniform(200)))
             fish.zPosition = zPositionFish
 
+            fish.physicsBody = SKPhysicsBody.init(
+                texture: SKTexture(imageNamed: "fishFly"),
+                alphaThreshold: 0.1,
+                size: CGSize(width: fish.size.height, height: fish.size.width))
             
-            
+            fish.physicsBody?.categoryBitMask = FishCategory
+            fish.physicsBody?.contactTestBitMask = WorldCategory
+            fish.physicsBody?.collisionBitMask = 0
+            fish.physicsBody?.affectedByGravity = false
         }
         
         return fish
@@ -35,10 +42,26 @@ class FishNode: SKSpriteNode {
     
     
     public func swim(){
-        let swimAction = SKAction.repeatForever(
-            SKAction.animate(with: fishSwimFrame, timePerFrame: 0.3))
         
-        run(swimAction)
+        let animationCount = Int(arc4random_uniform(10))
+        
+        let swimAction = SKAction.repeat(
+            SKAction.animate(with: fishSwimFrame, timePerFrame: 0.3),
+            count: animationCount)
+        
+        let changeStateAction = SKAction.run { [weak self] in
+            self?.texture = SKTexture(imageNamed: "fishFly")
+            self?.size = CGSize(width: (self?.size.height)!, height: (self?.size.width)!)
+            self?.physicsBody?.affectedByGravity = true
+        }
+        
+        let jumpAction = SKAction.applyImpulse(CGVector(dx: -30.0, dy: 200.0), duration: 0.50)
+        
+        let flipAction = SKAction.applyAngularImpulse(-1.0, duration: 20.0)
+        
+        let swimJumpSequence = SKAction.sequence([swimAction, changeStateAction, jumpAction, flipAction])
+        
+        run(swimJumpSequence)
     }
     
 }
