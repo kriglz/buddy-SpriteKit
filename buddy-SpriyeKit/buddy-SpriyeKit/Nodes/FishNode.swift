@@ -10,15 +10,25 @@ import SpriteKit
 
 class FishNode: SKSpriteNode {
     
-    var fishSwimFrame = [
-        SKTexture(imageNamed: "fishswing1"),
-        SKTexture(imageNamed: "fishswing2"),
-        SKTexture(imageNamed: "fishswing3")
+    var fishSwimFrame1 = [
+        SKTexture(imageNamed: "fishswing11"),
+        SKTexture(imageNamed: "fishswing21"),
+        SKTexture(imageNamed: "fishswing31")
     ]
     
-    public static func newInstance(size: CGSize) -> FishNode{
+    var fishSwimFrame2 = [
+        SKTexture(imageNamed: "fishswing12"),
+        SKTexture(imageNamed: "fishswing22"),
+        SKTexture(imageNamed: "fishswing32")
+    ]
     
-        let fish = FishNode(imageNamed: "fishswing1") // \(arc4random_uniform(2)+1)")
+    let randFishNumber = arc4random_uniform(2) + 1
+
+    
+    public func newInstance(size: CGSize) -> FishNode {
+        
+        
+        let fish = FishNode(imageNamed: "fish\(randFishNumber)")
         
         if fish.texture != nil {
             
@@ -27,7 +37,7 @@ class FishNode: SKSpriteNode {
             fish.zPosition = zPositionFish
 
             fish.physicsBody = SKPhysicsBody.init(
-                texture: SKTexture(imageNamed: "fishFly"),
+                texture: SKTexture(imageNamed: "fishFly\(randFishNumber)"),
                 alphaThreshold: 0.1,
                 size: CGSize(width: fish.size.height, height: fish.size.width))
             
@@ -35,6 +45,7 @@ class FishNode: SKSpriteNode {
             fish.physicsBody?.contactTestBitMask = WorldCategory
             fish.physicsBody?.collisionBitMask = 0
             fish.physicsBody?.affectedByGravity = false
+            
         }
         
         return fish
@@ -43,14 +54,23 @@ class FishNode: SKSpriteNode {
     
     public func swim(){
         
-        let animationCount = Int(arc4random_uniform(10))
+        var fishFrame = fishSwimFrame2
+        if self.randFishNumber == 1 {
+            fishFrame = fishSwimFrame1
+        }
+        
+        let randAnimationCount = Int(arc4random_uniform(10))
         
         let swimAction = SKAction.repeat(
-            SKAction.animate(with: fishSwimFrame, timePerFrame: 0.3),
-            count: animationCount)
+            SKAction.animate(with: fishFrame, timePerFrame: 0.3),
+            count: randAnimationCount)
+        
         
         let changeStateAction = SKAction.run { [weak self] in
-            self?.texture = SKTexture(imageNamed: "fishFly")
+            
+            if let randFishNumber = self?.randFishNumber {
+                self?.texture = SKTexture(imageNamed: "fishFly\(Int(randFishNumber))")                
+            }
             self?.size = CGSize(width: (self?.size.height)!, height: (self?.size.width)!)
             self?.physicsBody?.affectedByGravity = true
         }

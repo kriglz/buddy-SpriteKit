@@ -40,9 +40,8 @@ class BuddyNode: SKSpriteNode {
             
             //Adding contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory
-            buddy.physicsBody?.contactTestBitMask = WorldCategory 
-         
-            
+            buddy.physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
+            buddy.physicsBody?.collisionBitMask = 0
             
         }
         return buddy

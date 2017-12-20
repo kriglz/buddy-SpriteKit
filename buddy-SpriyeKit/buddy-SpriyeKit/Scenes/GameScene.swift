@@ -282,6 +282,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch otherBody.categoryBitMask {
         case WorldCategory:
             buddy.removeAllActions()
+       
+        case FloorCategory:
+            buddy.physicsBody?.collisionBitMask = FloorCategory
+            
         default:
             break
         }
@@ -395,7 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func spawnFish(){
-        let fish = FishNode.newInstance(size: size)
+        let fish = FishNode().newInstance(size: size)
         
         fish.swim()
         
