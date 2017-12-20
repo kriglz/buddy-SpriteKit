@@ -10,8 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-    
+        
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
 
@@ -91,7 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
         controlButtons.menuButtonAction = {
-            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
+            let transition = SKTransition.push(with: SKTransitionDirection.right , duration: 0.5)
             let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
             menuScene.scaleMode = self.scaleMode
             self.view?.presentScene(menuScene, transition: transition)
@@ -362,7 +361,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance(size: size)
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass + buddy.size.height / 2 )
+        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass - 10.0 + buddy.size.height / 2 )
         buddy.updatePosition(point: buddyInitPosition)
         
         addChild(buddy)
