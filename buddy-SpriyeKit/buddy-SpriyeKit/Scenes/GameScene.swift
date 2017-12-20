@@ -62,7 +62,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnPalm()
         
         //Setting up fish.
-        spawnFish()
+        for _ in 1...2 {
+            spawnFish()
+        }
         
         
         //Setting up particle emitter.
@@ -363,10 +365,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func spawnFish(){
-        allFish.append(FishNode.newInstance(size: size))
+        let fish = FishNode.newInstance(size: size)
         
-        for fish in allFish {
-            addChild(fish)
-        }
+        addChild(fish)
     }
 }

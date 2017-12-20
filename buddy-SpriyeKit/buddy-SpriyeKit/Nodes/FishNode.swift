@@ -15,9 +15,9 @@ class FishNode: SKSpriteNode {
         let fish = FishNode(imageNamed: "fish\(arc4random_uniform(2)+1)")
         
         if fish.texture != nil {
-            
+                        
             fish.size = CGSize(width: size.width / 9.6, height: size.height / 7.94)
-            fish.position = CGPoint(x: size.width / 2, y: size.height / 3)
+            fish.position = CGPoint(x: size.width / 2 + CGFloat(arc4random_uniform(200)), y: size.height / 3 - CGFloat(arc4random_uniform(200)))
             fish.zPosition = zPositionFish
 
         }
