@@ -89,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
-        controlButtons.centerOnPoint(point: buddy.position, with: margin)
+        controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
         addChild(controlButtons)
     }
 
@@ -134,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
                 
                 centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: buddy.position, with: margin)
+                controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
             }
 
             

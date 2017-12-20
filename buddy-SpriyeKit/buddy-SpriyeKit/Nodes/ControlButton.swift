@@ -18,7 +18,9 @@ class ControlButtons: SKNode {
     private var goRightButton: SKSpriteNode!
     private let goRightButtonTexture = SKTexture(imageNamed: "buttonRight")
     
-    
+    ///Button to go to menu screen.
+    private var menuButton: SKSpriteNode!
+    private let menuButtonTexture = SKTexture(imageNamed: "buttonMenu")
    
 
     
@@ -38,6 +40,13 @@ class ControlButtons: SKNode {
         goRightButton.zPosition = zPositionControl
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
+        
+        
+        menuButton = SKSpriteNode(texture: menuButtonTexture)
+        menuButton.size = CGSize(width: buttonSize.width / 2, height: buttonSize.height / 2)
+        menuButton.zPosition = zPositionControl
+        menuButton.alpha = alphaDefault
+        addChild(menuButton)
     }
     
     let alphaPressed: CGFloat = 0.3
@@ -104,12 +113,13 @@ class ControlButtons: SKNode {
         goLeftButton.alpha = alphaDefault
     }
     
-    public func centerOnPoint(point: CGPoint, with margin: CGFloat){
+    public func centerOnPoint(point: CGPoint, with margin: CGFloat, in size: CGSize){
         let marginX: CGFloat = margin
         let marginY: CGFloat = margin / 7.7
 
         goLeftButton.position = CGPoint(x: point.x - marginX - goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
+        menuButton.position = CGPoint(x: point.x + marginX + 1.5 * menuButton.size.width, y: size.height - marginY - menuButton.size.height / 2)
     }
 }
 
