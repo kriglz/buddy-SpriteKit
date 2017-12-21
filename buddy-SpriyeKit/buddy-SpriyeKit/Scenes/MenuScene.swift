@@ -20,16 +20,19 @@ class MenuScene: SKScene {
     
     override func sceneDidLoad() {
         
-        let fish = FishNode().newInstance(size: size)
-        fish.size.width *= 3
-        fish.position = CGPoint(x: 2 * size.width / 3 - fish.size.width / 2, y: 3 * size.height / 4)
-        fish.physicsBody = nil
-        
-        fish.swim()
-        fish.moveAround(in: size)
-        addChild(fish)
-        
-        
+        for index in 0...2 {
+            //Creating swimming fish.
+            let fish = FishNode().newInstance(size: size)
+            fish.size.width *= 3
+            let topMargin = 3 * size.height / 4
+            fish.position = CGPoint(x: 2 * size.width / 3 - fish.size.width / 2,
+                                    y: topMargin * ( 1 - CGFloat(index) / 4))
+            fish.physicsBody = nil
+            
+            fish.swim()
+            fish.moveAround(in: size)
+            addChild(fish)
+        }
     }
     
     

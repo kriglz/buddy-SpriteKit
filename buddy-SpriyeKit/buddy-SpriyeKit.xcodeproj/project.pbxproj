@@ -85,6 +85,7 @@
 				8946D1181FD8F65A0049084F /* Info.plist */,
 				8946D1061FD8F65A0049084F /* AppDelegate.swift */,
 				8946D10E1FD8F65A0049084F /* GameViewController.swift */,
+				89E0C2E21FEB58830070AC3B /* Emitters */,
 				8946D11F1FD8F6700049084F /* Nodes */,
 				8946D11E1FD8F6690049084F /* Scenes */,
 				8946D1201FD8F69E0049084F /* Supporting Files */,
@@ -104,17 +105,13 @@
 		8946D11F1FD8F6700049084F /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
-				89D1208A1FE312A30065B588 /* MagicParticles.sks */,
-				89D1208B1FE312A30065B588 /* Assets.xcassets */,
-				89D1208E1FE342230065B588 /* ParticleNode.swift */,
-				89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
 				89E5B25B1FE897CA0000C647 /* PalmNode.swift */,
-				89EC73111FE9CD8500014A65 /* FishNode.swift */,
 				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
+				89EC73111FE9CD8500014A65 /* FishNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
+				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -128,6 +125,18 @@
 				8946D1151FD8F65A0049084F /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		89E0C2E21FEB58830070AC3B /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				89D1208A1FE312A30065B588 /* MagicParticles.sks */,
+				89D1208B1FE312A30065B588 /* Assets.xcassets */,
+				89D1208E1FE342230065B588 /* ParticleNode.swift */,
+				89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */,
+			);
+			name = Emitters;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

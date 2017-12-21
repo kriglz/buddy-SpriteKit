@@ -83,21 +83,6 @@ class ControlButtons: SKNode {
         
         pointMenu.x += pointMenuFrame.origin.x + pointMenuFrame.size.width / 2
         pointMenu.y += pointMenuFrame.origin.y + pointMenuFrame.size.height / 2
-      
-        
-//        let testDot = SKShapeNode(circleOfRadius: 1.0)
-//        testDot.position = pointMenu
-//        testDot.strokeColor = .black
-//        testDot.fillColor = .black
-//        testDot.zPosition = 101
-//        addChild(testDot)
-//
-//       let testNode = SKShapeNode(rect: pointMenuFrame)
-//        testNode.fillColor = .blue
-//        testNode.zPosition = 100
-//        addChild(testNode)
-//
-        
         
         //Checks if either one button was touched.
         //Only one button can be touched at a time.
@@ -166,7 +151,6 @@ class ControlButtons: SKNode {
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         menuButton.position = CGPoint(x: point.x + marginX + 1.5 * menuButton.size.width, y: size.height - marginY - menuButton.size.height / 2)
     }
-    
 }
 
 

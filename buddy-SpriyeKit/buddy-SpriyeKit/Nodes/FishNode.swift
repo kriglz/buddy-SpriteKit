@@ -128,6 +128,7 @@ class FishNode: SKSpriteNode {
         
         run(SKAction.repeatForever(sequenceOfAnimations))
         
+        //Adds bubbles to the swimming fish.
         if let emitter = emitter {
             emitter.position.x = 15.0 - self.size.width / 2
             addChild(emitter)
