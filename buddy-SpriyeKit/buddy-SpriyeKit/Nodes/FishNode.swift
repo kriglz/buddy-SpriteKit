@@ -103,6 +103,29 @@ class FishNode: SKSpriteNode {
         run(sequenceOfAnimations)
     }
     
+    ///Adds swim-move action to the fish.
+    public func moveAround(in size: CGSize){
+        
+        let deltaX = size.width / 9
+        let duration = 3.0
+        
+        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y),
+                                                 duration: duration)
+        
+        let flipAnimation = SKAction.run { [weak self] in
+            self?.xScale *= -1
+        }
+        
+        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + deltaX, y: self.position.y),
+                                                     duration: duration)
+  
+        let sequenceOfAnimations = SKAction.sequence([moveToPointAnimation,
+                                                      flipAnimation,
+                                                      moveBackToPointAnimation,
+                                                      flipAnimation])
+        
+        run(SKAction.repeatForever(sequenceOfAnimations))
+    }
     
     public func jump(){
         

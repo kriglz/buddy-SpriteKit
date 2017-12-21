@@ -19,7 +19,17 @@ class MenuScene: SKScene {
     }
     
     override func sceneDidLoad() {
-        backgroundColor = SKColor(red: 0.99, green: 0.92, blue: 0.55, alpha: 1.0)
+        
+        let fish = FishNode().newInstance(size: size)
+        fish.size.width *= 3
+        fish.position = CGPoint(x: 2 * size.width / 3 - fish.size.width / 2, y: 3 * size.height / 4)
+        fish.physicsBody = nil
+        
+        fish.swim()
+        fish.moveAround(in: size)
+        addChild(fish)
+        
+        
     }
     
     

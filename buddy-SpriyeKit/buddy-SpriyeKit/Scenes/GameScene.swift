@@ -28,7 +28,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
     private var allPalms = [PalmNode]()
-    private var allFish = [FishNode]()
     
     private var isEmittingOver: Bool = false
 
@@ -38,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
-        
+                
         //Setting up scene background.
         background.setup(size: size)
         addChild(background)
