@@ -13,6 +13,8 @@ class MenuScene: SKScene {
     private let playButton = MenuButtons()
     let fishIndex: UInt32 = arc4random_uniform(2) + 1
 
+    private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
+
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
@@ -25,10 +27,9 @@ class MenuScene: SKScene {
     override func sceneDidLoad() {
         
         //Creating background
-        let backgroundNode = SKShapeNode(rect: self.frame)
-        backgroundNode.fillColor = .white
-        backgroundNode.fillTexture = SKTexture(imageNamed: "menuBackground")
-
+        let backgroundNode = SKSpriteNode(imageNamed: "menuBackground")
+        backgroundNode.size = size
+        backgroundNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         backgroundNode.zPosition = zPositionSky
         addChild(backgroundNode)
         
@@ -63,6 +64,22 @@ class MenuScene: SKScene {
         }
         addChild(playButton)
         
+        //Adds bubbles to the background.
+        if let emitter = emitter {
+            emitter.position = CGPoint(x: self.size.width / 2, y: 0)
+            emitter.particlePositionRange.dx = self.size.width / 2
+            emitter.zPosition = zPositionFish - 1
+            emitter.alpha = 0.6
+            emitter.particleLifetime = 10.0
+            emitter.particleBirthRate = 0.3
+            addChild(emitter)
+        }
+        
+        let menuGrass = SKSpriteNode(texture: SKTexture(imageNamed: "menuBackgroundGrass1"))
+        menuGrass.size = size
+        menuGrass.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        menuGrass.zPosition = backgroundNode.zPosition + 1
+        addChild(menuGrass)
     }
     
     
