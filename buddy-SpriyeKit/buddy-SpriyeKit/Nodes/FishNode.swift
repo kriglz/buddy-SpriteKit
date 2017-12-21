@@ -22,18 +22,17 @@ class FishNode: SKSpriteNode {
         SKTexture(imageNamed: "fishswing32")
     ]
     
-    let randFishNumber = arc4random_uniform(2) + 1
-    let fishScaleConstant = CGFloat(drand48())
+//    var randFishNumber = arc4random_uniform(2) + 1
+    private let fishScaleConstant = CGFloat(drand48())
     
-    let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
+    private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
     ///Creates new fish node.
-    public func newInstance(size: CGSize) -> FishNode {
+    public func newInstance(size: CGSize, randFishNumber: UInt32) -> FishNode {
         
         let fish = FishNode(imageNamed: "fish\(randFishNumber)")
         
         if fish.texture != nil {
-            
             fish.size = CGSize(
                 width: (size.width / 9.6) * (0.8 + 0.5 * fishScaleConstant),
                 height: (size.height / 7.94) * (0.8 + 0.5 * fishScaleConstant))
@@ -58,9 +57,10 @@ class FishNode: SKSpriteNode {
     }
     
     ///Adds swim animation to the fish.
-    public func swim(){
+    public func swim(randFishNumber: UInt32){
+        
         var fishFrame = fishSwimFrame2
-        if self.randFishNumber == 1 {
+        if randFishNumber == 1 {
             fishFrame = fishSwimFrame1
         }
         
@@ -75,7 +75,6 @@ class FishNode: SKSpriteNode {
     public func move(){
         
         let scaleConstant = drand48()
-        
         self.alpha = 0.0
         
         let fadeInAnimation = SKAction.fadeIn(withDuration: 5 * (1 + scaleConstant))
@@ -109,7 +108,7 @@ class FishNode: SKSpriteNode {
     public func moveAround(in size: CGSize){
         
         let deltaX = size.width / 9
-        let duration = 3.0 + Double(arc4random_uniform(4))
+        let duration = 2.0 + Double(arc4random_uniform(6))
         
         let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y),
                                                  duration: duration)
@@ -135,10 +134,10 @@ class FishNode: SKSpriteNode {
         }
     }
     
-    public func jump(){
+    public func jump(randFishNumber: UInt32){
         
         var fishFrame = fishSwimFrame2
-        if self.randFishNumber == 1 {
+        if randFishNumber == 1 {
             fishFrame = fishSwimFrame1
         }
         
@@ -151,9 +150,7 @@ class FishNode: SKSpriteNode {
         
         let changeStateAction = SKAction.run { [weak self] in
             
-            if let randFishNumber = self?.randFishNumber {
-                self?.texture = SKTexture(imageNamed: "fishFly\(Int(randFishNumber))")
-            }
+            self?.texture = SKTexture(imageNamed: "fishFly\(Int(randFishNumber))")
             self?.size = CGSize(width: (self?.size.height)!, height: (self?.size.width)!)
             self?.physicsBody?.affectedByGravity = true
         }

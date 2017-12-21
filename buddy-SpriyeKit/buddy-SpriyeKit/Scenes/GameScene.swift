@@ -31,7 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var isEmittingOver: Bool = false
 
-    
+    private var fishIndex: UInt32 = 0
     
     
     
@@ -61,6 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Setting up fish.
         for _ in 1...3 {
+            fishIndex = arc4random_uniform(2)+1
             spawnFish()
         }
         
@@ -127,6 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if childNode(withName: "fish") == nil {
             for _ in 1...2 {
+                fishIndex = arc4random_uniform(2)+1
                 spawnFish()
             }
         }
@@ -416,11 +418,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func spawnFish(){
-        let fish = FishNode().newInstance(size: size)
+        let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
         
         fish.physicsBody = nil
         
-        fish.swim()
+        fish.swim(randFishNumber: fishIndex)
         fish.move()
         
         fish.name = "fish"
