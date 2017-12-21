@@ -89,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
         controlButtons.menuButtonAction = {
-            let transition = SKTransition.push(with: SKTransitionDirection.right , duration: 0.5)
+            let transition = SKTransition.moveIn(with: SKTransitionDirection.left , duration: 0.5)
             let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
             menuScene.scaleMode = self.scaleMode
             self.view?.presentScene(menuScene, transition: transition)

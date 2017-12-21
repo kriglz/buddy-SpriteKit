@@ -10,8 +10,10 @@ import SpriteKit
 
 class MenuScene: SKScene {
     
+    private let playButton = ControlButtons()
+
+    
     override func didMove(to view: SKView) {
-        
         let swipeHandler = #selector(handleSwipeBack(byReactingTo:))
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
         swipeRecognizer.direction = .left
@@ -20,6 +22,7 @@ class MenuScene: SKScene {
     
     override func sceneDidLoad() {
         
+        //Loop to create 3 fish stack.
         for index in 0...2 {
             //Creating swimming fish.
             let fish = FishNode().newInstance(size: size)
@@ -33,6 +36,20 @@ class MenuScene: SKScene {
             fish.moveAround(in: size)
             addChild(fish)
         }
+        
+        //Sets up play button.
+        
+        playButton.setupPlay(size: size)
+        playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
+        playButton.menuPlayButtonAction = {
+            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
+//            let playScene = PlayScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
+//            playScene.scaleMode = self.scaleMode
+//            self.view?.presentScene(playScene, transition: transition)
+//            self.playButton.menuPlayButtonAction = nil
+        }
+        addChild(playButton)
+        
     }
     
     

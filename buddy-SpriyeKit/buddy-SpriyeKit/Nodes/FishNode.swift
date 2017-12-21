@@ -109,7 +109,7 @@ class FishNode: SKSpriteNode {
     public func moveAround(in size: CGSize){
         
         let deltaX = size.width / 9
-        let duration = 3.0
+        let duration = 3.0 + Double(arc4random_uniform(4))
         
         let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y),
                                                  duration: duration)

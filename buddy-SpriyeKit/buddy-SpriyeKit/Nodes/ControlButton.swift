@@ -25,10 +25,27 @@ class ControlButtons: SKNode {
     private(set) var isMenuButtonPressed = false
     ///Function for menu button.
     public var menuButtonAction: (() -> ())?
-
+    
+    ///Button to play at menu screen.
+    private var menuPlayButton: SKSpriteNode!
+    private let menuPlayButtonTexture = SKTexture(imageNamed: "buttonPlay")
+    ///Defines if menu play button is pressed.
+    private(set) var isMenuPlayButtonPressed = false
+    ///Function for menu play button.
+    public var menuPlayButtonAction: (() -> ())?
+    
+    
+    public func setupPlay(size: CGSize){
+        let buttonSize = CGSize(width: size.width / 2.3885, height: size.height / 9.2)
+        
+        menuPlayButton = SKSpriteNode(texture: menuPlayButtonTexture)
+        menuPlayButton.size = buttonSize
+        menuPlayButton.zPosition = zPositionControl
+        menuPlayButton.alpha = alphaDefault
+        addChild(menuPlayButton)
+    }
     
     public func setup(size: CGSize){
-        
         let buttonSize = CGSize(width: size.width / 17.74, height: size.height / 10.51)
         
         goLeftButton = SKSpriteNode(texture: goLeftButtonTexture)
