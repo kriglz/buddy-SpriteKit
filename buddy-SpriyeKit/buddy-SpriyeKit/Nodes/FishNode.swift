@@ -24,6 +24,8 @@ class FishNode: SKSpriteNode {
     
     let randFishNumber = arc4random_uniform(2) + 1
     let fishScaleConstant = CGFloat(drand48())
+    
+    let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
     ///Creates new fish node.
     public func newInstance(size: CGSize) -> FishNode {
@@ -125,6 +127,11 @@ class FishNode: SKSpriteNode {
                                                       flipAnimation])
         
         run(SKAction.repeatForever(sequenceOfAnimations))
+        
+        if let emitter = emitter {
+            emitter.position.x = 15.0 - self.size.width / 2
+            addChild(emitter)
+        }
     }
     
     public func jump(){

@@ -23,6 +23,7 @@
 		89D1208D1FE312A30065B588 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89D1208B1FE312A30065B588 /* Assets.xcassets */; };
 		89D1208F1FE342230065B588 /* ParticleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D1208E1FE342230065B588 /* ParticleNode.swift */; };
 		89E0C2DF1FEAF7E00070AC3B /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E0C2DE1FEAF7E00070AC3B /* MenuScene.swift */; };
+		89E0C2E11FEB4F3C0070AC3B /* BubbleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */; };
 		89E5B25C1FE897CA0000C647 /* PalmNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E5B25B1FE897CA0000C647 /* PalmNode.swift */; };
 		89EC73121FE9CD8500014A65 /* FishNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC73111FE9CD8500014A65 /* FishNode.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		89D1208B1FE312A30065B588 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		89D1208E1FE342230065B588 /* ParticleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleNode.swift; sourceTree = "<group>"; };
 		89E0C2DE1FEAF7E00070AC3B /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BubbleParticles.sks; sourceTree = "<group>"; };
 		89E5B25B1FE897CA0000C647 /* PalmNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalmNode.swift; sourceTree = "<group>"; };
 		89EC73111FE9CD8500014A65 /* FishNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 				89D1208A1FE312A30065B588 /* MagicParticles.sks */,
 				89D1208B1FE312A30065B588 /* Assets.xcassets */,
 				89D1208E1FE342230065B588 /* ParticleNode.swift */,
+				89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */,
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
 				89E5B25B1FE897CA0000C647 /* PalmNode.swift */,
@@ -189,6 +192,7 @@
 				8946D1121FD8F65A0049084F /* Main.storyboard in Resources */,
 				89D1208C1FE312A30065B588 /* MagicParticles.sks in Resources */,
 				8946D1141FD8F65A0049084F /* Assets.xcassets in Resources */,
+				89E0C2E11FEB4F3C0070AC3B /* BubbleParticles.sks in Resources */,
 				8946D1171FD8F65A0049084F /* LaunchScreen.storyboard in Resources */,
 				89D1208D1FE312A30065B588 /* Assets.xcassets in Resources */,
 			);
