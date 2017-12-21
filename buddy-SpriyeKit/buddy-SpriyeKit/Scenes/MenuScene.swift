@@ -10,7 +10,7 @@ import SpriteKit
 
 class MenuScene: SKScene {
     
-    private let playButton = ControlButtons()
+    private let playButton = MenuButtons()
 
     
     override func didMove(to view: SKView) {
@@ -39,7 +39,7 @@ class MenuScene: SKScene {
         
         //Sets up play button.
         
-        playButton.setupPlay(size: size)
+        playButton.setup(size: size)
         playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
         playButton.menuPlayButtonAction = {
             let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
@@ -52,6 +52,30 @@ class MenuScene: SKScene {
         
     }
     
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPoint = touches.first?.location(in: self)
+        
+        if let touchPoint = touchPoint {
+            playButton.touchBegan(at: touchPoint)
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPoint = touches.first?.location(in: self)
+        
+        if let touchPoint = touchPoint {
+            playButton.touchMoved(to: touchPoint)
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPoint = touches.first?.location(in: self)
+
+        if let touchPoint = touchPoint {
+            playButton.touchEnded(at: touchPoint)
+        }
+    }
     
     
     ///Handles swipe left (back) behaviour.
