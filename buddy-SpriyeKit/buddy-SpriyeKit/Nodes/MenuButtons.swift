@@ -30,13 +30,7 @@ class MenuButtons: SKNode {
     }
     
     
-    let alphaPressed: CGFloat = 0.3
-    let alphaDefault: CGFloat = 0.6
-    
-    
-    
     private func getButton(for point: CGPoint) {
-        
         ///Point which is touch point converted to menu button coordinate system.
         var pointMenu = menuPlayButton.convert(point, from: parent!)
         //Adding button origin and half size to make point and button coordinate systems completely equal.

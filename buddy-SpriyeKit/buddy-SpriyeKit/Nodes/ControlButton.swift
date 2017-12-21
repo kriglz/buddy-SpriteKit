@@ -69,9 +69,6 @@ class ControlButtons: SKNode {
         addChild(menuButton)
     }
     
-    let alphaPressed: CGFloat = 0.3
-    let alphaDefault: CGFloat = 0.6
-    
     
     
     private func getButton(for point: CGPoint) {
