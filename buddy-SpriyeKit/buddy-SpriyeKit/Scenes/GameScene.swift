@@ -302,9 +302,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case WorldCategory:
             buddy.removeAllActions()
        
-        case FloorCategory:
-            buddy.physicsBody?.collisionBitMask = FloorCategory
-            
         default:
             break
         }
