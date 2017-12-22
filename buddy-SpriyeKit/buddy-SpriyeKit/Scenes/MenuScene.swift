@@ -14,6 +14,7 @@ class MenuScene: SKScene {
     let fishIndex: UInt32 = arc4random_uniform(2) + 1
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
+    private let highScoreNode = SKLabelNode(fontNamed: "Damascus")
 
     
     override func didMove(to view: SKView) {
@@ -63,6 +64,18 @@ class MenuScene: SKScene {
 //            self.playButton.menuPlayButtonAction = nil
         }
         addChild(playButton)
+        
+        //Sets up high-score node.
+//        let defaults = UserDefaults.standard
+//        let highScore = defaults.integer(forKey: ScoreKey)
+        highScoreNode.text = "HIGH SCORE - 20"
+        highScoreNode.fontSize = 12
+        highScoreNode.verticalAlignmentMode = .center
+        highScoreNode.horizontalAlignmentMode = .center
+        highScoreNode.position = CGPoint(x: size.width / 2, y: playButton.position.y / 3)
+        highScoreNode.zPosition = zPositionControl
+        highScoreNode.alpha = alphaDefault
+        addChild(highScoreNode)
         
         //Adds bubbles to the background.
         if let emitter = emitter {
