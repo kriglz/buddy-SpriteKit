@@ -10,7 +10,11 @@ import SpriteKit
 
 class WaterScene: SKScene {
     
+    private var lastUpdateTime : TimeInterval = 0
+    private var dt: TimeInterval = 0.0
+    
     let fishIndex: UInt32 = arc4random_uniform(2) + 1
+    private var isExitingScene = false
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
     private let highScoreNode = SKLabelNode(fontNamed: "Damascus")
@@ -30,6 +34,7 @@ class WaterScene: SKScene {
         
         //Creating init background
         backgroundDarkNode = SKSpriteNode(imageNamed: "waterBackgroundDark")
+        backgroundDarkNode.name = "backgroundDarkNode"
         backgroundDarkNode.size = size
         backgroundDarkNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         backgroundDarkNode.zPosition = zPositionFish + 1
@@ -87,8 +92,6 @@ class WaterScene: SKScene {
     }
     
     
-    private var lastUpdateTime : TimeInterval = 0
-    private var dt: TimeInterval = 0.0
 
     override func update(_ currentTime: TimeInterval) {
         
@@ -103,26 +106,34 @@ class WaterScene: SKScene {
         dt = currentTime - self.lastUpdateTime
         
         if currentTime > 2 {
-            let disappearAction = SKAction.fadeOut(withDuration: 3)
+            let disappearAction = SKAction.fadeOut(withDuration: 2)
             backgroundDarkNode.run(disappearAction)
             
             let lightAppearAction = SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.fadeIn(withDuration: 2)])
             backgroundLightNode.run(lightAppearAction)
         }
         
+        if isExitingScene {
+            let appearAction = SKAction.sequence([SKAction.fadeIn(withDuration: 0.05), SKAction.wait(forDuration: 0.1)])
+            backgroundDarkNode.run(appearAction, completion: { [weak self] in
+                self?.switchToTheGameScene()
+            })
+        }
     }
     
     
     
-    
-    
-    ///Handles swipe left (back) behaviour.
+    ///Handles swipe up behaviour, by changing `isExitingScene` to true.
     @objc private func handleSwipeDown(byReactingTo: UISwipeGestureRecognizer){
-        
+        isExitingScene = true
+    }
+    
+    ///Moves the current scene out of frame.
+    private func switchToTheGameScene() {
         let transition = SKTransition.push(with: .down, duration: 0.5)
-        let gameWorldSize = CGSize.init(width: size.width * xScaleForSceneSize, height: size.height)
-        let gameScene = GameScene(size: gameWorldSize)
-        gameScene.scaleMode = scaleMode
-        view?.presentScene(gameScene, transition: transition)
+        let gameSceneSize = CGSize.init(width: self.size.width * xScaleForSceneSize, height: self.size.height)
+        let gameScene = GameScene(size: gameSceneSize)
+        gameScene.scaleMode = self.scaleMode
+        self.view?.presentScene(gameScene, transition: transition)
     }
 }
