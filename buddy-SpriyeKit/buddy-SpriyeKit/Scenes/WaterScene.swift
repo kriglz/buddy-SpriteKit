@@ -22,6 +22,8 @@ class WaterScene: SKScene {
     private var backgroundDarkNode: SKSpriteNode!
     private var backgroundLightNode: SKSpriteNode!
     
+    private var allFish = [FishNode]()
+    
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
         let swipeHandler = #selector(handleSwipeDown(byReactingTo:))
@@ -70,8 +72,14 @@ class WaterScene: SKScene {
             
             fish.swim(randFishNumber: fishIndex)
             fish.moveAround(in: size)
+            
+            allFish.append(fish)
+        }
+        
+        for fish in allFish {
             addChild(fish)
         }
+        
     
         //Adds bubbles to the background.
         if let emitter = emitter {
