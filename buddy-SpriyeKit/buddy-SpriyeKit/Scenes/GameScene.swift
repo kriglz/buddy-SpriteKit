@@ -34,12 +34,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var fishIndex: UInt32 = 0
     
     override func didMove(to view: SKView) {
+        
         //Adds swipe handler to the scene.
         let swipeHandler = #selector(handleSwipeUp(byReactingTo:))
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
         swipeRecognizer.direction = .up
         self.view?.addGestureRecognizer(swipeRecognizer)
     }
+    
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -67,7 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Setting up fish.
         for _ in 1...3 {
-            fishIndex = arc4random_uniform(2)+1
+            fishIndex = arc4random_uniform(2) + 1
             spawnFish()
         }
         
@@ -100,6 +102,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     ///Handles swipe left (back) behaviour.
     @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
+        guard (view?.scene?.frame.width)! == size.width else {
+            return
+        }
         
         controlButtons.isHidden = true
         
@@ -108,6 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let waterScene = WaterScene(size: waterSceneSize)
         waterScene.scaleMode = scaleMode
         view?.presentScene(waterScene, transition: transition)
+    
     }
 
     
@@ -115,6 +121,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     ///Updates scene every 1/60 sec.
     override func update(_ currentTime: TimeInterval) {
+        
         //Called before each frame is rendered
         
         //Initialize _lastUpdateTime if it has not already been.

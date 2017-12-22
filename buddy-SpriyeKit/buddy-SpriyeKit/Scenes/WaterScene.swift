@@ -13,7 +13,7 @@ class WaterScene: SKScene {
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
     
-    let fishIndex: UInt32 = arc4random_uniform(2) + 1
+    var fishIndex: UInt32 = 0
     private var isExitingScene = false
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
@@ -61,6 +61,7 @@ class WaterScene: SKScene {
         //Loop to create 3 fish stack.
         for index in 0...2 {
             //Creating swimming fish.
+            fishIndex = arc4random_uniform(2) + 1
             let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
             fish.texture = SKTexture(imageNamed: "fish\(fishIndex)")
 
@@ -152,6 +153,7 @@ class WaterScene: SKScene {
     
     ///Moves the current scene out of frame.
     private func switchToTheGameScene() {
+        
         let transition = SKTransition.push(with: .down, duration: 0.5)
         let gameSceneSize = CGSize.init(width: self.size.width * xScaleForSceneSize, height: self.size.height)
         let gameScene = GameScene(size: gameSceneSize)
