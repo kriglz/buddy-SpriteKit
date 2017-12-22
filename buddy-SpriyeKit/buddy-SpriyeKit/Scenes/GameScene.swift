@@ -98,9 +98,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(controlButtons)
     }
 
-
     ///Handles swipe left (back) behaviour.
     @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
+        
+        controlButtons.isHidden = true
         
         let transition = SKTransition.push(with: .up, duration: 0.5)
         let waterSceneSize = CGSize.init(width: size.width / xScaleForSceneSize, height: size.height)

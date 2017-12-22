@@ -15,6 +15,8 @@ class WaterScene: SKScene {
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
     private let highScoreNode = SKLabelNode(fontNamed: "Damascus")
 
+    private var backgroundDarkNode: SKSpriteNode!
+    private var backgroundLightNode: SKSpriteNode!
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
@@ -25,6 +27,21 @@ class WaterScene: SKScene {
     }
     
     override func sceneDidLoad() {
+        
+        //Creating init background
+        backgroundDarkNode = SKSpriteNode(imageNamed: "waterBackgroundDark")
+        backgroundDarkNode.size = size
+        backgroundDarkNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        backgroundDarkNode.zPosition = zPositionFish + 1
+        addChild(backgroundDarkNode)
+        
+        //Creating background light
+        backgroundLightNode = SKSpriteNode(imageNamed: "waterBackgroundLight")
+        backgroundLightNode.size = size
+        backgroundLightNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        backgroundLightNode.alpha = 0
+        backgroundLightNode.zPosition = zPositionSky + 1
+        addChild(backgroundLightNode)
         
         //Creating background
         let backgroundNode = SKSpriteNode(imageNamed: "waterBackground")
@@ -68,6 +85,34 @@ class WaterScene: SKScene {
         waterGrass.zPosition = backgroundNode.zPosition + 1
         addChild(waterGrass)
     }
+    
+    
+    private var lastUpdateTime : TimeInterval = 0
+    private var dt: TimeInterval = 0.0
+
+    override func update(_ currentTime: TimeInterval) {
+        
+        //Called before each frame is rendered
+        
+        //Initialize _lastUpdateTime if it has not already been.
+        if (self.lastUpdateTime == 0) {
+            self.lastUpdateTime = currentTime
+        }
+        
+        //Calculate time since last update.
+        dt = currentTime - self.lastUpdateTime
+        
+        if currentTime > 2 {
+            let disappearAction = SKAction.fadeOut(withDuration: 3)
+            backgroundDarkNode.run(disappearAction)
+            
+            let lightAppearAction = SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.fadeIn(withDuration: 2)])
+            backgroundLightNode.run(lightAppearAction)
+        }
+        
+    }
+    
+    
     
     
     
