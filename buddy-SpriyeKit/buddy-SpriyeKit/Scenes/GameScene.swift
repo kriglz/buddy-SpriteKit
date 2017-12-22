@@ -95,13 +95,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-//        controlButtons.menuButtonAction = {
-//            let transition = SKTransition.moveIn(with: SKTransitionDirection.left , duration: 0.5)
-//            let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
-//            menuScene.scaleMode = self.scaleMode
-//            self.view?.presentScene(menuScene, transition: transition)
-//            self.controlButtons.menuButtonAction = nil
-//        }
         addChild(controlButtons)
     }
 
@@ -110,10 +103,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
         
         let transition = SKTransition.push(with: .up, duration: 0.5)
-        let menuSceneSize = CGSize.init(width: size.width / xScaleForSceneSize, height: size.height)
-        let menuScene = MenuScene(size: menuSceneSize)
-        menuScene.scaleMode = scaleMode
-        view?.presentScene(menuScene, transition: transition)
+        let waterSceneSize = CGSize.init(width: size.width / xScaleForSceneSize, height: size.height)
+        let waterScene = WaterScene(size: waterSceneSize)
+        waterScene.scaleMode = scaleMode
+        view?.presentScene(waterScene, transition: transition)
     }
 
     

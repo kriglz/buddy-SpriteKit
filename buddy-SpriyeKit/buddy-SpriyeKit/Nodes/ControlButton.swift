@@ -26,24 +26,6 @@ class ControlButtons: SKNode {
     ///Function for menu button.
     public var menuButtonAction: (() -> ())?
     
-//    ///Button to play at menu screen.
-//    private var menuPlayButton: SKSpriteNode!
-//    private let menuPlayButtonTexture = SKTexture(imageNamed: "buttonPlay")
-//    ///Defines if menu play button is pressed.
-//    private(set) var isMenuPlayButtonPressed = false
-//    ///Function for menu play button.
-//    public var menuPlayButtonAction: (() -> ())?
-    
-    
-//    public func setupPlay(size: CGSize){
-//        let buttonSize = CGSize(width: size.width / 2.3885, height: size.height / 9.2)
-//
-//        menuPlayButton = SKSpriteNode(texture: menuPlayButtonTexture)
-//        menuPlayButton.size = buttonSize
-//        menuPlayButton.zPosition = zPositionControl
-//        menuPlayButton.alpha = alphaDefault
-//        addChild(menuPlayButton)
-//    }
     
     public func setup(size: CGSize){
         let buttonSize = CGSize(width: size.width / 17.74, height: size.height / 10.51)
@@ -60,13 +42,6 @@ class ControlButtons: SKNode {
         goRightButton.zPosition = zPositionControl
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
-        
-        
-//        menuButton = SKSpriteNode(texture: menuButtonTexture)
-//        menuButton.size = CGSize(width: buttonSize.width / 2, height: buttonSize.height / 2)
-//        menuButton.zPosition = zPositionControl
-//        menuButton.alpha = alphaDefault
-//        addChild(menuButton)
     }
     
     
@@ -86,49 +61,21 @@ class ControlButtons: SKNode {
         pointRight.x += goRightButton.frame.origin.x + goRightButton.size.width / 2
         pointRight.y += goRightButton.frame.origin.y + goRightButton.size.height / 2
         
-//        ///Point which is touch point converted to menu button coordinate system.
-//        var pointMenu = menuButton.convert(point, from: parent!)
-//        //Adding button origin and half size to make point and button coordinate systems completely equal.
-//
-//        let pointMenuFrame = CGRect(x: menuButton.frame.origin.x - menuButton.size.width / 4,
-//                                    y: menuButton.frame.origin.y - menuButton.size.height / 4,
-//                                    width: menuButton.size.width * 1.5,
-//                                    height: menuButton.size.height * 1.5)
-//
-//        pointMenu.x += pointMenuFrame.origin.x + pointMenuFrame.size.width / 2
-//        pointMenu.y += pointMenuFrame.origin.y + pointMenuFrame.size.height / 2
         
         //Checks if either one button was touched.
         //Only one button can be touched at a time.
-//        if pointMenuFrame.contains(pointMenu){ //Using 1/4 bigger frame for menu point to register.
-//            menuButton.alpha = alphaPressed
-//            goRightButton.alpha = alphaDefault
-//            goLeftButton.alpha = alphaDefault
-//
-//            isMenuButtonPressed = true
-//
-//        } else
             if goLeftButton.frame.contains(pointLeft) {
             direction = .left
             goLeftButton.alpha = alphaPressed
             goRightButton.alpha = alphaDefault
-//            menuButton.alpha = alphaDefault
-//            isMenuButtonPressed = false
-
         } else if goRightButton.frame.contains(pointRight) {
             direction = .right
             goRightButton.alpha = alphaPressed
             goLeftButton.alpha = alphaDefault
-//            menuButton.alpha = alphaDefault
-//            isMenuButtonPressed = false
-
         } else {
             direction = .none
             goRightButton.alpha = alphaDefault
             goLeftButton.alpha = alphaDefault
-//            menuButton.alpha = alphaDefault
-//            isMenuButtonPressed = false
-
         }
     }
     
@@ -150,12 +97,6 @@ class ControlButtons: SKNode {
         direction = .none
         goRightButton.alpha = alphaDefault
         goLeftButton.alpha = alphaDefault
-//        menuButton.alpha = alphaDefault
-        
-//        if isMenuButtonPressed && menuButtonAction != nil {
-//            menuButtonAction!()
-//        }
-        
     }
     
     public func centerOnPoint(point: CGPoint, with margin: CGFloat, in size: CGSize){
@@ -164,7 +105,6 @@ class ControlButtons: SKNode {
 
         goLeftButton.position = CGPoint(x: point.x - marginX - goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
-//        menuButton.position = CGPoint(x: point.x + marginX + 1.5 * menuButton.size.width, y: size.height - marginY - menuButton.size.height / 2)
     }
 }
 

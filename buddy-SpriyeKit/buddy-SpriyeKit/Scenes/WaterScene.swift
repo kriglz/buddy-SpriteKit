@@ -1,5 +1,5 @@
 //
-//  MenuScene.swift
+//  WaterScene.swift
 //  buddy-SpriyeKit
 //
 //  Created by Kristina Gelzinyte on 12/20/17.
@@ -8,9 +8,8 @@
 
 import SpriteKit
 
-class MenuScene: SKScene {
+class WaterScene: SKScene {
     
-//    private let playButton = MenuButtons()
     let fishIndex: UInt32 = arc4random_uniform(2) + 1
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
@@ -28,7 +27,7 @@ class MenuScene: SKScene {
     override func sceneDidLoad() {
         
         //Creating background
-        let backgroundNode = SKSpriteNode(imageNamed: "menuBackground")
+        let backgroundNode = SKSpriteNode(imageNamed: "waterBackground")
         backgroundNode.size = size
         backgroundNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         backgroundNode.zPosition = zPositionSky
@@ -51,31 +50,6 @@ class MenuScene: SKScene {
             fish.moveAround(in: size)
             addChild(fish)
         }
-        
-        //Sets up play button.
-        
-//        playButton.setup(size: size)
-//        playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
-//        playButton.menuPlayButtonAction = {
-//            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
-//            let playScene = PlayScene(size: CGSize(width: self.size.width * xScaleForSceneSize, height: self.size.height))
-//            playScene.scaleMode = self.scaleMode
-//            self.view?.presentScene(playScene, transition: transition)
-//            self.playButton.menuPlayButtonAction = nil
-//        }
-//        addChild(playButton)
-    
-        //Sets up high-score node.
-//        let defaults = UserDefaults.standard
-//        let highScore = defaults.integer(forKey: ScoreKey)
-//        highScoreNode.text = "HIGH SCORE - 20"
-//        highScoreNode.fontSize = 12
-//        highScoreNode.verticalAlignmentMode = .center
-//        highScoreNode.horizontalAlignmentMode = .center
-//        highScoreNode.position = CGPoint(x: size.width / 2, y: playButton.position.y / 3)
-//        highScoreNode.zPosition = zPositionControl
-//        highScoreNode.alpha = alphaDefault
-//        addChild(highScoreNode)
     
         //Adds bubbles to the background.
         if let emitter = emitter {
@@ -88,37 +62,13 @@ class MenuScene: SKScene {
             addChild(emitter)
         }
         
-        let menuGrass = SKSpriteNode(texture: SKTexture(imageNamed: "menuBackgroundGrass1"))
-        menuGrass.size = size
-        menuGrass.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        menuGrass.zPosition = backgroundNode.zPosition + 1
-        addChild(menuGrass)
+        let waterGrass = SKSpriteNode(texture: SKTexture(imageNamed: "waterBackgroundGrass"))
+        waterGrass.size = size
+        waterGrass.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        waterGrass.zPosition = backgroundNode.zPosition + 1
+        addChild(waterGrass)
     }
     
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touchPoint = touches.first?.location(in: self)
-//        
-//        if let touchPoint = touchPoint {
-////            playButton.touchBegan(at: touchPoint)
-//        }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touchPoint = touches.first?.location(in: self)
-//        
-//        if let touchPoint = touchPoint {
-////            playButton.touchMoved(to: touchPoint)
-//        }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touchPoint = touches.first?.location(in: self)
-//
-//        if let touchPoint = touchPoint {
-////            playButton.touchEnded(at: touchPoint)
-//        }
-//    }
     
     
     ///Handles swipe left (back) behaviour.
