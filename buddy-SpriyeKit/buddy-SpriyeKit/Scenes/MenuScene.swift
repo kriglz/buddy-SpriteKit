@@ -58,10 +58,10 @@ class MenuScene: SKScene {
         playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
         playButton.menuPlayButtonAction = {
             let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
-//            let playScene = PlayScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
-//            playScene.scaleMode = self.scaleMode
-//            self.view?.presentScene(playScene, transition: transition)
-//            self.playButton.menuPlayButtonAction = nil
+            let playScene = PlayScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
+            playScene.scaleMode = self.scaleMode
+            self.view?.presentScene(playScene, transition: transition)
+            self.playButton.menuPlayButtonAction = nil
         }
         addChild(playButton)
         
