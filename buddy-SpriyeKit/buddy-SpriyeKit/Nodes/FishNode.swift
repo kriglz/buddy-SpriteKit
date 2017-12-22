@@ -104,6 +104,14 @@ class FishNode: SKSpriteNode {
         run(sequenceOfAnimations)
     }
     
+    ///Adds move to the fish position.
+    public func moveFish(by distance: CGPoint){
+        
+        self.position.x += distance.x
+        self.position.y += distance.y
+
+    }
+    
     ///Adds swim-move action to the fish.
     public func moveAround(in size: CGSize){
         

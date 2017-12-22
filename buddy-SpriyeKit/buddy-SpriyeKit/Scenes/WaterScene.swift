@@ -71,7 +71,6 @@ class WaterScene: SKScene {
             fish.physicsBody = nil
             
             fish.swim(randFishNumber: fishIndex)
-            fish.moveAround(in: size)
             
             allFish.append(fish)
         }
@@ -100,10 +99,8 @@ class WaterScene: SKScene {
     }
     
     
-
+    //Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        
-        //Called before each frame is rendered
         
         //Initialize _lastUpdateTime if it has not already been.
         if (self.lastUpdateTime == 0) {
@@ -113,6 +110,7 @@ class WaterScene: SKScene {
         //Calculate time since last update.
         dt = currentTime - self.lastUpdateTime
         
+        //Scene emerges from behind the dark water background node.
         if currentTime > 2 {
             let disappearAction = SKAction.fadeOut(withDuration: 2)
             backgroundDarkNode.run(disappearAction)
@@ -121,12 +119,28 @@ class WaterScene: SKScene {
             backgroundLightNode.run(lightAppearAction)
         }
         
+        //Scene disappears underneath the dark water node before transition.
         if isExitingScene {
             let appearAction = SKAction.sequence([SKAction.fadeIn(withDuration: 0.05), SKAction.wait(forDuration: 0.1)])
             backgroundDarkNode.run(appearAction, completion: { [weak self] in
                 self?.switchToTheGameScene()
             })
         }
+        
+        
+        //Fish movement.
+        
+        for fish in allFish {
+            
+            let point = CGPoint(x: 1.0, y: 1.0)
+            
+            
+            fish.moveFish(by: point)
+        }
+        
+
+        
+        
     }
     
     
