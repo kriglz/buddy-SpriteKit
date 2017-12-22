@@ -10,7 +10,7 @@ import SpriteKit
 
 class MenuScene: SKScene {
     
-    private let playButton = MenuButtons()
+//    private let playButton = MenuButtons()
     let fishIndex: UInt32 = arc4random_uniform(2) + 1
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
@@ -19,9 +19,9 @@ class MenuScene: SKScene {
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
-        let swipeHandler = #selector(handleSwipeBack(byReactingTo:))
+        let swipeHandler = #selector(handleSwipeDown(byReactingTo:))
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
-        swipeRecognizer.direction = .left
+        swipeRecognizer.direction = .down
         self.view?.addGestureRecognizer(swipeRecognizer)
     }
     
@@ -54,29 +54,29 @@ class MenuScene: SKScene {
         
         //Sets up play button.
         
-        playButton.setup(size: size)
-        playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
-        playButton.menuPlayButtonAction = {
-            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
-            let playScene = PlayScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
-            playScene.scaleMode = self.scaleMode
-            self.view?.presentScene(playScene, transition: transition)
-            self.playButton.menuPlayButtonAction = nil
-        }
-        addChild(playButton)
-        
+//        playButton.setup(size: size)
+//        playButton.position = CGPoint(x: size.width / 2, y: size.height / 6)
+//        playButton.menuPlayButtonAction = {
+//            let transition = SKTransition.reveal(with: SKTransitionDirection.right , duration: 0.5)
+//            let playScene = PlayScene(size: CGSize(width: self.size.width * xScaleForSceneSize, height: self.size.height))
+//            playScene.scaleMode = self.scaleMode
+//            self.view?.presentScene(playScene, transition: transition)
+//            self.playButton.menuPlayButtonAction = nil
+//        }
+//        addChild(playButton)
+    
         //Sets up high-score node.
 //        let defaults = UserDefaults.standard
 //        let highScore = defaults.integer(forKey: ScoreKey)
-        highScoreNode.text = "HIGH SCORE - 20"
-        highScoreNode.fontSize = 12
-        highScoreNode.verticalAlignmentMode = .center
-        highScoreNode.horizontalAlignmentMode = .center
-        highScoreNode.position = CGPoint(x: size.width / 2, y: playButton.position.y / 3)
-        highScoreNode.zPosition = zPositionControl
-        highScoreNode.alpha = alphaDefault
-        addChild(highScoreNode)
-        
+//        highScoreNode.text = "HIGH SCORE - 20"
+//        highScoreNode.fontSize = 12
+//        highScoreNode.verticalAlignmentMode = .center
+//        highScoreNode.horizontalAlignmentMode = .center
+//        highScoreNode.position = CGPoint(x: size.width / 2, y: playButton.position.y / 3)
+//        highScoreNode.zPosition = zPositionControl
+//        highScoreNode.alpha = alphaDefault
+//        addChild(highScoreNode)
+    
         //Adds bubbles to the background.
         if let emitter = emitter {
             emitter.position = CGPoint(x: self.size.width / 2, y: 0)
@@ -96,35 +96,35 @@ class MenuScene: SKScene {
     }
     
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touchPoint = touches.first?.location(in: self)
-        
-        if let touchPoint = touchPoint {
-            playButton.touchBegan(at: touchPoint)
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touchPoint = touches.first?.location(in: self)
-        
-        if let touchPoint = touchPoint {
-            playButton.touchMoved(to: touchPoint)
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touchPoint = touches.first?.location(in: self)
-
-        if let touchPoint = touchPoint {
-            playButton.touchEnded(at: touchPoint)
-        }
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touchPoint = touches.first?.location(in: self)
+//        
+//        if let touchPoint = touchPoint {
+////            playButton.touchBegan(at: touchPoint)
+//        }
+//    }
+//    
+//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touchPoint = touches.first?.location(in: self)
+//        
+//        if let touchPoint = touchPoint {
+////            playButton.touchMoved(to: touchPoint)
+//        }
+//    }
+//    
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touchPoint = touches.first?.location(in: self)
+//
+//        if let touchPoint = touchPoint {
+////            playButton.touchEnded(at: touchPoint)
+//        }
+//    }
     
     
     ///Handles swipe left (back) behaviour.
-    @objc private func handleSwipeBack(byReactingTo: UISwipeGestureRecognizer){
+    @objc private func handleSwipeDown(byReactingTo: UISwipeGestureRecognizer){
         
-        let transition = SKTransition.reveal(with: .left, duration: 0.5)
+        let transition = SKTransition.push(with: .down, duration: 0.5)
         let gameWorldSize = CGSize.init(width: size.width * xScaleForSceneSize, height: size.height)
         let gameScene = GameScene(size: gameWorldSize)
         gameScene.scaleMode = scaleMode

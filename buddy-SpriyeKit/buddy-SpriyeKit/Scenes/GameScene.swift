@@ -33,7 +33,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private var fishIndex: UInt32 = 0
     
-    
+    override func didMove(to view: SKView) {
+        //Adds swipe handler to the scene.
+        let swipeHandler = #selector(handleSwipeUp(byReactingTo:))
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
+        swipeRecognizer.direction = .up
+        self.view?.addGestureRecognizer(swipeRecognizer)
+    }
     
     override func sceneDidLoad() {
         self.lastUpdateTime = 0
@@ -89,18 +95,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
         controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-        controlButtons.menuButtonAction = {
-            let transition = SKTransition.moveIn(with: SKTransitionDirection.left , duration: 0.5)
-            let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
-            menuScene.scaleMode = self.scaleMode
-            self.view?.presentScene(menuScene, transition: transition)
-            self.controlButtons.menuButtonAction = nil
-        }
+//        controlButtons.menuButtonAction = {
+//            let transition = SKTransition.moveIn(with: SKTransitionDirection.left , duration: 0.5)
+//            let menuScene = MenuScene(size: CGSize(width: self.size.width / xScaleForSceneSize, height: self.size.height))
+//            menuScene.scaleMode = self.scaleMode
+//            self.view?.presentScene(menuScene, transition: transition)
+//            self.controlButtons.menuButtonAction = nil
+//        }
         addChild(controlButtons)
     }
 
 
-    
+    ///Handles swipe left (back) behaviour.
+    @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
+        
+        let transition = SKTransition.push(with: .up, duration: 0.5)
+        let menuSceneSize = CGSize.init(width: size.width / xScaleForSceneSize, height: size.height)
+        let menuScene = MenuScene(size: menuSceneSize)
+        menuScene.scaleMode = scaleMode
+        view?.presentScene(menuScene, transition: transition)
+    }
+
     
     
     
@@ -207,8 +222,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             controlButtons.touchBegan(at: touchPoint)
             
-            if !controlButtons.isMenuButtonPressed {
-                
+//            if !controlButtons.isMenuButtonPressed {
+            
                 switch controlButtons.direction {
                 case .left:
                     buddy.walk( .left)
@@ -219,7 +234,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .none:
                     buddy.walk( .none)
                 }
-            }
+//            }
         }
     }
 
@@ -231,7 +246,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             controlButtons.touchMoved(to: touchPoint)
             
-            if !controlButtons.isMenuButtonPressed {
+//            if !controlButtons.isMenuButtonPressed {
                 switch controlButtons.direction {
                 case .left:
                     buddy.walk( .left)
@@ -242,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 case .none:
                     buddy.walk( .none)
                 }
-            }
+//            }
         }
     }
     

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		893B55CD1FE59FB600490D35 /* BackgroundCloudsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */; };
-		8945BF8F1FECB3E90059FFF8 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8945BF8E1FECB3E90059FFF8 /* PlayScene.swift */; };
 		8946D1071FD8F65A0049084F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D1061FD8F65A0049084F /* AppDelegate.swift */; };
 		8946D10D1FD8F65A0049084F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10C1FD8F65A0049084F /* GameScene.swift */; };
 		8946D10F1FD8F65A0049084F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D10E1FD8F65A0049084F /* GameViewController.swift */; };
@@ -32,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCloudsNode.swift; sourceTree = "<group>"; };
-		8945BF8E1FECB3E90059FFF8 /* PlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 		8946D1031FD8F65A0049084F /* buddy-SpriyeKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "buddy-SpriyeKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8946D1061FD8F65A0049084F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8946D10C1FD8F65A0049084F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 		8946D11E1FD8F6690049084F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				8945BF8E1FECB3E90059FFF8 /* PlayScene.swift */,
 				89E0C2DE1FEAF7E00070AC3B /* MenuScene.swift */,
 				8946D10C1FD8F65A0049084F /* GameScene.swift */,
 			);
@@ -221,7 +218,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				898CE30F1FDA1888001CF189 /* Constants.swift in Sources */,
-				8945BF8F1FECB3E90059FFF8 /* PlayScene.swift in Sources */,
 				89EC73121FE9CD8500014A65 /* FishNode.swift in Sources */,
 				898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */,
 				89D1208F1FE342230065B588 /* ParticleNode.swift in Sources */,
