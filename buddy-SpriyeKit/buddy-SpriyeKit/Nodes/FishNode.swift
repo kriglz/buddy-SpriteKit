@@ -107,8 +107,15 @@ class FishNode: SKSpriteNode {
     ///Adds move to the fish position.
     public func moveFish(by distance: CGPoint){
 
-        zRotation = -1
+        let angle = atan(distance.y / distance.x)
         
+        if distance.x < 0 {
+            xScale = 1
+        } else {
+            xScale = -1
+        }
+                
+        zRotation = angle
         self.position.x += distance.x
         self.position.y += distance.y
     }

@@ -133,8 +133,9 @@ class WaterScene: SKScene {
         
         for fish in allFish {
             
-            let point = CGPoint(x: 1.0, y: 1.0)
             
+            let point = CGPoint(x: -1, y: 1)
+
             
             fish.moveFish(by: point)
         }
