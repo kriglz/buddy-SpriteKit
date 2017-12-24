@@ -12,7 +12,7 @@ let WorldCategory: UInt32 = 0x1 << 1
 let BuddyCategory: UInt32 = 0x1 << 2
 let FloorCategory: UInt32 = 0x1 << 3
 let FishCategory: UInt32 = 0x1 << 4
-
+let FishFoodCategory: UInt32 = 0x1 << 5
 
 let xScaleForSceneSize: CGFloat = 3.0
 

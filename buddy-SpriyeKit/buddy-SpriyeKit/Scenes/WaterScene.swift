@@ -23,6 +23,9 @@ class WaterScene: SKScene {
     private var backgroundDarkNode: SKSpriteNode!
     private var backgroundLightNode: SKSpriteNode!
     
+    
+    private var foodNode = FoodNode()
+    
     private var allFish = [FishNode]()
     
     override func didMove(to view: SKView) {
@@ -60,10 +63,16 @@ class WaterScene: SKScene {
         
         
         //Loop to create 3 fish initially in the scene.
-        for index in 0...2 {
+        for _ in 0...2 {
             spawnFish()
         }
         
+        //Loop to create 3 fish food initially in the scene.
+        for _ in 0...2 {
+            spawnFishFood()
+        }
+        
+
         
     
         //Adds bubbles to the background.
@@ -181,5 +190,16 @@ class WaterScene: SKScene {
         
         allFish.append(fish)
         addChild(fish)
+    }
+    
+    private func spawnFishFood(){
+
+        let food = foodNode.newInstance(size: size)
+        food.position = CGPoint(
+            x: CGFloat(arc4random_uniform(UInt32(size.width))),
+            y: size.height - 10.0)
+        
+        food.physicsBody?.affectedByGravity = false
+        addChild(food)
     }
 }
