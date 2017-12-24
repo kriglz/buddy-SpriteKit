@@ -25,6 +25,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     
     
     private var foodNode = FoodNode()
+    private var isFoodReleased = false
+    
     
     private var allFish = [FishNode]()
     
@@ -137,6 +139,10 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         }
         
         
+        if childNode(withName: "fishFood") == nil && isFoodReleased {
+            isFoodReleased = false
+        }
+        
     }
     
     
@@ -148,6 +154,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Loop to create 3 fish food after tap.
         for _ in 0...2 {
             spawnFishFood()
+            isFoodReleased = true
         }
     }
     
@@ -206,6 +213,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         
         food.fallingInTheWater()
         food.disintegrating()
+        
+        food.name = "fishFood"
         
         addChild(food)
     }
