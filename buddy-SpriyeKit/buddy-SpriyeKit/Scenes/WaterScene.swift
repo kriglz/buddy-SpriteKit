@@ -34,6 +34,12 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
         swipeRecognizer.direction = .down
         self.view?.addGestureRecognizer(swipeRecognizer)
+        
+        //Adds tap handler to the scene.
+        let tapHandler = #selector(handleTapGesture(byReactingTo:))
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: tapHandler)
+        tapRecognizer.numberOfTapsRequired = 1
+        self.view?.addGestureRecognizer(tapRecognizer)
     }
     
     override func sceneDidLoad() {
@@ -67,10 +73,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
             spawnFish()
         }
         
-        //Loop to create 3 fish food initially in the scene.
-        for _ in 0...20 {
-            spawnFishFood()
-        }
+
         
 
         
@@ -135,32 +138,19 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         }
         
         
-        //Fish movement.
-        
-//        for index in 0..<allFish.count {
-//            
-//            let distanceToDestination = sqrt(pow((allFish[index].0.position.x - allFish[index].1.x), 2) + pow((allFish[index].0.position.y - allFish[index].1.y), 2))
-//            
-//            //Sets the helicopter speed.
-//            if distanceToDestination > 6 {
-//                let directionX = allFish[index].1.x - allFish[index].0.position.x
-//                let directionY = allFish[index].1.y - allFish[index].0.position.y
-//                
-//                let deltaX = directionX * 0.01
-//                let deltaY = directionY * 0.01
-//                
-//                let delta = CGPoint(x: deltaX, y: deltaY)
-//                
-//                allFish[index].0.moveFish(by: delta)
-//                
-//            } else {
-//                allFish[index].1 = generateFishDestinationPoint(for: allFish[index].0.position)
-//               
-//            }
-//        }
     }
     
     
+    
+    
+    
+    ///Handles tap gesture.
+    @objc private func handleTapGesture(byReactingTo: UISwipeGestureRecognizer){
+        //Loop to create 3 fish food after tap.
+        for _ in 0...2 {
+            spawnFishFood()
+        }
+    }
     
     ///Handles swipe up behaviour, by changing `isExitingScene` to true.
     @objc private func handleSwipeDown(byReactingTo: UISwipeGestureRecognizer){
@@ -176,6 +166,11 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         gameScene.scaleMode = self.scaleMode
         self.view?.presentScene(gameScene, transition: transition)
     }
+    
+    
+    
+    
+    
     
     
     
@@ -215,6 +210,13 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(food)
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     ///Contact beginning delegate

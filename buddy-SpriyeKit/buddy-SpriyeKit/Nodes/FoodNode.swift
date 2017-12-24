@@ -37,7 +37,11 @@ class FoodNode: SKSpriteNode {
     }
     
     
-    ///MAkes food fall in the water.
+    
+    
+    
+    
+    ///Makes food fall in the water.
     public func fallingInTheWater(){
         
         let scaleConstant = CGFloat(drand48()) // Bigger - faster, and smaller dx
