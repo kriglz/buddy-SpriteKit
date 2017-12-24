@@ -14,6 +14,7 @@ class WaterScene: SKScene {
     private var dt: TimeInterval = 0.0
     
     var fishIndex: UInt32 = 0
+    
     private var isExitingScene = false
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
@@ -58,27 +59,11 @@ class WaterScene: SKScene {
         addChild(backgroundNode)
         
         
-        //Loop to create 3 fish stack.
+        //Loop to create 3 fish initially in the scene.
         for index in 0...2 {
-            //Creating swimming fish.
-            fishIndex = arc4random_uniform(2) + 1
-            let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
-            fish.texture = SKTexture(imageNamed: "fish\(fishIndex)")
-
-            fish.size.width *= 3
-            let topMargin = 3 * size.height / 4
-            fish.position = CGPoint(x: 2 * size.width / 3 - fish.size.width / 2,
-                                    y: topMargin * ( 1 - CGFloat(index) / 4))
-            fish.physicsBody = nil
-            
-            fish.swim(randFishNumber: fishIndex)
-            
-            allFish.append(fish)
+            spawnFish()
         }
         
-        for fish in allFish {
-            addChild(fish)
-        }
         
     
         //Adds bubbles to the background.
@@ -98,6 +83,9 @@ class WaterScene: SKScene {
         waterGrass.zPosition = backgroundNode.zPosition + 1
         addChild(waterGrass)
     }
+    
+   
+    
     
     
     //Called before each frame is rendered
@@ -131,18 +119,27 @@ class WaterScene: SKScene {
         
         //Fish movement.
         
-        for fish in allFish {
-            
-            
-            let point = CGPoint(x: -1, y: 1)
-
-            
-            fish.moveFish(by: point)
-        }
-        
-
-        
-        
+//        for index in 0..<allFish.count {
+//            
+//            let distanceToDestination = sqrt(pow((allFish[index].0.position.x - allFish[index].1.x), 2) + pow((allFish[index].0.position.y - allFish[index].1.y), 2))
+//            
+//            //Sets the helicopter speed.
+//            if distanceToDestination > 6 {
+//                let directionX = allFish[index].1.x - allFish[index].0.position.x
+//                let directionY = allFish[index].1.y - allFish[index].0.position.y
+//                
+//                let deltaX = directionX * 0.01
+//                let deltaY = directionY * 0.01
+//                
+//                let delta = CGPoint(x: deltaX, y: deltaY)
+//                
+//                allFish[index].0.moveFish(by: delta)
+//                
+//            } else {
+//                allFish[index].1 = generateFishDestinationPoint(for: allFish[index].0.position)
+//               
+//            }
+//        }
     }
     
     
@@ -160,5 +157,29 @@ class WaterScene: SKScene {
         let gameScene = GameScene(size: gameSceneSize)
         gameScene.scaleMode = self.scaleMode
         self.view?.presentScene(gameScene, transition: transition)
+    }
+    
+    
+    
+    ///creates a new fish
+    private func spawnFish(){
+        //Creating swimming fish.
+        fishIndex = arc4random_uniform(2) + 1
+        
+        let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
+        fish.size.width *= 3
+        fish.physicsBody = nil
+
+        fish.zPosition += CGFloat(drand48())
+        
+        let margin = size.height / 10
+        fish.position = CGPoint(x: CGFloat(arc4random_uniform(UInt32( size.width))),
+                                y: margin + CGFloat(arc4random_uniform( UInt32( 8 * size.height / 10))))
+        
+        fish.swim(randFishNumber: fishIndex)
+        fish.moveAround(in: size)
+        
+        allFish.append(fish)
+        addChild(fish)
     }
 }

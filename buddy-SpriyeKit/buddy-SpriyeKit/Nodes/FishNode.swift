@@ -22,7 +22,6 @@ class FishNode: SKSpriteNode {
         SKTexture(imageNamed: "fishswing32")
     ]
     
-//    var randFishNumber = arc4random_uniform(2) + 1
     private let fishScaleConstant = CGFloat(drand48())
     
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
@@ -123,17 +122,17 @@ class FishNode: SKSpriteNode {
     ///Adds swim-move action to the fish.
     public func moveAround(in size: CGSize){
         
-        let deltaX = size.width / 9
-        let duration = 2.0 + Double(arc4random_uniform(6))
+        let deltaX = size.width / 4
+        let duration = 3.0 + Double(arc4random_uniform(6))
         
-        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y),
+        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y + CGFloat(drand48())),
                                                  duration: duration)
         
         let flipAnimation = SKAction.run { [weak self] in
             self?.xScale *= -1
         }
         
-        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + deltaX, y: self.position.y),
+        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + deltaX, y: self.position.y + CGFloat(drand48())),
                                                      duration: duration)
   
         let sequenceOfAnimations = SKAction.sequence([moveToPointAnimation,
