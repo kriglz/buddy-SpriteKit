@@ -26,7 +26,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     
     private var fishFoodNode = FoodNode()
     private var isFishFoodReleased = false
-    
+    private var fishSeekingTime: TimeInterval = 3.0
+
     
     private var allFish = [FishNode]()
     
@@ -141,30 +142,57 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Set `isFoodReleased` to false if there are no food left.
         if childNode(withName: "fishFood") == nil && isFishFoodReleased {
             isFishFoodReleased = false
+            
+            for fish in allFish {
+                fish.moveAround(in: size)
+            }
+            
         }
+        
+
+        
+        
         
         if isFishFoodReleased {
             removeFishMoveAroundAction()
             
+            fishSeekingTime += dt
+
+            if fishSeekingTime > 3 {
+
+                for fish in allFish {
+                    
+                    if fish.action(forKey: fishMoveAroundActionKey) == nil {
+                                                
+                        fish.removeAction(forKey: fishSeekFoodActionKey)
+                        fish.seekFood(node: childNode(withName: "fishFood") as! FoodNode)
+                        
+                    }
+                }
+                
+                fishSeekingTime = 0.0
+            }
         }
         
         
         
-        let foodArray = self["fishFood"]
-        print(foodArray.count)
+//        let foodArray = self["fishFood"]
+//        print(foodArray.count)
+//        
+//        print(enumerateChildNodes(withName: "fishFood", using: { (node, pointer) in
+//            print(node.position)
+//        }))
         
-        print(enumerateChildNodes(withName: "fishFood", using: { (node, pointer) in
-            print(node.position)
-        }))  // childNode(withName: "fishFood")?.position)
+        // childNode(withName: "fishFood")?.position)
 
-        
+        self.lastUpdateTime = currentTime
     }
     
     
     private func removeFishMoveAroundAction(){
         for fish in allFish {
             if fish.action(forKey: fishMoveAroundActionKey) != nil {
-                let delayAction = SKAction.wait(forDuration: Double(arc4random_uniform(6)) + 2)
+                let delayAction = SKAction.wait(forDuration: Double(arc4random_uniform(3)) + 1)
                 let removeAction = SKAction.run {
                     fish.removeAction(forKey: fishMoveAroundActionKey)
                 }
@@ -214,8 +242,9 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         
         let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
         fish.size.width *= 3
-        fish.physicsBody = nil
+        
 
+        
         fish.zPosition += CGFloat(drand48())
         
         let margin = size.height / 10
@@ -264,12 +293,12 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        //Checks if fish was hit.
-        if contact.bodyA.categoryBitMask == FishCategory || contact.bodyB.categoryBitMask == FishCategory {
-            
-            handleFishCollision(contact: contact)
-            return
-        }
+//        //Checks if fish was hit.
+//        if contact.bodyA.categoryBitMask == FishCategory || contact.bodyB.categoryBitMask == FishCategory {
+//
+//            handleFishCollision(contact: contact)
+//            return
+//        }
     }
     
     private func handleFishFoodCollision(contact: SKPhysicsContact) {
@@ -286,10 +315,9 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         
         switch otherBody.categoryBitMask {
          
-        case FishFoodCategory:
+        case FishCategory:
             foodBody.node?.removeFromParent()
 
-            
         case WorldCategory:
             foodBody.node?.removeFromParent()
             
@@ -301,25 +329,27 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     }
 
     
-    private func handleFishCollision(contact: SKPhysicsContact) {
-        var otherBody: SKPhysicsBody
-        var fishBody: SKPhysicsBody
-        
-        if contact.bodyA.categoryBitMask == FishCategory {
-            otherBody = contact.bodyB
-            fishBody = contact.bodyA
-        } else {
-            otherBody = contact.bodyA
-            fishBody = contact.bodyB
-        }
-        
-        switch otherBody.categoryBitMask {
-            
-        
-            
-        default:
-            break
-        }
-    }
+//    private func handleFishCollision(contact: SKPhysicsContact) {
+//        var otherBody: SKPhysicsBody
+//        var fishBody: SKPhysicsBody
+//
+//        if contact.bodyA.categoryBitMask == FishCategory {
+//            otherBody = contact.bodyB
+//            fishBody = contact.bodyA
+//        } else {
+//            otherBody = contact.bodyA
+//            fishBody = contact.bodyB
+//        }
+//
+//        switch otherBody.categoryBitMask {
+//
+//        case FishFoodCategory:
+//            otherBody.node?.removeFromParent()
+//            (fishBody.node as! FishNode).moveAround(in: size)
+//
+//        default:
+//            break
+//        }
+//    }
     
 }

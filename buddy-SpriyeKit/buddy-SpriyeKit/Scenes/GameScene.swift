@@ -432,9 +432,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func spawnFish(){
         let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
-        
-        fish.physicsBody = nil
-        
+                
         fish.swim(randFishNumber: fishIndex)
         fish.move()
         

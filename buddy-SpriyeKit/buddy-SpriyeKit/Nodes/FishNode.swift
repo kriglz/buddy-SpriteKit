@@ -25,7 +25,7 @@ class FishNode: SKSpriteNode {
     private let fishScaleConstant = CGFloat(drand48())
     
     
-    private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
+    public let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
     ///Creates new fish node.
     public func newInstance(size: CGSize, randFishNumber: UInt32) -> FishNode {
@@ -40,21 +40,30 @@ class FishNode: SKSpriteNode {
                 x: CGFloat(arc4random_uniform(UInt32(size.width))),
                 y: size.height / 4 - 120 * fishScaleConstant)
             fish.zPosition = zPositionFish
-
-            fish.physicsBody = SKPhysicsBody.init(
-                texture: SKTexture(imageNamed: "fishFly\(randFishNumber)"),
-                alphaThreshold: 0.1,
-                size: CGSize(width: fish.size.height, height: fish.size.width))
-            
-            fish.physicsBody?.categoryBitMask = FishCategory
-            fish.physicsBody?.contactTestBitMask = WorldCategory
-            fish.physicsBody?.collisionBitMask = 0
-            fish.physicsBody?.affectedByGravity = false
-            
         }
         
         return fish
     }
+    
+    
+    
+    
+    ///Adds physics body to the fish.
+    public func addPhysicsBody(for texture: SKTexture){
+        
+        physicsBody = SKPhysicsBody.init(
+            texture: texture,
+            alphaThreshold: 0.1,
+            size: size)
+        
+        physicsBody?.categoryBitMask = FishCategory
+        physicsBody?.contactTestBitMask = WorldCategory | FishFoodCategory
+        physicsBody?.collisionBitMask = 0
+        physicsBody?.affectedByGravity = false
+    }
+    
+    
+    
     
     ///Adds swim animation to the fish.
     public func swim(randFishNumber: UInt32){
@@ -68,10 +77,15 @@ class FishNode: SKSpriteNode {
             SKAction.animate(with: fishFrame, timePerFrame: Double(0.1 * (1 + 2 * fishScaleConstant))))
         
         run(swimAction)
+        
+        if let emitter = emitter {
+            emitter.position.x = 15.0 - self.size.width / 2
+            addChild(emitter)
+        }
     }
     
     
-    ///Adds swim-move action to the fish. For GAME scene.
+    ///Adds swim-move action to the fish. For GAME SCENE.
     public func move(){
         
         let scaleConstant = drand48()
@@ -106,11 +120,43 @@ class FishNode: SKSpriteNode {
     
 
     
+    ///Adds food following action to the fish.
+    public func seekFood(node: FoodNode){
+        
+        if action(forKey: fishSeekFoodActionKey) == nil {
+            
+            var newXScale: CGFloat = 1.0
+            if node.position.x > self.position.x {
+                newXScale = -1.0
+            }
+            
+            let flipAction = SKAction.run {
+                self.xScale = newXScale
+            }
+            
+            run(flipAction)
+            
+            let rotateAction = SKAction.rotate(toAngle: atan((node.position.y - self.position.y) / (node.position.x - self.position.x)), duration: 1 + Double(drand48()))
+            
+            let seekAction = SKAction.move(to: node.position, duration: 3 * (1 + Double(drand48())))
+            
+            let seekSequence = SKAction.group([rotateAction, seekAction])
+            
+            run(seekSequence, withKey: fishSeekFoodActionKey)
+            
+            
+            self.physicsBody = nil
+            addPhysicsBody(for: self.texture!)
+        }
+    }
+    
+    
     ///Adds swim-move action to the fish. For WATER SCENE.
     public func moveAround(in size: CGSize){
         
         let deltaX = size.width / 4
         let duration = 3.0 + Double(arc4random_uniform(6))
+        
         
         let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y + CGFloat(drand48())),
                                                  duration: duration)
@@ -127,15 +173,14 @@ class FishNode: SKSpriteNode {
                                                       moveBackToPointAnimation,
                                                       flipAnimation])
         
-        run(SKAction.repeatForever(sequenceOfAnimations), withKey: fishMoveAroundActionKey)
         
-        //Adds bubbles to the swimming fish.
-        if let emitter = emitter {
-            emitter.position.x = 15.0 - self.size.width / 2
-            addChild(emitter)
-        }
+        run(SKAction.repeatForever(sequenceOfAnimations), withKey: fishMoveAroundActionKey)
     }
     
+    
+    
+    
+    ///Makes fish jump.
     public func jump(randFishNumber: UInt32){
         
         var fishFrame = fishSwimFrame2
