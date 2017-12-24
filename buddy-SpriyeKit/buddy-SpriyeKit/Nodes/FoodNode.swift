@@ -27,7 +27,7 @@ class FoodNode: SKSpriteNode {
             food.physicsBody?.categoryBitMask = FishFoodCategory
             food.physicsBody?.contactTestBitMask = WorldCategory | FishCategory
 //            food.physicsBody?.collisionBitMask = 0
-//            food.physicsBody?.affectedByGravity = true
+            food.physicsBody?.affectedByGravity = false
         
             
         }
@@ -35,4 +35,21 @@ class FoodNode: SKSpriteNode {
         return food
         
     }
+    
+    public func fallingInTheWater(){
+        
+        let fallAction = SKAction.moveTo(y: position.y - 400.0, duration: 40.0)
+        
+        let pushLeftAction = SKAction.applyForce(CGVector(dx: -0.01, dy: 0), duration: 1)
+        let pushRightAction = SKAction.applyForce(CGVector(dx: 0.01, dy: 0), duration: 1)
+
+        let pushActions = SKAction.repeatForever(SKAction.sequence([pushLeftAction,
+                                                                   SKAction.wait(forDuration: 0.3),
+                                                                   pushRightAction,
+                                                                   SKAction.wait(forDuration: 0.3)]))
+        
+        let fallActionGroup = SKAction.group([fallAction, pushActions])
+        run(fallActionGroup)
+    }
+    
 }

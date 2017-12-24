@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class WaterScene: SKScene {
+class WaterScene: SKScene, SKPhysicsContactDelegate {
     
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
@@ -91,6 +91,15 @@ class WaterScene: SKScene {
         waterGrass.position = CGPoint(x: size.width / 2, y: size.height / 2)
         waterGrass.zPosition = backgroundNode.zPosition + 1
         addChild(waterGrass)
+        
+        
+        //Adding WorldFrame
+        let worldFrame = frame
+        
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
+        self.physicsBody?.categoryBitMask = WorldCategory
+        self.physicsWorld.contactDelegate = self
+//        self.physicsWorld.gravity.dy = -0.1
     }
     
    
@@ -199,7 +208,8 @@ class WaterScene: SKScene {
             x: CGFloat(arc4random_uniform(UInt32(size.width))),
             y: size.height - 10.0)
         
-        food.physicsBody?.affectedByGravity = false
+        food.fallingInTheWater()
+        
         addChild(food)
     }
 }
