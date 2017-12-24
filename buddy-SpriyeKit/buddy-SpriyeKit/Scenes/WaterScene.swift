@@ -102,7 +102,6 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsWorld.contactDelegate = self
-//        self.physicsWorld.gravity.dy = -0.1
     }
     
    
@@ -252,11 +251,12 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         switch otherBody.categoryBitMask {
          
         case FishFoodCategory:
-            foodBody.collisionBitMask = 0
-            
+//            foodBody.collisionBitMask = 0
+            foodBody.node?.removeFromParent()
+
             
         case WorldCategory:
-            foodBody.collisionBitMask = 0
+            foodBody.node?.removeFromParent()
             
         default:
             break
@@ -279,6 +279,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         }
         
         switch otherBody.categoryBitMask {
+            
+        
             
         default:
             break

@@ -26,7 +26,7 @@ class FoodNode: SKSpriteNode {
 
             food.physicsBody?.categoryBitMask = FishFoodCategory
             food.physicsBody?.contactTestBitMask = WorldCategory | FishCategory
-//            food.physicsBody?.collisionBitMask = 0
+            food.physicsBody?.collisionBitMask = 0
             food.physicsBody?.affectedByGravity = false
         
             
