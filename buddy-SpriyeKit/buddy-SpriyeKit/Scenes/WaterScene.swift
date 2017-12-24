@@ -97,8 +97,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         
         
         //Adding WorldFrame
-        let worldFrame = frame
-        
+        let worldFrame = CGRect(origin: CGPoint(x: frame.origin.x - 20, y: frame.origin.y - 20),
+                                size: CGSize(width: frame.size.width + 40, height: frame.size.height + 40))        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsWorld.contactDelegate = self
@@ -251,7 +251,6 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         switch otherBody.categoryBitMask {
          
         case FishFoodCategory:
-//            foodBody.collisionBitMask = 0
             foodBody.node?.removeFromParent()
 
             
