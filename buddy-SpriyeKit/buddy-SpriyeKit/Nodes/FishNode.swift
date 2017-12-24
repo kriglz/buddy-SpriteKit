@@ -24,6 +24,7 @@ class FishNode: SKSpriteNode {
     
     private let fishScaleConstant = CGFloat(drand48())
     
+    
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
     ///Creates new fish node.
@@ -70,7 +71,7 @@ class FishNode: SKSpriteNode {
     }
     
     
-    ///Adds swim-move action to the fish.
+    ///Adds swim-move action to the fish. For GAME scene.
     public func move(){
         
         let scaleConstant = drand48()
@@ -103,23 +104,9 @@ class FishNode: SKSpriteNode {
         run(sequenceOfAnimations)
     }
     
-    ///Adds move to the fish position.
-    public func moveFish(by distance: CGPoint){
 
-        let angle = atan(distance.y / distance.x)
-        
-        if distance.x < 0 {
-            xScale = 1
-        } else {
-            xScale = -1
-        }
-                
-        zRotation = angle
-        self.position.x += distance.x
-        self.position.y += distance.y
-    }
     
-    ///Adds swim-move action to the fish.
+    ///Adds swim-move action to the fish. For WATER SCENE.
     public func moveAround(in size: CGSize){
         
         let deltaX = size.width / 4
@@ -140,7 +127,7 @@ class FishNode: SKSpriteNode {
                                                       moveBackToPointAnimation,
                                                       flipAnimation])
         
-        run(SKAction.repeatForever(sequenceOfAnimations))
+        run(SKAction.repeatForever(sequenceOfAnimations), withKey: fishMoveAroundActionKey)
         
         //Adds bubbles to the swimming fish.
         if let emitter = emitter {

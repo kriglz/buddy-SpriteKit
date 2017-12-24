@@ -26,6 +26,7 @@ let yForMountains: CGFloat = 0.12
 let yForSky: CGFloat = 1.0 - yForGrass - yForMountains //0.40 now
 
 let cameraMoveNotificationKey = "cameraMoved"
+let fishMoveAroundActionKey = "fishMoveAroundActionKey"
 
 let horizonSpeedConstant = CGFloat(1.9)
 

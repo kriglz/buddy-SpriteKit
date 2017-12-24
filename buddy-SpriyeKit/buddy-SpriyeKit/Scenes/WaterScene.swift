@@ -24,8 +24,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     private var backgroundLightNode: SKSpriteNode!
     
     
-    private var foodNode = FoodNode()
-    private var isFoodReleased = false
+    private var fishFoodNode = FoodNode()
+    private var isFishFoodReleased = false
     
     
     private var allFish = [FishNode]()
@@ -138,23 +138,50 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
             })
         }
         
-        
-        if childNode(withName: "fishFood") == nil && isFoodReleased {
-            isFoodReleased = false
+        //Set `isFoodReleased` to false if there are no food left.
+        if childNode(withName: "fishFood") == nil && isFishFoodReleased {
+            isFishFoodReleased = false
         }
+        
+        if isFishFoodReleased {
+            removeFishMoveAroundAction()
+            
+        }
+        
+        
+        
+        let foodArray = self["fishFood"]
+        print(foodArray.count)
+        
+        print(enumerateChildNodes(withName: "fishFood", using: { (node, pointer) in
+            print(node.position)
+        }))  // childNode(withName: "fishFood")?.position)
+
         
     }
     
     
+    private func removeFishMoveAroundAction(){
+        for fish in allFish {
+            if fish.action(forKey: fishMoveAroundActionKey) != nil {
+                let delayAction = SKAction.wait(forDuration: Double(arc4random_uniform(6)) + 2)
+                let removeAction = SKAction.run {
+                    fish.removeAction(forKey: fishMoveAroundActionKey)
+                }
+                
+                run(SKAction.sequence([delayAction, removeAction]))
+            }
+        }
+    }
     
     
     
     ///Handles tap gesture.
     @objc private func handleTapGesture(byReactingTo: UISwipeGestureRecognizer){
         //Loop to create 3 fish food after tap.
-        for _ in 0...2 {
+        for _ in 0...1 {
             spawnFishFood()
-            isFoodReleased = true
+            isFishFoodReleased = true
         }
     }
     
@@ -206,7 +233,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     ///Adds fish food to the scene.
     private func spawnFishFood(){
 
-        let food = foodNode.newInstance(size: size)
+        let food = fishFoodNode.newInstance(size: size)
         food.position = CGPoint(
             x: 3 * size.width / 8 + CGFloat(arc4random_uniform(UInt32(size.width / 4))),
             y: size.height - 10.0)
