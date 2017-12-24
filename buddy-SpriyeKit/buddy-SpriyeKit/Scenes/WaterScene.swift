@@ -68,7 +68,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //Loop to create 3 fish food initially in the scene.
-        for _ in 0...2 {
+        for _ in 0...20 {
             spawnFishFood()
         }
         
@@ -201,15 +201,86 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         addChild(fish)
     }
     
+    
+    ///Adds fish food to the scene.
     private func spawnFishFood(){
 
         let food = foodNode.newInstance(size: size)
         food.position = CGPoint(
-            x: CGFloat(arc4random_uniform(UInt32(size.width))),
+            x: size.width / 2 + CGFloat(arc4random_uniform(UInt32(size.width / 5))),
             y: size.height - 10.0)
         
         food.fallingInTheWater()
+        food.disintegrating()
         
         addChild(food)
     }
+    
+    
+    ///Contact beginning delegate
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        //Checks if buddy was hit.
+        if contact.bodyA.categoryBitMask == FishFoodCategory || contact.bodyB.categoryBitMask == FishFoodCategory {
+            
+            handleFishFoodCollision(contact: contact)
+            return
+        }
+        
+        //Checks if fish was hit.
+        if contact.bodyA.categoryBitMask == FishCategory || contact.bodyB.categoryBitMask == FishCategory {
+            
+            handleFishCollision(contact: contact)
+            return
+        }
+    }
+    
+    private func handleFishFoodCollision(contact: SKPhysicsContact) {
+        var otherBody: SKPhysicsBody
+        var foodBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask == FishFoodCategory {
+            otherBody = contact.bodyB
+            foodBody = contact.bodyA
+        } else {
+            otherBody = contact.bodyA
+            foodBody = contact.bodyB
+        }
+        
+        switch otherBody.categoryBitMask {
+         
+        case FishFoodCategory:
+            foodBody.collisionBitMask = 0
+            
+            
+        case WorldCategory:
+            foodBody.collisionBitMask = 0
+            
+        default:
+            break
+            
+        }
+        
+    }
+
+    
+    private func handleFishCollision(contact: SKPhysicsContact) {
+        var otherBody: SKPhysicsBody
+        var fishBody: SKPhysicsBody
+        
+        if contact.bodyA.categoryBitMask == FishCategory {
+            otherBody = contact.bodyB
+            fishBody = contact.bodyA
+        } else {
+            otherBody = contact.bodyA
+            fishBody = contact.bodyB
+        }
+        
+        switch otherBody.categoryBitMask {
+            
+        default:
+            break
+        }
+    }
+    
 }
