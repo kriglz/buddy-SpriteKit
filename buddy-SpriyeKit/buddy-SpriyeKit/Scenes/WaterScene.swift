@@ -202,7 +202,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
 
         let food = foodNode.newInstance(size: size)
         food.position = CGPoint(
-            x: size.width / 2 + CGFloat(arc4random_uniform(UInt32(size.width / 5))),
+            x: 3 * size.width / 8 + CGFloat(arc4random_uniform(UInt32(size.width / 4))),
             y: size.height - 10.0)
         
         food.fallingInTheWater()
