@@ -99,6 +99,9 @@ class ControlButtons: SKNode {
         goLeftButton.alpha = alphaDefault
     }
     
+    
+    
+    
     public func centerOnPoint(point: CGPoint, with margin: CGFloat, in size: CGSize){
         let marginX: CGFloat = margin
         let marginY: CGFloat = margin / 7.7

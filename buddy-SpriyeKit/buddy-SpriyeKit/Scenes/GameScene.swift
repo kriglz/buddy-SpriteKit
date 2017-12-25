@@ -220,22 +220,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         if let touchPoint = touchPoint {
-            
             controlButtons.touchBegan(at: touchPoint)
             
-//            if !controlButtons.isMenuButtonPressed {
-            
-                switch controlButtons.direction {
-                case .left:
-                    buddy.walk( .left)
-                    
-                case .right:
-                    buddy.walk( .right)
-                    
-                case .none:
-                    buddy.walk( .none)
-                }
-//            }
+            switch controlButtons.direction {
+            case .left:
+                buddy.walk( .left)
+                
+            case .right:
+                buddy.walk( .right)
+                
+            case .none:
+                buddy.walk( .none)
+            }
         }
     }
 
@@ -244,21 +240,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let touchPoint = touches.first?.location(in: self)
         
         if let touchPoint = touchPoint {
-            
             controlButtons.touchMoved(to: touchPoint)
             
-//            if !controlButtons.isMenuButtonPressed {
-                switch controlButtons.direction {
-                case .left:
-                    buddy.walk( .left)
-                    
-                case .right:
-                    buddy.walk( .right)
-                    
-                case .none:
-                    buddy.walk( .none)
-                }
-//            }
+            switch controlButtons.direction {
+            case .left:
+                buddy.walk( .left)
+                
+            case .right:
+                buddy.walk( .right)
+                
+            case .none:
+                buddy.walk( .none)
+            }
         }
     }
     
