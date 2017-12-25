@@ -55,6 +55,7 @@ class FishNode: SKSpriteNode {
             texture: texture,
             alphaThreshold: 0.1,
             size: size)
+
         
         physicsBody?.categoryBitMask = FishCategory
         physicsBody?.contactTestBitMask = WorldCategory | FishFoodCategory
@@ -80,6 +81,9 @@ class FishNode: SKSpriteNode {
         
         if let emitter = emitter {
             emitter.position.x = 15.0 - self.size.width / 2
+            emitter.particleScale = 0.04
+            emitter.particleScaleSpeed = 0.01
+            emitter.zPosition = zPositionFish - 10
             addChild(emitter)
         }
     }
@@ -124,29 +128,21 @@ class FishNode: SKSpriteNode {
     public func seekFood(node: FoodNode){
         
         if action(forKey: fishSeekFoodActionKey) == nil {
-            
-            var newXScale: CGFloat = 1.0
+
             if node.position.x > self.position.x {
-                newXScale = -1.0
+                self.xScale = -1.0
+            } else {
+                self.xScale = 1.0
             }
             
-            let flipAction = SKAction.run {
-                self.xScale = newXScale
-            }
-            
-            run(flipAction)
-            
-            let rotateAction = SKAction.rotate(toAngle: atan((node.position.y - self.position.y) / (node.position.x - self.position.x)), duration: 1 + Double(drand48()))
-            
-            let seekAction = SKAction.move(to: node.position, duration: 3 * (1 + Double(drand48())))
-            
-            let seekSequence = SKAction.group([rotateAction, seekAction])
-            
-            run(seekSequence, withKey: fishSeekFoodActionKey)
-            
-            
-            self.physicsBody = nil
+            self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
             addPhysicsBody(for: self.texture!)
+
+            let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
+            let time = Double(distance) / 70
+            
+            let seekAction = SKAction.move(to: node.position, duration: time)
+            run(seekAction, withKey: fishSeekFoodActionKey)
         }
     }
     
@@ -157,6 +153,9 @@ class FishNode: SKSpriteNode {
         let deltaX = size.width / 4
         let duration = 3.0 + Double(arc4random_uniform(6))
         
+        if xScale < 1 {
+            xScale = 1
+        }
         
         let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - deltaX, y: self.position.y + CGFloat(drand48())),
                                                  duration: duration)
@@ -178,39 +177,66 @@ class FishNode: SKSpriteNode {
     }
     
     
+    ///Moves fish to new destination after food seeking.
+    public func moveToNewDestination(in size: CGSize){
+        self.physicsBody = nil
+        
+        let marginY = size.height / 3
+        let destination = CGPoint(x: CGFloat(arc4random_uniform(UInt32( size.width))),
+                                  y: CGFloat(arc4random_uniform(UInt32( size.height - 2 * marginY))) + marginY)
+        
+        if destination.x > self.position.x {
+            self.xScale = -1.0
+        } else {
+            self.xScale = 1.0
+        }
+        
+        self.zRotation = atan((destination.y - self.position.y) / (destination.x - self.position.x)) / 2
+        
+        let moveAction = SKAction.move(to: destination, duration: 10 * (1 + Double(drand48())))
+        
+        let moveAroundAction = SKAction.run { [weak self] in
+            self?.zRotation = 0
+            self?.moveAround(in: size)
+        }
+        
+        let moveSequence = SKAction.sequence([moveAction, moveAroundAction])
+        
+        run(moveSequence, withKey: fishMoveToNewDestinationActionKey)
+    }
     
     
     ///Makes fish jump.
-    public func jump(randFishNumber: UInt32){
-        
-        var fishFrame = fishSwimFrame2
-        if randFishNumber == 1 {
-            fishFrame = fishSwimFrame1
-        }
-        
-        let randAnimationCount = Int(arc4random_uniform(10))
-        
-        let swimAction = SKAction.repeat(
-            SKAction.animate(with: fishFrame, timePerFrame: 0.3),
-            count: randAnimationCount)
-        
-        
-        let changeStateAction = SKAction.run { [weak self] in
-            
-            self?.texture = SKTexture(imageNamed: "fishFly\(Int(randFishNumber))")
-            self?.size = CGSize(width: (self?.size.height)!, height: (self?.size.width)!)
-            self?.physicsBody?.affectedByGravity = true
-        }
-        
-        let duration = Double(randAnimationCount) / 20 + 0.2
-        
-        let jumpAction = SKAction.applyImpulse(CGVector(dx: -30.0, dy: 200.0), duration: duration)
-        
-        let flipAction = SKAction.applyAngularImpulse(-1.0, duration: 20.0)
-        
-        let swimJumpSequence = SKAction.sequence([swimAction, changeStateAction, jumpAction, flipAction])
-        
-        run(swimJumpSequence)
-    }
+//    public func jump(randFishNumber: UInt32){
+//
+//        var fishFrame = fishSwimFrame2
+//        if randFishNumber == 1 {
+//            fishFrame = fishSwimFrame1
+//        }
+//
+//        let randAnimationCount = Int(arc4random_uniform(10))
+//
+//        let swimAction = SKAction.repeat(
+//            SKAction.animate(with: fishFrame, timePerFrame: 0.3),
+//            count: randAnimationCount)
+//
+//
+//        let changeStateAction = SKAction.run { [weak self] in
+//
+//            self?.texture = SKTexture(imageNamed: "fishFly\(Int(randFishNumber))")
+//            self?.size = CGSize(width: (self?.size.height)!, height: (self?.size.width)!)
+//            self?.physicsBody?.affectedByGravity = true
+//        }
+//
+//        let duration = Double(randAnimationCount) / 20 + 0.2
+//
+//        let jumpAction = SKAction.applyImpulse(CGVector(dx: -30.0, dy: 200.0), duration: duration)
+//
+//        let flipAction = SKAction.applyAngularImpulse(-1.0, duration: 20.0)
+//
+//        let swimJumpSequence = SKAction.sequence([swimAction, changeStateAction, jumpAction, flipAction])
+//
+//        run(swimJumpSequence)
+//    }
     
 }
