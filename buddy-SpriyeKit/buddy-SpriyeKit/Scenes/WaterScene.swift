@@ -142,7 +142,6 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Set `isFoodReleased` to false if there are no food left.
         if childNode(withName: "fishFood") == nil && isFishFoodReleased {
             isFishFoodReleased = false
-            fishSeekingTime = 1.0
 
             for fish in allFish {
                 fish.removeAction(forKey: fishSeekFoodActionKey)
@@ -169,30 +168,35 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                     if fish.action(forKey: fishMoveAroundActionKey) == nil {
                                                 
                         fish.removeAction(forKey: fishSeekFoodActionKey)
-                        fish.seekFood(node: childNode(withName: "fishFood") as! FoodNode)
                         
+                        let goalFood = closestFishFoodNode(for: fish)
+                        fish.seekFood(node: goalFood)
                     }
                 }
                 
                 fishSeekingTime = 0.0
             }
         }
-        
-        
-        
-//        let foodArray = self["fishFood"]
-//        print(foodArray.count)
-//        
-//        print(enumerateChildNodes(withName: "fishFood", using: { (node, pointer) in
-//            print(node.position)
-//        }))
-        
-        // childNode(withName: "fishFood")?.position)
 
         self.lastUpdateTime = currentTime
     }
     
     
+    
+    
+    ///Finds closest food node for fish to seek.
+    private func closestFishFoodNode(for fish: FishNode) -> FoodNode {
+        
+        let foodArray = self["fishFood"]
+
+        let sorted = foodArray.sorted {abs($0.position.x - fish.position.x) < abs($1.position.x - fish.position.x)}
+        let food = sorted[0] as! FoodNode
+        
+        return food
+    }
+    
+    
+    ///Removes fish move actions before it starts to seek food.
     private func removeFishMoveAction(){
         for fish in allFish {
             if fish.action(forKey: fishMoveAroundActionKey) != nil || fish.action(forKey: fishMoveToNewDestinationActionKey) != nil {
@@ -214,7 +218,12 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Loop to create 3 fish food after tap.
         for _ in 0...1 {
             spawnFishFood()
-            isFishFoodReleased = true
+            
+            if !isFishFoodReleased {
+                let foodReleaseAction = SKAction.sequence([SKAction.wait(forDuration: 5),
+                                                           SKAction.run { [weak self] in self?.isFishFoodReleased = true}])
+                run(foodReleaseAction)
+            }
         }
     }
     
