@@ -13,23 +13,21 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
     
-    var fishIndex: UInt32 = 0
-    
     private var isExitingScene = false
-
-    private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
-    private let highScoreNode = SKLabelNode(fontNamed: "Damascus")
 
     private var backgroundDarkNode: SKSpriteNode!
     private var backgroundLightNode: SKSpriteNode!
     
-    
+    private var fishIndex: UInt32 = 0
+
+    private var allFish = [FishNode]()
     private var fishFoodNode = FoodNode()
     private var isFishFoodReleased = false
     private var fishSeekingTime: TimeInterval = 0.0
+    private var tapCount = 0
 
-    
-    private var allFish = [FishNode]()
+    private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
+
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
@@ -142,7 +140,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Set `isFoodReleased` to false if there are no food left.
         if childNode(withName: "fishFood") == nil && isFishFoodReleased {
             isFishFoodReleased = false
-
+            tapCount = 0
+            
             for fish in allFish {
                 if fish.isSeekingFishFood {
                     fish.removeAction(forKey: fishSeekFoodActionKey)
@@ -168,22 +167,34 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                     
                     if fish.isSeekingFishFood {
                         
+                        //Removes other actions first.
                         removeFishMoveAction(for: fish)
-                        
                         
                         if fish.action(forKey: fishMoveAroundActionKey) == nil {
                             
                             fish.removeAction(forKey: fishSeekFoodActionKey)
                             
+                            //Adds seeking action to the fish.
                             let goalFood = closestFishFoodNode(for: fish)
                             fish.seekFood(node: goalFood)
                         }
+                    } else {
+                        //If fish is not seeking food anymore, removes eseeking action.
+                        if fish.action(forKey: fishSeekFoodActionKey) != nil {
+                            fish.removeAction(forKey: fishSeekFoodActionKey)
+                        }
+                        //Checks if new action needs to be added.
+                        if fish.action(forKey: fishMoveAroundActionKey) == nil && fish.action(forKey: fishMoveToNewDestinationActionKey) == nil {
+                            
+                            fish.run(SKAction.wait(forDuration: 0.5), completion: { [weak self] in
+                                fish.moveToNewDestination(in: (self?.size)!)})
+                        }
                     }
                 }
+                //Resets seeking action timer.
                 fishSeekingTime = 0.0
             }
         }
-
         self.lastUpdateTime = currentTime
     }
     
@@ -215,36 +226,39 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
-    
+
     ///Handles tap gesture.
     @objc private func handleTapGesture(byReactingTo: UISwipeGestureRecognizer){
         //Loop to create 3 fish food after tap.
+        tapCount += 1
+
         for _ in 0...1 {
             spawnFishFood()
             
-            if !isFishFoodReleased {
+            //Makes a decision for fish if it needs to seek the food.
+            //Also resets the decision if more than 4 times fish food was released.
+            if !isFishFoodReleased || tapCount > 4 {
                 isFishFoodReleased = true
+                tapCount = 0
                 
-                ///Sets fish seek o rnot seek fish food.
+                ///Sets fish seek or not seek fish food.
                 for fish in allFish {
-                    
-                    if arc4random_uniform(2) == 0 {
+                    if arc4random_uniform(3) == 0 {
                         fish.isSeekingFishFood = true
-                        print(true)
                     } else {
                         fish.isSeekingFishFood = false
-                        print(false)
                     }
                 }
             }
         }
     }
     
+    
     ///Handles swipe up behaviour, by changing `isExitingScene` to true.
     @objc private func handleSwipeDown(byReactingTo: UISwipeGestureRecognizer){
         isExitingScene = true
     }
+    
     
     ///Moves the current scene out of frame.
     private func switchToTheGameScene() {
