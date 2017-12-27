@@ -165,7 +165,10 @@ class FloorNode: SKSpriteNode {
 
             let wave = SKAction.animate(with: waterWaveFrame, timePerFrame: 0.4)
             let waveAction = SKAction.repeatForever(wave)
+            
             floorSprite.run(waveAction)
+            floorSpriteAfterFrame.run(waveAction)
+            floorSpriteBeforeFrame.run(waveAction)
             
             isWaveRunning = true
             return
