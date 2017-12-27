@@ -150,11 +150,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if buddy.isWalking {
             
             //Move camera only if buddy is not by the edge of the scene.
-            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-                
+//            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+            
                 centerCameraOnPoint(point: buddy.position)
                 controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-            } 
+//            } 
 
             
             //Emits particles
@@ -353,7 +353,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.position.x = point.x
         
         //Sends noficication that camera has moved.
-        NotificationCenter.default.post(name: Notification.Name(rawValue: buddyMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
+        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
               "BuddySpeed": buddy.walkingSpeed,
               "DeltaTime": dt])
     }
@@ -397,7 +397,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for cloud in allClouds {
             addChild(cloud.0)
             NotificationCenter.default.addObserver(
-                forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
+                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
                 object: nil,
                 queue: nil,
                 using: cloud.0.moveTheClouds)
@@ -422,7 +422,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             //Makes background nodes observe notification about camera movements.
             NotificationCenter.default.addObserver(
-                forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
+                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
                 object: nil,
                 queue: nil,
                 using: palm.moveThePalm)

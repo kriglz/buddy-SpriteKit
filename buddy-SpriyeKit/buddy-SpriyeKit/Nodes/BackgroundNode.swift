@@ -43,7 +43,7 @@ class BackgroundNode: SKNode {
         
         //Makes background nodes observe notification about buddy movements.
         NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
+            forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
             object: nil,
             queue: nil,
             using: moveTheBackground)
@@ -144,8 +144,8 @@ class BackgroundNode: SKNode {
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
         moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / horizonSpeedConstant)
-        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 1.5)
-        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 1.4)
+        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 5)
+        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 6)
     }
     
     
@@ -164,7 +164,7 @@ class BackgroundNode: SKNode {
             
             switch direction {
                 
-            case .left:
+            case .right:
                 
                 newPosition.x -= byDeltaX
                 spriteToMove.position = newPosition
@@ -178,7 +178,7 @@ class BackgroundNode: SKNode {
                     spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
                 
-            case .right:
+            case .left:
                 
                 newPosition.x += byDeltaX
                 spriteToMove.position = newPosition 

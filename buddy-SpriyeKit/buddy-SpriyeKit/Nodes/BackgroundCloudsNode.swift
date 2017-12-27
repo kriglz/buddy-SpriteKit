@@ -68,9 +68,9 @@ class BackgroundCloudsNode: SKSpriteNode {
             
             switch buddyDirection {
             case .left:
-                cloudSpeed -= buddySpeed / 1.4
+                cloudSpeed -= buddySpeed / 5.4
             case .right:
-                cloudSpeed += buddySpeed / 1.4
+                cloudSpeed += buddySpeed / 5.4
             default:
                 break
             }
@@ -84,11 +84,11 @@ class BackgroundCloudsNode: SKSpriteNode {
         newPosition = position
         
         switch direction {
-        case .left:
+        case .right:
             newPosition.x -= deltaX
             position = newPosition
             
-        case .right:
+        case .left:
             newPosition.x += deltaX
             position = newPosition
             
