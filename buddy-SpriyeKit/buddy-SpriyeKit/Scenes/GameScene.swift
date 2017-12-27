@@ -53,9 +53,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.setup(size: size)
         addChild(floor)
         
-        
         //Updates floor node (water) to wave.
         floor.runWaves()
+        
+        
         
         //Initializes a buddy.
         spawnBuddy()

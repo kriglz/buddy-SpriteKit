@@ -170,12 +170,12 @@ class BackgroundNode: SKNode {
                 spriteToMove.position = newPosition
             
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.maxX < 0.0) || (spriteToMove == afterSprite && spriteToMove.frame.minX < 0.0) {
+                if spriteToMove.frame.maxX < 0.0 {
                     
                     //Shift it over so that it's now to the immediate right of the other sprite.
                     //Two sprite are leap-frogging each other as tehy both move.
                     
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
+                    spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
                 
             case .right:
@@ -184,12 +184,12 @@ class BackgroundNode: SKNode {
                 spriteToMove.position = newPosition 
                 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.minX > spriteToMove.size.width) || (spriteToMove == beforeSprite && spriteToMove.frame.minX > 0.0){
+                if spriteToMove.frame.minX > spriteToMove.size.width {
                     
                     //Shift it over so that it's now to the immediate right of the other sprite.
                     //Two sprite are leap-frogging each other as tehy both move.
                     
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
+                    spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }
                 
             case .none:
