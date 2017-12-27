@@ -52,11 +52,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Setting up the floor for buddy - grass.
         floor.setup(size: size)
         addChild(floor)
-        
         //Updates floor node (water) to wave.
         floor.runWaves()
-        
-        
         
         //Initializes a buddy.
         spawnBuddy()
@@ -438,6 +435,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
         fish.swim(randFishNumber: fishIndex)
         fish.move()
+        fish.emitter?.removeFromParent()
         
         fish.name = "fish"
         

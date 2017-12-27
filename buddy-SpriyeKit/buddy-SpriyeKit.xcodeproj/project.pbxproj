@@ -98,8 +98,8 @@
 		8946D11E1FD8F6690049084F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				89E0C2DE1FEAF7E00070AC3B /* WaterScene.swift */,
 				8946D10C1FD8F65A0049084F /* GameScene.swift */,
+				89E0C2DE1FEAF7E00070AC3B /* WaterScene.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
