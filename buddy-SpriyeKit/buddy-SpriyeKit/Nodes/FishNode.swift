@@ -123,22 +123,19 @@ class FishNode: SKSpriteNode {
     ///Adds food following action to the fish.
     public func seekFood(node: FoodNode){
         
-        if action(forKey: fishSeekFoodActionKey) == nil {
-
-            if node.position.x > self.position.x {
-                self.xScale = -1.0
-            } else {
-                self.xScale = 1.0
-            }
-            
-            self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
-
-            let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
-            let time = Double(distance) / 70
-            
-            let seekAction = SKAction.move(to: node.position, duration: time)
-            run(seekAction, withKey: fishSeekFoodActionKey)
+        if node.position.x > self.position.x {
+            self.xScale = -1.0
+        } else {
+            self.xScale = 1.0
         }
+        
+        self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
+        
+        let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
+        let time = Double(distance) / 70
+        
+        let seekAction = SKAction.move(to: node.position, duration: time)
+        self.run(seekAction, withKey: fishSeekFoodActionKey)
     }
     
     

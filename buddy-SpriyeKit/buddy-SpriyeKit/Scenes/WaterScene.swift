@@ -161,14 +161,15 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Make fish to seek food.
         if isFishFoodReleased {
             fishSeekingTime += dt
-
-            for fish in allFish {
+            
+            if fishSeekingTime > 1 {
                 
-                if fish.isSeekingFishFood {
+                for fish in allFish {
                     
-                    removeFishMoveAction(for: fish)
-                    
-                    if fishSeekingTime > 1 {
+                    if fish.isSeekingFishFood {
+                        
+                        removeFishMoveAction(for: fish)
+                        
                         
                         if fish.action(forKey: fishMoveAroundActionKey) == nil {
                             
@@ -177,9 +178,9 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                             let goalFood = closestFishFoodNode(for: fish)
                             fish.seekFood(node: goalFood)
                         }
-                    fishSeekingTime = 0.0
                     }
                 }
+                fishSeekingTime = 0.0
             }
         }
 
@@ -210,7 +211,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                 fish.removeAction(forKey: fishMoveToNewDestinationActionKey)
             }
             
-            run(removeAction)
+            fish.run(removeAction)
         }
     }
     
@@ -228,10 +229,12 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                 ///Sets fish seek o rnot seek fish food.
                 for fish in allFish {
                     
-                    if arc4random_uniform(4) == 0 {
+                    if arc4random_uniform(2) == 0 {
                         fish.isSeekingFishFood = true
+                        print(true)
                     } else {
                         fish.isSeekingFishFood = false
+                        print(false)
                     }
                 }
             }
