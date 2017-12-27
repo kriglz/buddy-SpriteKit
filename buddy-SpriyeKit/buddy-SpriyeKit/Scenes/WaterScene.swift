@@ -146,6 +146,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                 if fish.isSeekingFishFood {
                     fish.removeAction(forKey: fishSeekFoodActionKey)
                     fish.isSeekingFishFood = false
+                    fish.physicsBody?.isDynamic = false
                     
                     fish.run(SKAction.wait(forDuration: 0.5), completion: { [weak self] in
                         fish.moveToNewDestination(in: (self?.size)!)
@@ -245,8 +246,10 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
                 for fish in allFish {
                     if arc4random_uniform(3) == 0 {
                         fish.isSeekingFishFood = true
+                        fish.physicsBody?.isDynamic = true
                     } else {
                         fish.isSeekingFishFood = false
+                        fish.physicsBody?.isDynamic = false
                     }
                 }
             }
@@ -362,7 +365,6 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
             
         default:
             break
-            
         }
     }
 }

@@ -50,12 +50,13 @@ class FishNode: SKSpriteNode {
     
     ///Adds physics body to the fish.
     public func addPhysicsBody(){
+        physicsBody = SKPhysicsBody.init(texture: SKTexture(imageNamed: "fishPB"), size: size)
 
-        physicsBody = SKPhysicsBody.init(texture: self.texture!, size: size)
-   
         physicsBody?.categoryBitMask = FishCategory
         physicsBody?.contactTestBitMask = WorldCategory | FishFoodCategory
         physicsBody?.isDynamic = false
+        physicsBody?.allowsRotation = false
+        physicsBody?.restitution = 1.0
         physicsBody?.affectedByGravity = false
     }
     
@@ -120,23 +121,12 @@ class FishNode: SKSpriteNode {
     
 
     
-    ///Adds food following action to the fish.
-    public func seekFood(node: FoodNode){
-        
-        if node.position.x > self.position.x {
-            self.xScale = -1.0
-        } else {
-            self.xScale = 1.0
-        }
-        
-        self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
-        
-        let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
-        let time = Double(distance) / 70
-        
-        let seekAction = SKAction.move(to: node.position, duration: time)
-        self.run(seekAction, withKey: fishSeekFoodActionKey)
-    }
+    
+    
+    
+    
+    
+    
     
     
     ///Adds swim-move action to the fish. For WATER SCENE.
@@ -166,6 +156,25 @@ class FishNode: SKSpriteNode {
         
         
         run(SKAction.repeatForever(sequenceOfAnimations), withKey: fishMoveAroundActionKey)
+    }
+    
+    
+    ///Adds food following action to the fish.
+    public func seekFood(node: FoodNode){
+        
+        if node.position.x > self.position.x {
+            self.xScale = -1.0
+        } else {
+            self.xScale = 1.0
+        }
+        
+        self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
+        
+        let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
+        let time = Double(distance) / 70
+        
+        let seekAction = SKAction.move(to: node.position, duration: time)
+        self.run(seekAction, withKey: fishSeekFoodActionKey)
     }
     
     
