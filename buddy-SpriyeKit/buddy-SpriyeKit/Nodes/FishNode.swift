@@ -23,7 +23,7 @@ class FishNode: SKSpriteNode {
     ]
     
     private let fishScaleConstant = CGFloat(drand48())
-    
+    public var isSeekingFishFood = false
     
     public let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
@@ -49,9 +49,9 @@ class FishNode: SKSpriteNode {
     
     
     ///Adds physics body to the fish.
-    public func addPhysicsBody(for texture: SKTexture){
+    public func addPhysicsBody(){
 
-        physicsBody = SKPhysicsBody.init(texture: SKTexture(imageNamed: "fishPB"), size: size)
+        physicsBody = SKPhysicsBody.init(texture: self.texture!, size: size)
    
         physicsBody?.categoryBitMask = FishCategory
         physicsBody?.contactTestBitMask = WorldCategory | FishFoodCategory
@@ -132,7 +132,6 @@ class FishNode: SKSpriteNode {
             }
             
             self.zRotation = atan((node.position.y - self.position.y) / (node.position.x - self.position.x))
-            addPhysicsBody(for: self.texture!)
 
             let distance = sqrt(pow((node.position.y - self.position.y), 2) + pow((node.position.x - self.position.x), 2))
             let time = Double(distance) / 70
@@ -175,7 +174,6 @@ class FishNode: SKSpriteNode {
     
     ///Moves fish to new destination after food seeking.
     public func moveToNewDestination(in size: CGSize){
-        self.physicsBody = nil
         
         let marginY = size.height / 3
         let destination = CGPoint(x: CGFloat(arc4random_uniform(UInt32( size.width))),
