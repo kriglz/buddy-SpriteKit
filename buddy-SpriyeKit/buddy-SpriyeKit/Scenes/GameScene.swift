@@ -14,27 +14,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
 
-    
     private var buddy: BuddyNode!
     private var background = BackgroundNode()
     private var floor = FloorNode()
+    
     private let cameraNode = SKCameraNode()
+    
+    private let particleEmitter = ParticleNode()
+    private var isEmittingOver: Bool = false
+
+    private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
+    private var allPalms = [PalmNode]()
     
     private let controlButtons = ControlButtons()
     lazy var margin: CGFloat = size.width / 10.35
 
-    
-    private let particleEmitter = ParticleNode()
-    
-    private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
-    private var allPalms = [PalmNode]()
-    
-    private var isEmittingOver: Bool = false
-
     private var fishIndex: UInt32 = 0
+
+    
     
     override func didMove(to view: SKView) {
-        
         //Adds swipe handler to the scene.
         let swipeHandler = #selector(handleSwipeUp(byReactingTo:))
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
@@ -88,7 +87,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adding WorldFrame
         let worldFrame = frame
-        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsWorld.contactDelegate = self
@@ -100,6 +98,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(controlButtons)
     }
 
+    
+    
     ///Handles swipe left (back) behaviour.
     @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
         guard (view?.scene?.frame.width)! == size.width else {
@@ -113,16 +113,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let waterScene = WaterScene(size: waterSceneSize)
         waterScene.scaleMode = scaleMode
         view?.presentScene(waterScene, transition: transition)
-    
     }
 
     
     
     
     ///Updates scene every 1/60 sec.
+    ///Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        
-        //Called before each frame is rendered
         
         //Initialize _lastUpdateTime if it has not already been.
         if (self.lastUpdateTime == 0) {
@@ -158,7 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 centerCameraOnPoint(point: buddy.position)
                 controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-            }
+            } 
 
             
             //Emits particles
@@ -215,9 +213,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
-        
         
         if let touchPoint = touchPoint {
             controlButtons.touchBegan(at: touchPoint)
@@ -276,6 +275,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    
+    
+    
     
     
     
@@ -343,17 +345,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
+    
+    
+    
+    
     ///Updates camera position.
     private func centerCameraOnPoint(point: CGPoint){
         
         cameraNode.position.x = point.x
         
         //Sends noficication that camera has moved.
-        NotificationCenter.default.post(name: Notification.Name(rawValue: cameraMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
+        NotificationCenter.default.post(name: Notification.Name(rawValue: buddyMoveNotificationKey), object: nil, userInfo: [ "DirectionToMove" : controlButtons.direction,
               "BuddySpeed": buddy.walkingSpeed,
               "DeltaTime": dt])
     }
-
+    
+    
+    
+    
     
     
     ///Creates a new buddy.
@@ -374,8 +383,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(buddy)
     }
     
-    
-    
     ///Creates a new cloud.
     private func spawnCloud(){
         
@@ -392,13 +399,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for cloud in allClouds {
             addChild(cloud.0)
             NotificationCenter.default.addObserver(
-                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+                forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
                 object: nil,
                 queue: nil,
                 using: cloud.0.moveTheClouds)
         }
     }
     
+    ///Creates a new palm.
     private func spawnPalm(){
         
         allPalms.append(PalmNode.newInstance(size: size))
@@ -416,13 +424,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             //Makes background nodes observe notification about camera movements.
             NotificationCenter.default.addObserver(
-                forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+                forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
                 object: nil,
                 queue: nil,
                 using: palm.moveThePalm)
         }
     }
     
+    ///Creates a new fish.
     private func spawnFish(){
         let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
                 

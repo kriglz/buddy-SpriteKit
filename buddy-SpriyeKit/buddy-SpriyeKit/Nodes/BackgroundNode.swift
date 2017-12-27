@@ -41,9 +41,9 @@ class BackgroundNode: SKNode {
     ///Initialize the background nodes.
     public func setup(size: CGSize){
         
-        //Makes background nodes observe notification about camera movements.
+        //Makes background nodes observe notification about buddy movements.
         NotificationCenter.default.addObserver(
-            forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+            forName: NSNotification.Name(rawValue: buddyMoveNotificationKey),
             object: nil,
             queue: nil,
             using: moveTheBackground)
@@ -129,7 +129,7 @@ class BackgroundNode: SKNode {
     
     
     
-    ///Moves the background if notification from camera has been received.
+    ///Moves the background if notification from buddy has been received.
     @objc func moveTheBackground( notification: Notification) -> Void {
         
         guard let buddyDirection = notification.userInfo!["DirectionToMove"],
