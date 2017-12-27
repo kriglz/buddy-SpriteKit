@@ -172,14 +172,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if childNode(withName: "particleEmitter") == nil {
                     addChild(particleEmitter)
                 }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
                 
             case .right:
                 
                 if childNode(withName: "particleEmitter") == nil {
                     addChild(particleEmitter)
                 }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
+                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
                 
             default:
                 break

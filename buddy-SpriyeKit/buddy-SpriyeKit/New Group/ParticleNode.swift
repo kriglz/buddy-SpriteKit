@@ -35,9 +35,13 @@ class ParticleNode: SKEmitterNode {
             case .left:
                 emitter.emissionAngle = 0
                 emitter.emissionAngleRange = .pi / 9
+                emitter.xAcceleration = 200
+//                emitter.particleSpeed = 50.0
             case .right:
                 emitter.emissionAngle = .pi
                 emitter.emissionAngleRange = .pi / 9
+                emitter.xAcceleration = -200
+//                emitter.particleSpeed = -50.0
             default:
                 break
             }
