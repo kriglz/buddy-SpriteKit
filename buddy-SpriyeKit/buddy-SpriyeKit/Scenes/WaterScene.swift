@@ -279,7 +279,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
 
         let food = fishFoodNode.newInstance(size: size)
         food.position = CGPoint(
-            x: 3 * size.width / 8 + CGFloat(arc4random_uniform(UInt32(size.width / 4))),
+            x: 2 * size.width / 8 + CGFloat(arc4random_uniform(UInt32(size.width / 2))),
             y: size.height - 10.0)
         
         food.fallingInTheWater()
@@ -301,7 +301,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
     ///Contact beginning delegate
     func didBegin(_ contact: SKPhysicsContact) {
         
-        //Checks if buddy was hit.
+        //Checks if fish food was hit.
         if contact.bodyA.categoryBitMask == FishFoodCategory || contact.bodyB.categoryBitMask == FishFoodCategory {
             
             handleFishFoodCollision(contact: contact)

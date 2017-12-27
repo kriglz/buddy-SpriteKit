@@ -50,16 +50,12 @@ class FishNode: SKSpriteNode {
     
     ///Adds physics body to the fish.
     public func addPhysicsBody(for texture: SKTexture){
-        
-        physicsBody = SKPhysicsBody.init(
-            texture: texture,
-            alphaThreshold: 0.1,
-            size: size)
 
-        
+        physicsBody = SKPhysicsBody.init(texture: SKTexture(imageNamed: "fishPB"), size: size)
+   
         physicsBody?.categoryBitMask = FishCategory
         physicsBody?.contactTestBitMask = WorldCategory | FishFoodCategory
-        physicsBody?.collisionBitMask = 0
+        physicsBody?.isDynamic = false
         physicsBody?.affectedByGravity = false
     }
     
