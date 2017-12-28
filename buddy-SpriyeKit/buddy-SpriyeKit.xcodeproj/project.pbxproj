@@ -98,8 +98,8 @@
 		8946D11E1FD8F6690049084F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				89E0C2DE1FEAF7E00070AC3B /* WaterScene.swift */,
 				8946D10C1FD8F65A0049084F /* GameScene.swift */,
+				89E0C2DE1FEAF7E00070AC3B /* WaterScene.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -110,10 +110,10 @@
 				898CE3101FDB65BA001CF189 /* BackgroundNode.swift */,
 				893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */,
 				89E5B25B1FE897CA0000C647 /* PalmNode.swift */,
-				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
 				89EC73111FE9CD8500014A65 /* FishNode.swift */,
 				892FFFE21FEF33C0006ED63F /* FoodNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
+				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
 				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 			);
 			path = Nodes;

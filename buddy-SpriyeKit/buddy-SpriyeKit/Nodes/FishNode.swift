@@ -38,10 +38,10 @@ class FishNode: SKSpriteNode {
                 height: (size.height / 7.94) * (0.8 + 0.5 * fishScaleConstant))
             fish.position = CGPoint(
                 x: CGFloat(arc4random_uniform(UInt32(size.width))),
-                y: size.height / 4 - 120 * fishScaleConstant)
+                y: size.height / 5 - 100 * fishScaleConstant)
             fish.zPosition = zPositionFish
         }
-        
+                
         return fish
     }
     
@@ -86,43 +86,112 @@ class FishNode: SKSpriteNode {
     }
     
     
+    public var fishSpeed: CGFloat = 0
+
+    ///Fish movement direction.
+    private var direction: Direction = .left
+    
+    //Buddy properties.
+    private var buddyDirection: Direction?
+    private var buddySpeed: CGFloat?
+    
+    private var currentTime: TimeInterval = 0.0
+    
     ///Adds swim-move action to the fish. For GAME SCENE.
-    public func move(){
+    public func move(deltaTime: TimeInterval, in frameSize: CGSize){
+       
+        //Changes fish "swing" - y position.
+        currentTime += deltaTime
         
-        let scaleConstant = drand48()
-        self.alpha = 0.0
-        
-        let fadeInAnimation = SKAction.fadeIn(withDuration: 5 * (1 + scaleConstant))
-        let moveToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x - (50 * (1 + CGFloat(scaleConstant))), y: self.position.y - 10),
-                                                 duration: 5 * (1 + scaleConstant))
-        let groupAction1 = SKAction.group([moveToPointAnimation,
-                                           fadeInAnimation])
-        
-        
-        let flipAnimation = SKAction.run { [weak self] in
-            self?.xScale *= -1
+        if currentTime > 2 {
+            currentTime = 0
         }
         
-        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + 20 * (1 + CGFloat(scaleConstant)), y: self.position.y - 10), duration: 1.0  * (1 + scaleConstant))
-        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 1.0  * (1 + scaleConstant))
-        let groupAction2 = SKAction.group([moveBackToPointAnimation,
-                                          fadeOutAniamtion])
+        if currentTime >= 0 && currentTime <= 1 {
+            position.y -= 0.1
+        } else if currentTime > 1 && currentTime <= 2 {
+            position.y += 0.1
+        }
         
         
-        let removeAction = SKAction.removeFromParent()
         
-        let sequenceOfAnimations = SKAction.sequence([groupAction1,
-                                                      flipAnimation,
-                                                      groupAction2,
-                                                      removeAction])
         
-        run(sequenceOfAnimations)
+        var newFishSpeed = fishSpeed
+    
+        //Moves fish in different speed if buddy moves too.
+        if let buddySpeed = buddySpeed,
+            let buddyDirection = buddyDirection {
+            
+            switch buddyDirection {
+            case .right:
+                if direction == .left {
+                    newFishSpeed += buddySpeed / 4
+                } else {
+                    newFishSpeed -= buddySpeed / 4
+                }
+                
+            case .left:
+                if direction == .left {
+                    newFishSpeed -= buddySpeed / 4
+                } else {
+                    newFishSpeed += buddySpeed / 4
+                }
+                
+            default:
+                break
+            }
+        }
+        
+        ///Value which shows how much x is changed every `deltaTime`.
+        let deltaX: CGFloat = newFishSpeed * CGFloat(deltaTime)
+        
+        switch direction {
+        case .left:
+            position.x -= deltaX
+            if position.x < -size.width / 2 {
+                direction = .right
+                xScale = -1
+            }
+            
+        case .right:
+            position.x += deltaX * 2
+            
+            if position.x > frameSize.width + size.width / 2 {
+                direction = .left
+                xScale = 1
+            }
+            
+        case .none:
+            break
+        }
+        
+        
+        buddyDirection = nil
+        buddySpeed = nil
     }
     
-
+    @objc func moveTheFish(notification: Notification) -> Void {
+        
+        guard let buddysDirection = notification.userInfo!["DirectionToMove"],
+            let buddysSpeed = notification.userInfo!["BuddySpeed"] else { return }
+        
+        buddyDirection = buddysDirection as? Direction
+        buddySpeed = buddysSpeed as? CGFloat
+    }
     
-    
-    
+    public func fadeInOut(){
+        
+        let scaleConstant = drand48()
+        self.alpha = 1.0
+        let fadeInAnimation = SKAction.fadeIn(withDuration: 3 * (1 + scaleConstant))
+        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 1 * (1 + scaleConstant))
+        let actions = SKAction.sequence([fadeInAnimation,
+                                         fadeOutAniamtion,
+                                         SKAction.wait(forDuration: 10 * (1 + scaleConstant))])
+        
+        self.run(SKAction.repeatForever(actions))
+    }
+  
     
     
     
@@ -204,6 +273,9 @@ class FishNode: SKSpriteNode {
         
         run(moveSequence, withKey: fishMoveToNewDestinationActionKey)
     }
+    
+    
+  
     
     
     ///Makes fish jump.

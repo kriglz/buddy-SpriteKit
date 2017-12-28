@@ -80,7 +80,7 @@ class ControlButtons: SKNode {
     }
     
     ///Node which describes selected button.
-    var direction: Direction = .none
+    private(set) var direction: Direction = .none
   
     
     public func touchBegan(at point: CGPoint){

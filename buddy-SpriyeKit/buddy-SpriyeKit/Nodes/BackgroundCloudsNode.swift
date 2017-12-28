@@ -16,6 +16,9 @@ class BackgroundCloudsNode: SKSpriteNode {
     private var buddySpeed: CGFloat?
     private var buddyDirection: Direction?
     
+    
+    
+    
     ///Creates a new cloud node.
     public static func newInstance(size: CGSize) -> (BackgroundCloudsNode, CGFloat) {
         
@@ -55,19 +58,19 @@ class BackgroundCloudsNode: SKSpriteNode {
 
     
     ///Moves the cloud.
-    func moveTheCloud(deltaTime: TimeInterval, speed: CGFloat, in frameSize: CGSize){
+    public func moveTheCloud(deltaTime: TimeInterval, speed: CGFloat, in frameSize: CGSize){
         
         var cloudSpeed: CGFloat = speed
         
-        //Moves clouds in different speed if camera moves too.
+        //Moves clouds in different speed if buddy moves too.
         if let buddySpeed = buddySpeed,
             let buddyDirection = buddyDirection {
             
             switch buddyDirection {
-            case .left:
-                cloudSpeed -= buddySpeed / 1.4
             case .right:
-                cloudSpeed += buddySpeed / 1.4
+                cloudSpeed += buddySpeed / 5.4
+            case .left:
+                cloudSpeed -= buddySpeed / 5.4
             default:
                 break
             }
@@ -81,11 +84,11 @@ class BackgroundCloudsNode: SKSpriteNode {
         newPosition = position
         
         switch direction {
-        case .left:
+        case .right:
             newPosition.x -= deltaX
             position = newPosition
             
-        case .right:
+        case .left:
             newPosition.x += deltaX
             position = newPosition
             
@@ -103,7 +106,7 @@ class BackgroundCloudsNode: SKSpriteNode {
     }
     
     
-    ///Moves the clouds relative to the camera movement.
+    ///Moves the clouds relative to the buddy movement.
     @objc func moveTheClouds(notification: Notification) -> Void {
         
         guard let bDirection = notification.userInfo!["DirectionToMove"],

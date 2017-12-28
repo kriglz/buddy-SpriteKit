@@ -14,27 +14,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var lastUpdateTime : TimeInterval = 0
     private var dt: TimeInterval = 0.0
 
-    
     private var buddy: BuddyNode!
     private var background = BackgroundNode()
     private var floor = FloorNode()
+    
     private let cameraNode = SKCameraNode()
+    
+    private var particleEmitter = ParticleNode()
+    private var isEmittingOver: Bool = false
+
+    private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
+    private var allPalms = [PalmNode]()
     
     private let controlButtons = ControlButtons()
     lazy var margin: CGFloat = size.width / 10.35
 
-    
-    private let particleEmitter = ParticleNode()
-    
-    private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
-    private var allPalms = [PalmNode]()
-    
-    private var isEmittingOver: Bool = false
-
     private var fishIndex: UInt32 = 0
+
+    
     
     override func didMove(to view: SKView) {
-        
         //Adds swipe handler to the scene.
         let swipeHandler = #selector(handleSwipeUp(byReactingTo:))
         let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: swipeHandler)
@@ -53,8 +52,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Setting up the floor for buddy - grass.
         floor.setup(size: size)
         addChild(floor)
-        
-        
         //Updates floor node (water) to wave.
         floor.runWaves()
         
@@ -88,7 +85,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Adding WorldFrame
         let worldFrame = frame
-        
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsWorld.contactDelegate = self
@@ -100,6 +96,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(controlButtons)
     }
 
+    
+    
     ///Handles swipe left (back) behaviour.
     @objc private func handleSwipeUp(byReactingTo: UISwipeGestureRecognizer){
         guard (view?.scene?.frame.width)! == size.width else {
@@ -113,16 +111,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let waterScene = WaterScene(size: waterSceneSize)
         waterScene.scaleMode = scaleMode
         view?.presentScene(waterScene, transition: transition)
-    
     }
 
     
     
     
     ///Updates scene every 1/60 sec.
+    ///Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        
-        //Called before each frame is rendered
         
         //Initialize _lastUpdateTime if it has not already been.
         if (self.lastUpdateTime == 0) {
@@ -137,87 +133,101 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.update(deltaTime: dt)
         
 
+        //Updates clouds behaviour.
         for cloud in allClouds {
             cloud.0.moveTheCloud(deltaTime: dt, speed: cloud.1, in: size)
         }
-
         
-        if childNode(withName: "fish") == nil {
-            for _ in 1...2 {
-                fishIndex = arc4random_uniform(2)+1
-                spawnFish()
-            }
+        
+        //Updates fish behaviour.
+        for fish in floor["fish"] {
+            (fish as! FishNode).move(deltaTime: dt, in: size)
         }
+        
         
         
         //Updates camera and control buttons position if buddy has moved.
         if buddy.isWalking {
             
             //Move camera only if buddy is not by the edge of the scene.
-            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
-                
-                centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-            }
-
+            //            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+            
+            centerCameraOnPoint(point: buddy.position)
+            controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
+            //            }
+            
             
             //Emits particles
-            if isEmittingOver {
-                particleEmitter.removeAllActions()
-                particleEmitter.removeFromParent()
-                isEmittingOver = false
-            }
-            
-            particleEmitter.alpha = 0.4
- 
-            switch controlButtons.direction {
-            case .left:
-                
-                if childNode(withName: "particleEmitter") == nil {
-                    addChild(particleEmitter)
-                }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
-                
-            case .right:
-                
-                if childNode(withName: "particleEmitter") == nil {
-                    addChild(particleEmitter)
-                }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 10, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
-                
-            default:
-                break
-            }
+            emitBuddysParticles()
             
         } else {
-
-            if childNode(withName: "particleEmitter") != nil {
-                
-                particleEmitter.numParticlesToEmit = 0
-              
-                let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
-                                                            SKAction.wait(forDuration: 0.3),
-                                                            
-                                                            SKAction.removeFromParent()
-                ])
-                
-                particleEmitter.run(disappearingAction)
-                particleEmitter.resetSimulation()
-                
-                isEmittingOver = true
-            }
+            //Removes particles
+            removeBuddysParticles()
         }
+        
+        
         self.lastUpdateTime = currentTime
+    }
+
+    
+    
+    
+    
+    
+    private func emitBuddysParticles(){
+        
+        if isEmittingOver {
+            particleEmitter.removeAllActions()
+            particleEmitter.removeFromParent()
+            particleEmitter.resetSimulation()
+            particleEmitter.alpha = 0.3
+            isEmittingOver = false
+        }
+                
+        switch controlButtons.direction {
+        case .left:
+            
+            particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
+            
+            if childNode(withName: "particleEmitter") == nil {
+                addChild(particleEmitter)
+            }
+            
+        case .right:
+            
+            particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
+            
+            if childNode(withName: "particleEmitter") == nil {
+                addChild(particleEmitter)
+            }
+            
+        default:
+            removeBuddysParticles()
+        }
+    }
+    
+    private func removeBuddysParticles() {
+        if childNode(withName: "particleEmitter") != nil {
+            
+            particleEmitter.numParticlesToEmit = 0
+            
+            let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
+                                                        SKAction.removeFromParent()
+                                                        ])
+            particleEmitter.run(disappearingAction)
+            isEmittingOver = true
+        }
     }
     
     
-   
+
+
+
     
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touchPoint = touches.first?.location(in: self)
-        
         
         if let touchPoint = touchPoint {
             controlButtons.touchBegan(at: touchPoint)
@@ -276,6 +286,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    
+    
+    
     
     
     
@@ -343,6 +356,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
+    
+    
+    
+    
     ///Updates camera position.
     private func centerCameraOnPoint(point: CGPoint){
         
@@ -353,7 +370,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
               "BuddySpeed": buddy.walkingSpeed,
               "DeltaTime": dt])
     }
-
+    
+    
+    
+    
     
     
     ///Creates a new buddy.
@@ -373,8 +393,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(buddy)
     }
-    
-    
     
     ///Creates a new cloud.
     private func spawnCloud(){
@@ -399,6 +417,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    ///Creates a new palm.
     private func spawnPalm(){
         
         allPalms.append(PalmNode.newInstance(size: size))
@@ -423,14 +442,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    ///Creates a new fish.
     private func spawnFish(){
         let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
-                
+        
+        fish.fishSpeed = 20.0 + CGFloat(arc4random_uniform(20))
+        fish.size = CGSize(width: fish.size.width * 0.7, height: fish.size.height * 0.7)
         fish.swim(randFishNumber: fishIndex)
-        fish.move()
+        fish.fadeInOut()
+        fish.emitter?.removeFromParent()
         
         fish.name = "fish"
+        floor.addChild(fish)
         
-        addChild(fish)
+        //Makes fish nodes observe notification about camera movements.
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+            object: nil,
+            queue: nil,
+            using: fish.moveTheFish)
     }
 }

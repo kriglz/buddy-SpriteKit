@@ -41,7 +41,7 @@ class BackgroundNode: SKNode {
     ///Initialize the background nodes.
     public func setup(size: CGSize){
         
-        //Makes background nodes observe notification about camera movements.
+        //Makes background nodes observe notification about buddy movements.
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
             object: nil,
@@ -100,12 +100,12 @@ class BackgroundNode: SKNode {
         addChild(mountainsBack)
         
         mountainsBackAfterFrame = mountainsBack.copy() as! SKSpriteNode
-        mountainsBackAfterFrame.position = CGPoint(x: mountainsBack.position.x + mountainsBack.size.width, y: mountainsBack.position.y)
+        mountainsBackAfterFrame.position = CGPoint(x: mountainsBack.position.x + mountainsBackAfterFrame.size.width, y: mountainsBack.position.y)
         mountainsBackAfterFrame.zPosition = mountainsBack.zPosition
         addChild(mountainsBackAfterFrame)
 
         mountainsBackBeforeFrame = mountainsBack.copy() as! SKSpriteNode
-        mountainsBackBeforeFrame.position = CGPoint(x: mountainsBack.position.x - mountainsBack.size.width, y: mountainsBack.position.y)
+        mountainsBackBeforeFrame.position = CGPoint(x: mountainsBack.position.x - mountainsBackBeforeFrame.size.width, y: mountainsBack.position.y)
         mountainsBackBeforeFrame.zPosition = mountainsBack.zPosition
         addChild(mountainsBackBeforeFrame)
         
@@ -129,7 +129,7 @@ class BackgroundNode: SKNode {
     
     
     
-    ///Moves the background if notification from camera has been received.
+    ///Moves the background if notification from buddy has been received.
     @objc func moveTheBackground( notification: Notification) -> Void {
         
         guard let buddyDirection = notification.userInfo!["DirectionToMove"],
@@ -143,53 +143,40 @@ class BackgroundNode: SKNode {
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
-        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / horizonSpeedConstant)
-        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 1.5)
-        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 1.4)
+        moveSprite(sprite: horizonGrass, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / horizonSpeedConstant)
+        moveSprite(sprite: mountains, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 5)
+        moveSprite(sprite: mountainsBack, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 6)
     }
     
     
     
     
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
+    func moveSprite(sprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
         
         //Loop cycle for both sprite and dublicate
-        for spriteToMove in [sprite, beforeSprite, afterSprite] {
-            
-            //Move sprite to the left based on speed
-            var newPosition: CGPoint = CGPoint.zero
-            newPosition = spriteToMove.position
-            
+        for spriteToMove in [sprite, afterSprite] {
             
             switch direction {
                 
-            case .left:
-                
-                newPosition.x -= byDeltaX
-                spriteToMove.position = newPosition
-            
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.maxX < 0.0) || (spriteToMove == afterSprite && spriteToMove.frame.minX < 0.0) {
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
-                    
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x + spriteToMove.size.width, y: spriteToMove.position.y)
-                }
-                
             case .right:
                 
-                newPosition.x += byDeltaX
-                spriteToMove.position = newPosition 
-                
+                spriteToMove.position.x -= byDeltaX
+                spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
+
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if (spriteToMove == sprite && spriteToMove.frame.minX > spriteToMove.size.width) || (spriteToMove == beforeSprite && spriteToMove.frame.minX > 0.0){
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
-                    
-                    spriteToMove.position = CGPoint(x: spriteToMove.position.x - spriteToMove.size.width, y: spriteToMove.position.y)
+                if spriteToMove.frame.maxX <= 0.0 {
+                    spriteToMove.position.x += 2 * spriteToMove.size.width
+                }
+                
+            case .left:
+                
+                spriteToMove.position.x += byDeltaX
+                spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
+
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if spriteToMove.frame.minX >= spriteToMove.size.width {
+                    spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }
                 
             case .none:

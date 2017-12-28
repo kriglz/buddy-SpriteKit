@@ -70,7 +70,7 @@ class BuddyNode: SKSpriteNode {
         if !isWalking {
             
             //Sets walking action to nil.
-            physicsBody?.velocity.dx = 0.0
+//            physicsBody?.velocity.dx = 0.0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
             timeSinceLastStop = 0.0
@@ -120,11 +120,11 @@ class BuddyNode: SKSpriteNode {
             //Moves the buddy position by `walkingDeltaX`.
             switch direction {
             case .left:
-                position.x -= walkingDeltaX
+//                position.x -= walkingDeltaX
                 xScale = -1
             
             case .right:
-                position.x += walkingDeltaX
+//                position.x += walkingDeltaX
                 xScale = 1
                 
             case .none:

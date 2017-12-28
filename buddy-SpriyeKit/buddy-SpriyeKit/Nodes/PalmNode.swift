@@ -63,11 +63,11 @@ class PalmNode: SKSpriteNode {
         newPosition = position
         
         switch direction {
-        case .left:
+        case .right:
             newPosition.x -= deltaX
             position = newPosition
             
-        case .right:
+        case .left:
             newPosition.x += deltaX
             position = newPosition
             
