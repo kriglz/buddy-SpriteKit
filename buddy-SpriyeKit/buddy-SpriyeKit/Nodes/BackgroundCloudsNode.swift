@@ -67,10 +67,10 @@ class BackgroundCloudsNode: SKSpriteNode {
             let buddyDirection = buddyDirection {
             
             switch buddyDirection {
-            case .left:
-                cloudSpeed -= buddySpeed / 5.4
             case .right:
                 cloudSpeed += buddySpeed / 5.4
+            case .left:
+                cloudSpeed -= buddySpeed / 5.4
             default:
                 break
             }

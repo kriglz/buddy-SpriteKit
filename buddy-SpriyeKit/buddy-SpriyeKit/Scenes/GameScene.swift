@@ -133,17 +133,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buddy.update(deltaTime: dt)
         
 
+        //Updates clouds behaviour.
         for cloud in allClouds {
             cloud.0.moveTheCloud(deltaTime: dt, speed: cloud.1, in: size)
         }
         
         
-        if childNode(withName: "fish") == nil {
-            for _ in 1...2 {
-                fishIndex = arc4random_uniform(2)+1
-                spawnFish()
-            }
+        //Updates fish behaviour.
+        for fish in floor["fish"] {
+            (fish as! FishNode).move(deltaTime: dt, in: size)
         }
+        
         
         
         //Updates camera and control buttons position if buddy has moved.
@@ -445,14 +445,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Creates a new fish.
     private func spawnFish(){
         let fish = FishNode().newInstance(size: size, randFishNumber: fishIndex)
-                
+        
+        fish.fishSpeed = 20.0 + CGFloat(arc4random_uniform(20))
+        fish.size = CGSize(width: fish.size.width * 0.7, height: fish.size.height * 0.7)
         fish.swim(randFishNumber: fishIndex)
-        fish.move()
+        fish.fadeInOut()
         fish.emitter?.removeFromParent()
         
         fish.name = "fish"
-        
-        addChild(fish)
+        floor.addChild(fish)
         
         //Makes fish nodes observe notification about camera movements.
         NotificationCenter.default.addObserver(
