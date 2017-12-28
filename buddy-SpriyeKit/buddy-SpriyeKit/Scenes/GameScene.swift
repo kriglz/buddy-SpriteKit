@@ -453,5 +453,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fish.name = "fish"
         
         addChild(fish)
+        
+        //Makes fish nodes observe notification about camera movements.
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
+            object: nil,
+            queue: nil,
+            using: fish.moveTheFish)
     }
 }

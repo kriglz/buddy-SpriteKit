@@ -99,12 +99,13 @@ class FishNode: SKSpriteNode {
                                            fadeInAnimation])
         
         
-        let flipAnimation = SKAction.run { [weak self] in
-            self?.xScale *= -1
-        }
+//        let flipAnimation = SKAction.run { [weak self] in
+//            self?.xScale *= -1
+//        }
         
-        let moveBackToPointAnimation = SKAction.move(to: CGPoint(x: self.position.x + 20 * (1 + CGFloat(scaleConstant)), y: self.position.y - 10), duration: 1.0  * (1 + scaleConstant))
-        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 1.0  * (1 + scaleConstant))
+        
+        let moveBackToPointAnimation = SKAction.move(by: CGVector(dx: -5 * (1 + CGFloat(scaleConstant)), dy: 0), duration: 1.0  * (1 + scaleConstant))
+        let fadeOutAniamtion = SKAction.fadeOut(withDuration: 1.0 * (1 + scaleConstant))
         let groupAction2 = SKAction.group([moveBackToPointAnimation,
                                           fadeOutAniamtion])
         
@@ -112,7 +113,7 @@ class FishNode: SKSpriteNode {
         let removeAction = SKAction.removeFromParent()
         
         let sequenceOfAnimations = SKAction.sequence([groupAction1,
-                                                      flipAnimation,
+//                                                      flipAnimation,
                                                       groupAction2,
                                                       removeAction])
         
@@ -203,6 +204,37 @@ class FishNode: SKSpriteNode {
         let moveSequence = SKAction.sequence([moveAction, moveAroundAction])
         
         run(moveSequence, withKey: fishMoveToNewDestinationActionKey)
+    }
+    
+    
+    
+    var direction: Direction = .none
+    var buddysSpeed: CGFloat = 0.0
+    
+    @objc func moveTheFish(notification: Notification) -> Void {
+        
+        guard let buddyDirection = notification.userInfo!["DirectionToMove"],
+            let buddySpeed = notification.userInfo!["BuddySpeed"],
+            let deltaTime = notification.userInfo!["DeltaTime"] else { return }
+        
+        direction = buddyDirection as! Direction
+        buddysSpeed = buddySpeed as! CGFloat
+        let dt = deltaTime as! TimeInterval
+        
+        
+        let deltaX: CGFloat = buddysSpeed * CGFloat(dt) / 4
+        
+        switch direction {
+        case .right:
+            position.x += deltaX
+            
+        case .left:
+            position.x -= deltaX
+            
+        case .none:
+            break
+        }
+
     }
     
     
