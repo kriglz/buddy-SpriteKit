@@ -92,16 +92,33 @@ class FishNode: SKSpriteNode {
     private var direction: Direction = .left
     
     //Buddy properties.
-    var buddyDirection: Direction?
-    var buddySpeed: CGFloat?
+    private var buddyDirection: Direction?
+    private var buddySpeed: CGFloat?
     
+    private var currentTime: TimeInterval = 0.0
     
     ///Adds swim-move action to the fish. For GAME SCENE.
     public func move(deltaTime: TimeInterval, in frameSize: CGSize){
        
-        var newFishSpeed = fishSpeed
+        //Changes fish "swing" - y position.
+        currentTime += deltaTime
         
-        //Moves clouds in different speed if buddy moves too.
+        if currentTime > 2 {
+            currentTime = 0
+        }
+        
+        if currentTime >= 0 && currentTime <= 1 {
+            position.y -= 0.1
+        } else if currentTime > 1 && currentTime <= 2 {
+            position.y += 0.1
+        }
+        
+        
+        
+        
+        var newFishSpeed = fishSpeed
+    
+        //Moves fish in different speed if buddy moves too.
         if let buddySpeed = buddySpeed,
             let buddyDirection = buddyDirection {
             
@@ -174,16 +191,7 @@ class FishNode: SKSpriteNode {
         
         self.run(SKAction.repeatForever(actions))
     }
-    
-    public func swing(){
-        let scaleConstant = CGFloat(drand48())
-        let initPosition = position.y
-        let upAction = SKAction.moveTo(y: initPosition + 8 * scaleConstant, duration: 1.0 * (1 + Double(scaleConstant)))
-        let downAction = SKAction.moveTo(y: initPosition - 8 * scaleConstant, duration: 1.0 * (1 + Double(scaleConstant)))
-
-        let actions = SKAction.sequence([upAction, downAction])
-        self.run(SKAction.repeatForever(actions))
-    }
+  
     
     
     
