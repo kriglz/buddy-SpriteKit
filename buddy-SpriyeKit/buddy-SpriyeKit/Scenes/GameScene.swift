@@ -450,6 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fish.size = CGSize(width: fish.size.width * 0.7, height: fish.size.height * 0.7)
         fish.swim(randFishNumber: fishIndex)
         fish.fadeInOut()
+//        fish.swing()
         fish.emitter?.removeFromParent()
         
         fish.name = "fish"

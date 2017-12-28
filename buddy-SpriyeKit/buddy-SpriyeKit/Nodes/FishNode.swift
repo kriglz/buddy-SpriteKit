@@ -38,7 +38,7 @@ class FishNode: SKSpriteNode {
                 height: (size.height / 7.94) * (0.8 + 0.5 * fishScaleConstant))
             fish.position = CGPoint(
                 x: CGFloat(arc4random_uniform(UInt32(size.width))),
-                y: size.height / 4 - 120 * fishScaleConstant)
+                y: size.height / 5 - 100 * fishScaleConstant)
             fish.zPosition = zPositionFish
         }
                 
@@ -107,9 +107,19 @@ class FishNode: SKSpriteNode {
             
             switch buddyDirection {
             case .right:
-                newFishSpeed += buddySpeed / 4
+                if direction == .left {
+                    newFishSpeed += buddySpeed / 4
+                } else {
+                    newFishSpeed -= buddySpeed / 4
+                }
+                
             case .left:
-                newFishSpeed -= buddySpeed / 4
+                if direction == .left {
+                    newFishSpeed -= buddySpeed / 4
+                } else {
+                    newFishSpeed += buddySpeed / 4
+                }
+                
             default:
                 break
             }
@@ -124,7 +134,6 @@ class FishNode: SKSpriteNode {
             if position.x < -size.width / 2 {
                 direction = .right
                 xScale = -1
-//                position.x = frameSize.width + size.width / 2
             }
             
         case .right:
@@ -133,7 +142,6 @@ class FishNode: SKSpriteNode {
             if position.x > frameSize.width + size.width / 2 {
                 direction = .left
                 xScale = 1
-//                position.x = -size.width / 2
             }
             
         case .none:
@@ -168,7 +176,13 @@ class FishNode: SKSpriteNode {
     }
     
     public func swing(){
-        
+        let scaleConstant = CGFloat(drand48())
+        let initPosition = position.y
+        let upAction = SKAction.moveTo(y: initPosition + 8 * scaleConstant, duration: 1.0 * (1 + Double(scaleConstant)))
+        let downAction = SKAction.moveTo(y: initPosition - 8 * scaleConstant, duration: 1.0 * (1 + Double(scaleConstant)))
+
+        let actions = SKAction.sequence([upAction, downAction])
+        self.run(SKAction.repeatForever(actions))
     }
     
     
