@@ -99,14 +99,12 @@ class BackgroundNode: SKNode {
         mountainsBack.zPosition = zPositionMountains - 1.0
         addChild(mountainsBack)
         
-        mountainsBackAfterFrame = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
-        mountainsBackAfterFrame.size = mountains.size
+        mountainsBackAfterFrame = mountainsBack.copy() as! SKSpriteNode
         mountainsBackAfterFrame.position = CGPoint(x: mountainsBack.position.x + mountainsBackAfterFrame.size.width, y: mountainsBack.position.y)
         mountainsBackAfterFrame.zPosition = mountainsBack.zPosition
         addChild(mountainsBackAfterFrame)
 
-        mountainsBackBeforeFrame = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
-        mountainsBackBeforeFrame.size = mountains.size
+        mountainsBackBeforeFrame = mountainsBack.copy() as! SKSpriteNode
         mountainsBackBeforeFrame.position = CGPoint(x: mountainsBack.position.x - mountainsBackBeforeFrame.size.width, y: mountainsBack.position.y)
         mountainsBackBeforeFrame.zPosition = mountainsBack.zPosition
         addChild(mountainsBackBeforeFrame)

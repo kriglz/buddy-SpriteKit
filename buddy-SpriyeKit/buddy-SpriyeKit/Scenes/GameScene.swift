@@ -20,7 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private let cameraNode = SKCameraNode()
     
-    private let particleEmitter = ParticleNode()
+    private var particleEmitter = ParticleNode()
     private var isEmittingOver: Bool = false
 
     private var allClouds = [(BackgroundCloudsNode, CGFloat)]()
@@ -136,7 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for cloud in allClouds {
             cloud.0.moveTheCloud(deltaTime: dt, speed: cloud.1, in: size)
         }
-
+        
         
         if childNode(withName: "fish") == nil {
             for _ in 1...2 {
@@ -150,66 +150,85 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if buddy.isWalking {
             
             //Move camera only if buddy is not by the edge of the scene.
-//            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+            //            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
             
-                centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-//            } 
-
+            centerCameraOnPoint(point: buddy.position)
+            controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
+            //            }
+            
             
             //Emits particles
-            if isEmittingOver {
-                particleEmitter.removeAllActions()
-                particleEmitter.removeFromParent()
-                isEmittingOver = false
-            }
-            
-            particleEmitter.alpha = 0.4
- 
-            switch controlButtons.direction {
-            case .left:
-                
-                if childNode(withName: "particleEmitter") == nil {
-                    addChild(particleEmitter)
-                }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
-                
-            case .right:
-                
-                if childNode(withName: "particleEmitter") == nil {
-                    addChild(particleEmitter)
-                }
-                particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
-                
-            default:
-                break
-            }
+            emitBuddysParticles()
             
         } else {
-
-            if childNode(withName: "particleEmitter") != nil {
-                
-                particleEmitter.numParticlesToEmit = 0
-              
-                let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
-                                                            SKAction.wait(forDuration: 0.3),
-                                                            
-                                                            SKAction.removeFromParent()
-                ])
-                
-                particleEmitter.run(disappearingAction)
-                particleEmitter.resetSimulation()
-                
-                isEmittingOver = true
-            }
+            //Removes particles
+            removeBuddysParticles()
         }
+        
+        
         self.lastUpdateTime = currentTime
+    }
+
+    
+    
+    
+    
+    
+    private func emitBuddysParticles(){
+        
+        if isEmittingOver {
+            particleEmitter.removeAllActions()
+            particleEmitter.removeFromParent()
+            particleEmitter.resetSimulation()
+            isEmittingOver = false
+            particleEmitter.alpha = 0.4
+        }
+                
+        switch controlButtons.direction {
+        case .left:
+            
+            particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x + buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .left)
+            
+            if childNode(withName: "particleEmitter") == nil {
+                addChild(particleEmitter)
+            }
+            
+        case .right:
+            
+            particleEmitter.emitParticles(at: CGPoint(x: buddy.position.x - buddy.size.width / 3, y: buddy.position.y - buddy.size.height / 2 + 5), direction: .right)
+            
+            if childNode(withName: "particleEmitter") == nil {
+                addChild(particleEmitter)
+            }
+            
+        default:
+            isEmittingOver = true
+        }
+    }
+    
+    private func removeBuddysParticles() {
+        if childNode(withName: "particleEmitter") != nil {
+            
+            particleEmitter.numParticlesToEmit = 0
+            
+            let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
+                                                        SKAction.wait(forDuration: 0.21),
+                                                        
+                                                        SKAction.removeFromParent()
+                ])
+            
+            particleEmitter.run(disappearingAction)
+            particleEmitter.resetSimulation()
+            particleEmitter.alpha = 0.4
+
+            isEmittingOver = true
+        }
     }
     
     
-   
-    
-    
+
+
+
     
     
     
