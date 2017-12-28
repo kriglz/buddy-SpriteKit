@@ -143,52 +143,39 @@ class BackgroundNode: SKNode {
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
-        moveSprite(sprite: horizonGrass, beforeSprite: horizonGrassBeforeFrame, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / horizonSpeedConstant)
-        moveSprite(sprite: mountains, beforeSprite: mountainsBeforeFrame, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 5)
-        moveSprite(sprite: mountainsBack, beforeSprite: mountainsBackBeforeFrame, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 6)
+        moveSprite(sprite: horizonGrass, afterSprite: horizonGrassAfterFrame, byDeltaX: deltaX / horizonSpeedConstant)
+        moveSprite(sprite: mountains, afterSprite: mountainsAfterFrame, byDeltaX: deltaX / 5)
+        moveSprite(sprite: mountainsBack, afterSprite: mountainsBackAfterFrame, byDeltaX: deltaX / 6)
     }
     
     
     
     
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
+    func moveSprite(sprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
         
         //Loop cycle for both sprite and dublicate
-        for spriteToMove in [sprite, beforeSprite, afterSprite] {
-            
-            //Move sprite to the left based on speed
-            var newPosition: CGPoint = CGPoint.zero
-            newPosition = spriteToMove.position
-            
+        for spriteToMove in [sprite, afterSprite] {
             
             switch direction {
                 
             case .right:
                 
-                newPosition.x -= byDeltaX
-                spriteToMove.position = newPosition
-            
+                spriteToMove.position.x -= byDeltaX
+                spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
+
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if spriteToMove.frame.maxX < 0.0 {
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
-                    
+                if spriteToMove.frame.maxX <= 0.0 {
                     spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
                 
             case .left:
                 
-                newPosition.x += byDeltaX
-                spriteToMove.position = newPosition 
-                
+                spriteToMove.position.x += byDeltaX
+                spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
+
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if spriteToMove.frame.minX > spriteToMove.size.width {
-                    
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
-                    
+                if spriteToMove.frame.minX >= spriteToMove.size.width {
                     spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }
                 

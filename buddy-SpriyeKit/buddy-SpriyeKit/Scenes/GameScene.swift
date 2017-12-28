@@ -180,8 +180,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             particleEmitter.removeAllActions()
             particleEmitter.removeFromParent()
             particleEmitter.resetSimulation()
+            particleEmitter.alpha = 0.3
             isEmittingOver = false
-            particleEmitter.alpha = 0.4
         }
                 
         switch controlButtons.direction {
@@ -202,7 +202,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         default:
-            isEmittingOver = true
+            removeBuddysParticles()
         }
     }
     
@@ -212,15 +212,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             particleEmitter.numParticlesToEmit = 0
             
             let disappearingAction = SKAction.sequence([SKAction.fadeOut(withDuration: 0.2),
-                                                        SKAction.wait(forDuration: 0.21),
-                                                        
                                                         SKAction.removeFromParent()
-                ])
-            
+                                                        ])
             particleEmitter.run(disappearingAction)
-            particleEmitter.resetSimulation()
-            particleEmitter.alpha = 0.4
-
             isEmittingOver = true
         }
     }

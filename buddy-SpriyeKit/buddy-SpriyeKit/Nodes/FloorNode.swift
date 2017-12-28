@@ -59,17 +59,8 @@ class FloorNode: SKSpriteNode {
         floorSpriteAfterFrame = floorSprite.copy() as! SKSpriteNode
         floorSpriteAfterFrame.position = CGPoint(x: floorSprite.position.x + floorSprite.size.width, y: floorSprite.position.y)
         floorSpriteAfterFrame.zPosition = floorSprite.zPosition
-//        floorSpriteAfterFrame.physicsBody = floorSprite.physicsBody
         
         addChild(floorSpriteAfterFrame)
-        
-        
-        floorSpriteBeforeFrame = floorSprite.copy() as! SKSpriteNode
-        floorSpriteBeforeFrame.position = CGPoint(x: floorSprite.position.x - floorSprite.size.width, y: floorSprite.position.y)
-        floorSpriteBeforeFrame.zPosition = floorSprite.zPosition
-//        floorSpriteBeforeFrame.physicsBody = floorSprite.physicsBody
-        
-        addChild(floorSpriteBeforeFrame)
     }
     
     
@@ -90,64 +81,51 @@ class FloorNode: SKSpriteNode {
         buddysSpeed = buddySpeed as! CGFloat
         let dt = deltaTime as! TimeInterval
         
-        
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
-        moveSprite(sprite: floorSprite, beforeSprite: floorSpriteBeforeFrame, afterSprite: floorSpriteAfterFrame, byDeltaX: deltaX)
+        moveSprite(sprite: floorSprite, afterSprite: floorSpriteAfterFrame, byDeltaX: deltaX)
     }
     
     
     
     
     ///Sets the movement direction and speed.
-    func moveSprite(sprite: SKSpriteNode, beforeSprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
-        
+    func moveSprite(sprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
+
+
         //Loop cycle for both sprite and dublicate
-        for spriteToMove in [sprite, beforeSprite, afterSprite] {
-            
-            //Move sprite to the left based on speed
-            var newPosition: CGPoint = CGPoint.zero
-            newPosition = spriteToMove.position
-            
-            
+        for spriteToMove in [sprite, afterSprite] {
+
             switch direction {
                 
             case .right:
-                
-                newPosition.x -= byDeltaX
-                spriteToMove.position = newPosition
-                
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-                if spriteToMove.frame.maxX < 0.0 {
 
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
-                    
+                spriteToMove.position.x -= byDeltaX
+                spriteToMove.position.x = spriteToMove.position.x.rounded(.down)
+
+
+                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                if spriteToMove.frame.maxX <= 0.0 {
                     spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
-                
+
             case .left:
-                
-                newPosition.x += byDeltaX
-                spriteToMove.position = newPosition
-                
+
+                spriteToMove.position.x += byDeltaX
+                spriteToMove.position.x = spriteToMove.position.x.rounded(.down)
+
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
-
-                if spriteToMove.frame.minX > spriteToMove.size.width {
-
-                    //Shift it over so that it's now to the immediate right of the other sprite.
-                    //Two sprite are leap-frogging each other as tehy both move.
+                if spriteToMove.frame.minX >= spriteToMove.size.width {
                     spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }
-                
+
             case .none:
                 break
             }
         }
     }
     
-    
-    
+
     
     
     
@@ -168,7 +146,6 @@ class FloorNode: SKSpriteNode {
             
             floorSprite.run(waveAction)
             floorSpriteAfterFrame.run(waveAction)
-            floorSpriteBeforeFrame.run(waveAction)
             
             isWaveRunning = true
             return
