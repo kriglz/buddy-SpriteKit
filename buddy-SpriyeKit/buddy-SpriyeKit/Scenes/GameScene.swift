@@ -76,7 +76,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         particleEmitter.name = "particleEmitter"
         
         //Setting up camera.
-        cameraNode.position = CGPoint(x: buddy.position.x, y: size.height / 2)
+        cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         cameraNode.xScale = 1.0/xScaleForSceneSize
         cameraNode.yScale = 1.0
         camera = cameraNode
@@ -92,7 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
-        controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
+        controlButtons.centerOnPoint(point: cameraNode.position, with: margin, in: size)
         addChild(controlButtons)
     }
 
@@ -150,12 +150,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if buddy.isWalking {
             
             //Move camera only if buddy is not by the edge of the scene.
-            //            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+            if buddy.position.x > self.size.width / (2.0 * xScaleForSceneSize) && buddy.position.x < self.size.width * (2.0 * xScaleForSceneSize - 1.0) / (2.0 * xScaleForSceneSize) {
+                
+               
+            }
             
-            centerCameraOnPoint(point: buddy.position)
-            controlButtons.centerOnPoint(point: buddy.position, with: margin, in: size)
-            //            }
-            
+            if buddy.position.x < self.size.width / 2 {
+                centerCameraOnPoint(point: buddy.position)
+                controlButtons.centerOnPoint(point: cameraNode.position, with: margin, in: size)
+                buddy.isMoving = false
+            } else {
+                buddy.isMoving = true
+            }
+        
             
             //Emits particles
             emitBuddysParticles()
@@ -279,10 +286,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touchPoint = touches.first?.location(in: self)
         
-        if buddy.isWalking {
+        if let touchPoint = touchPoint {
+            controlButtons.touchEnded(at: touchPoint)
             
-            buddy.walk( .none)
+            if buddy.isWalking {
+                
+                buddy.walk( .none)
+            }
         }
     }
 
@@ -388,7 +400,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance(size: size)
-        let buddyInitPosition = CGPoint(x: size.width / 2, y: size.height * yForGrass - 10.0 + buddy.size.height / 2 )
+        let buddyInitPosition = CGPoint(x: size.width / 2 + buddy.size.width * 2, y: size.height * yForGrass - 10.0 + buddy.size.height / 2 )
         buddy.updatePosition(point: buddyInitPosition)
         
         addChild(buddy)

@@ -120,11 +120,15 @@ class BuddyNode: SKSpriteNode {
             //Moves the buddy position by `walkingDeltaX`.
             switch direction {
             case .left:
-//                position.x -= walkingDeltaX
+                if isMoving {
+                   position.x -= walkingDeltaX
+                }
                 xScale = -1
             
             case .right:
-//                position.x += walkingDeltaX
+                if isMoving {
+                    position.x += walkingDeltaX
+                }
                 xScale = 1
                 
             case .none:
@@ -133,6 +137,7 @@ class BuddyNode: SKSpriteNode {
         }
     }
     
+    var isMoving = false
     
      
     ///Sets destination point after touch action happens.
