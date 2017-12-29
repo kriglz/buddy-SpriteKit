@@ -31,7 +31,7 @@ class BuddyNode: SKSpriteNode {
         
         if let buddyTexture = buddy.texture {
             //Adding physics body of shape of still buddy.
-            let buddySize = CGSize(width: size.width / 8.15, height: size.height / 2.65)
+            let buddySize = CGSize(width: size.width / 8.15 / 1.1, height: size.height / 2.65 / 1.1)
             buddy.size = buddySize
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)

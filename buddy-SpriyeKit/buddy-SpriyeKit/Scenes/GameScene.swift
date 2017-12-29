@@ -400,7 +400,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Creates a new buddy.
         buddy = BuddyNode.newInstance(size: size)
-        let buddyInitPosition = CGPoint(x: size.width / 2 + buddy.size.width * 2, y: size.height * yForGrass - 10.0 + buddy.size.height / 2 )
+        let buddyInitPosition = CGPoint(x: size.width / 2 + buddy.size.width - 20, y: size.height * yForGrass - 10.0 + buddy.size.height / 2 )
         buddy.updatePosition(point: buddyInitPosition)
         
         addChild(buddy)
@@ -410,13 +410,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func spawnCloud(){
         
         //Creating clouds, adding them to cloud array.
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
-        allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        for _ in 0...7 {
+            allClouds.append(BackgroundCloudsNode.newInstance(size: size))
+        }
 
         //Every cloud is added to the parent and gets a notification observer for camera movement, so that speed could be adjusted.
         for cloud in allClouds {
@@ -432,14 +428,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     ///Creates a new palm.
     private func spawnPalm(){
         
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
-        allPalms.append(PalmNode.newInstance(size: size))
+        for _ in 0...10 {
+            allPalms.append(PalmNode.newInstance(size: size))
+        }
         
         for palm in allPalms {
             addChild(palm)

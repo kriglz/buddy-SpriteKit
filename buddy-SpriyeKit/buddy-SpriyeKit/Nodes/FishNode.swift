@@ -39,7 +39,7 @@ class FishNode: SKSpriteNode {
             fish.position = CGPoint(
                 x: CGFloat(arc4random_uniform(UInt32(size.width))),
                 y: size.height / 5 - 100 * fishScaleConstant)
-            fish.zPosition = zPositionFish
+            fish.zPosition = zPositionFish + fishScaleConstant
         }
                 
         return fish

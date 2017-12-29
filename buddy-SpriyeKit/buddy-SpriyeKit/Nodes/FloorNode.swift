@@ -101,7 +101,7 @@ class FloorNode: SKSpriteNode {
             case .right:
 
                 spriteToMove.position.x -= byDeltaX
-                spriteToMove.position.x = spriteToMove.position.x.rounded(.down)
+                spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 
 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
@@ -112,7 +112,7 @@ class FloorNode: SKSpriteNode {
             case .left:
 
                 spriteToMove.position.x += byDeltaX
-                spriteToMove.position.x = spriteToMove.position.x.rounded(.down)
+                spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 
                 //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.minX >= spriteToMove.size.width {

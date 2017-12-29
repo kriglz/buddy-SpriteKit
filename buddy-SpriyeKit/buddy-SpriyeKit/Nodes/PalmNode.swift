@@ -27,7 +27,7 @@ class PalmNode: SKSpriteNode {
             palm.size = CGSize(width: sizeWidth, height: sizeHeight)
             
             let yPosition =  size.height / 2 + 10.0 + 5 * (1 - scaleConstant)
-            var xPosition = size.width / 2
+            var xPosition = size.width / 4
             if randomSite == 0 {
                xPosition += CGFloat(arc4random_uniform(200))
             } else {
