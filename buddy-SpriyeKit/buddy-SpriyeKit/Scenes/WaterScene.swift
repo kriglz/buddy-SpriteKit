@@ -28,6 +28,8 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
+    private var fishFoodButton = SKSpriteNode()
+    
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
@@ -103,6 +105,19 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: worldFrame)
         self.physicsBody?.categoryBitMask = WorldCategory
         self.physicsWorld.contactDelegate = self
+        
+        
+        
+        //Adda fish food button
+        fishFoodButton = SKSpriteNode(texture: SKTexture(imageNamed: "buttonFishFood"))
+        let buttonSize = CGSize(width: size.width / 5.91, height: size.height / 10.51)
+        fishFoodButton.size = buttonSize
+    
+        let margin = size.width / 26.565
+        fishFoodButton.position = CGPoint(x: size.width - fishFoodButton.size.width / 2 - margin, y: fishFoodButton.size.height / 2 + margin)
+        fishFoodButton.zPosition = backgroundDarkNode.zPosition - 1
+        fishFoodButton.alpha = alphaDefault
+        addChild(fishFoodButton)
     }
     
    
@@ -233,6 +248,13 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         //Loop to create 3 fish food after tap.
         tapCount += 1
 
+        let fadeOut = SKAction.fadeAlpha(to: alphaPressed, duration: 0)
+        let wait = SKAction.wait(forDuration: 0.1)
+        let fadeIn = SKAction.fadeAlpha(to: alphaDefault, duration: 0)
+        
+        fishFoodButton.run(SKAction.sequence([fadeOut, wait, fadeIn]))
+        
+        
         for _ in 0...1 {
             spawnFishFood()
             
@@ -255,7 +277,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    
+
     
     ///Handles swipe up behaviour, by changing `isExitingScene` to true.
     @objc private func handleSwipeDown(byReactingTo: UISwipeGestureRecognizer){

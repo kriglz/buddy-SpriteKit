@@ -27,7 +27,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var allPalms = [PalmNode]()
     
     private let controlButtons = ControlButtons()
-    lazy var margin: CGFloat = size.width / 10.35
 
     private var fishIndex: UInt32 = 0
 
@@ -92,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         //Adds control buttons to the scene.
         controlButtons.setup(size: size)
-        controlButtons.centerOnPoint(point: cameraNode.position, with: margin, in: size)
+        controlButtons.centerOnPoint(point: cameraNode.position, in: size)
         addChild(controlButtons)
     }
 
@@ -157,7 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if buddy.position.x < self.size.width / 2 {
                 centerCameraOnPoint(point: buddy.position)
-                controlButtons.centerOnPoint(point: cameraNode.position, with: margin, in: size)
+                controlButtons.centerOnPoint(point: cameraNode.position, in: size)
                 buddy.isMoving = false
             } else {
                 buddy.isMoving = true

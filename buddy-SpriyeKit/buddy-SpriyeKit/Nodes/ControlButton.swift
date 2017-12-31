@@ -102,9 +102,9 @@ class ControlButtons: SKNode {
     
     
     
-    public func centerOnPoint(point: CGPoint, with margin: CGFloat, in size: CGSize){
-        let marginX: CGFloat = margin
-        let marginY: CGFloat = margin / 7.7
+    public func centerOnPoint(point: CGPoint, in size: CGSize){
+        let marginX: CGFloat = size.width / 10.35
+        let marginY: CGFloat = size.width / 10.35 / 7.7 
 
         goLeftButton.position = CGPoint(x: point.x - marginX - goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
         goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
