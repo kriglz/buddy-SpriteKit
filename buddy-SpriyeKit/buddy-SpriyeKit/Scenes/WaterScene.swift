@@ -50,7 +50,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         backgroundDarkNode.name = "backgroundDarkNode"
         backgroundDarkNode.size = size
         backgroundDarkNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        backgroundDarkNode.zPosition = zPositionFish + 1
+        backgroundDarkNode.zPosition = zPositionFish + 10
         addChild(backgroundDarkNode)
         
         //Creating background light

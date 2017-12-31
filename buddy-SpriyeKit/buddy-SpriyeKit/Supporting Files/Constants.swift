@@ -23,7 +23,7 @@ let alphaDefault: CGFloat = 0.6
 let yForGrass: CGFloat = 0.4
 let yForGrassHorizon: CGFloat = 0.08
 let yForMountains: CGFloat = 0.12
-let yForSky: CGFloat = 1.0 - yForGrass - yForMountains //0.40 now
+let yForSky: CGFloat = 1.0 - yForGrass //0.60 now
 
 let cameraMoveNotificationKey = "cameraMoved"
 

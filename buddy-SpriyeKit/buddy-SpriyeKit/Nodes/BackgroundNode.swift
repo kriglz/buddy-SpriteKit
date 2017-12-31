@@ -78,17 +78,17 @@ class BackgroundNode: SKNode {
         mountains.size = mountainsSize
         mountains.position = CGPoint(x: size.width / 2, y: mountains.size.height / 2 + size.height * (yForGrass + yForGrassHorizon) - 20)
         mountains.zPosition = zPositionMountains
-        addChild(mountains)
+//        addChild(mountains)
         
         mountainsAfterFrame = mountains.copy() as! SKSpriteNode
         mountainsAfterFrame.position = CGPoint(x: mountains.position.x + mountains.size.width, y: mountains.position.y)
         mountainsAfterFrame.zPosition = mountains.zPosition
-        addChild(mountainsAfterFrame)
+//        addChild(mountainsAfterFrame)
         
         mountainsBeforeFrame = mountains.copy() as! SKSpriteNode
         mountainsBeforeFrame.position = CGPoint(x: mountains.position.x - mountains.size.width, y: mountains.position.y)
         mountainsBeforeFrame.zPosition = mountains.zPosition
-        addChild(mountainsBeforeFrame)
+//        addChild(mountainsBeforeFrame)
         
         
         
@@ -97,29 +97,29 @@ class BackgroundNode: SKNode {
         mountainsBack.size = mountains.size
         mountainsBack.position = mountains.position
         mountainsBack.zPosition = zPositionMountains - 1.0
-        addChild(mountainsBack)
+//        addChild(mountainsBack)
         
         mountainsBackAfterFrame = mountainsBack.copy() as! SKSpriteNode
         mountainsBackAfterFrame.position = CGPoint(x: mountainsBack.position.x + mountainsBackAfterFrame.size.width, y: mountainsBack.position.y)
         mountainsBackAfterFrame.zPosition = mountainsBack.zPosition
-        addChild(mountainsBackAfterFrame)
+//        addChild(mountainsBackAfterFrame)
 
         mountainsBackBeforeFrame = mountainsBack.copy() as! SKSpriteNode
         mountainsBackBeforeFrame.position = CGPoint(x: mountainsBack.position.x - mountainsBackBeforeFrame.size.width, y: mountainsBack.position.y)
         mountainsBackBeforeFrame.zPosition = mountainsBack.zPosition
-        addChild(mountainsBackBeforeFrame)
+//        addChild(mountainsBackBeforeFrame)
         
         
         
         //Below stuff is not moving yet.
 
         //Init of sky.
-        let skySize = CGSize(width: size.width, height: size.height * (yForSky + yForMountains))
+        let skySize = CGSize(width: size.width, height: size.height * yForSky)
         
         let sky = SKSpriteNode(texture: SKTexture(imageNamed: "sky"))
         
         sky.size = skySize
-        sky.position = CGPoint(x: sky.size.width / 2, y: sky.size.height / 2 + size.height * (yForGrass + yForGrassHorizon))
+        sky.position = CGPoint(x: sky.size.width / 2, y: sky.size.height / 2 + size.height * yForGrass)
         sky.zPosition = zPositionSky
         
         addChild(sky)        
