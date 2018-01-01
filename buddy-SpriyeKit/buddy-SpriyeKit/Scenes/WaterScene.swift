@@ -28,8 +28,13 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
 
     private let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
 
+    
+    ///Button to feed fish.
     private var fishFoodButton = SKSpriteNode()
     
+    ///Button to fish.
+    private var spearButton: SKSpriteNode!
+    private let spearButtonTexture = SKTexture(imageNamed: "Spear")
     
     override func didMove(to view: SKView) {
         //Adds swipe handler to the scene.
@@ -118,6 +123,13 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         fishFoodButton.zPosition = backgroundDarkNode.zPosition - 1
         fishFoodButton.alpha = alphaDefault
         addChild(fishFoodButton)
+        
+        spearButton = SKSpriteNode(texture: spearButtonTexture)
+        spearButton.size = buttonSize
+        spearButton.position = CGPoint(x: fishFoodButton.size.width / 2 + margin, y: fishFoodButton.size.height / 2 + margin)
+        spearButton.zPosition = backgroundDarkNode.zPosition - 1
+        spearButton.alpha = alphaDefault
+        addChild(spearButton)
     }
     
    
