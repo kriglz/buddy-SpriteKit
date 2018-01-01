@@ -18,6 +18,15 @@ class ControlButtons: SKNode {
     private var goRightButton: SKSpriteNode!
     private let goRightButtonTexture = SKTexture(imageNamed: "buttonRight")
     
+    ///Button night mode.
+    private var nightModeButton: SKSpriteNode!
+    private let nightModeButtonTexture = SKTexture(imageNamed: "buttonNightMode")
+    
+    ///Button to fish.
+    private var spearButton: SKSpriteNode!
+    private let spearButtonTexture = SKTexture(imageNamed: "Spear")
+    
+    
     ///Button to go to menu screen.
     private var menuButton: SKSpriteNode!
     private let menuButtonTexture = SKTexture(imageNamed: "buttonMenu")
@@ -42,6 +51,18 @@ class ControlButtons: SKNode {
         goRightButton.zPosition = zPositionControl
         goRightButton.alpha = alphaDefault
         addChild(goRightButton)
+        
+        nightModeButton = SKSpriteNode(texture: nightModeButtonTexture)
+        nightModeButton.size = CGSize(width: buttonSize.width * 0.6, height: buttonSize.height * 0.6)
+        nightModeButton.zPosition = zPositionControl
+        nightModeButton.alpha = alphaDefault
+        addChild(nightModeButton)
+        
+        spearButton = SKSpriteNode(texture: spearButtonTexture)
+        spearButton.size = CGSize(width: buttonSize.width, height: buttonSize.height)
+        spearButton.zPosition = zPositionControl
+        spearButton.alpha = alphaDefault
+        addChild(spearButton)
     }
     
     
@@ -107,7 +128,8 @@ class ControlButtons: SKNode {
         let marginY: CGFloat = size.width / 10.35 / 7.7 
 
         goLeftButton.position = CGPoint(x: point.x - marginX - goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
-        goRightButton.position = CGPoint(x: point.x + marginX + goLeftButton.size.width / 2, y: marginY + goLeftButton.size.height / 2)
+        goRightButton.position = CGPoint(x: point.x + marginX + goRightButton.size.width / 2, y: marginY + goRightButton.size.height / 2)
+        spearButton.position = CGPoint(x: point.x, y: marginY + nightModeButton.size.height / 2)
     }
 }
 
