@@ -48,6 +48,7 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: tapHandler)
         tapRecognizer.numberOfTapsRequired = 1
         self.view?.addGestureRecognizer(tapRecognizer)
+        
     }
     
     override func sceneDidLoad() {
@@ -102,6 +103,19 @@ class WaterScene: SKScene, SKPhysicsContactDelegate {
         waterGrass.position = CGPoint(x: size.width / 2, y: size.height / 2)
         waterGrass.zPosition = backgroundNode.zPosition + 1
         addChild(waterGrass)
+
+        //Adds shader which makes water grass to wave.
+        let waveShader = SKShader(fileNamed: "waveShader.fsh")
+        waveShader.attributes = [
+            SKAttribute(name: "a_sprite_size", type: .vectorFloat2)
+        ]
+        waterGrass.shader = waveShader
+        
+        let waterGrassSize = vector_float2(Float(waterGrass.frame.size.width),
+                                       Float(waterGrass.frame.size.height))
+        waterGrass.setValue(SKAttributeValue(vectorFloat2: waterGrassSize),
+                        forAttribute: "a_sprite_size")
+        
         
         
         //Adding WorldFrame

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		890BC5991FF9F4320004015F /* waveShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 890BC5981FF9F4320004015F /* waveShader.fsh */; };
 		892FFFE31FEF33C0006ED63F /* FoodNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 892FFFE21FEF33C0006ED63F /* FoodNode.swift */; };
 		893B55CD1FE59FB600490D35 /* BackgroundCloudsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */; };
 		8946D1071FD8F65A0049084F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8946D1061FD8F65A0049084F /* AppDelegate.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		890BC5981FF9F4320004015F /* waveShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = waveShader.fsh; sourceTree = "<group>"; };
 		892FFFE21FEF33C0006ED63F /* FoodNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNode.swift; sourceTree = "<group>"; };
 		893B55CC1FE59FB600490D35 /* BackgroundCloudsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundCloudsNode.swift; sourceTree = "<group>"; };
 		8946D1031FD8F65A0049084F /* buddy-SpriyeKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "buddy-SpriyeKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +86,7 @@
 		8946D1051FD8F65A0049084F /* buddy-SpriyeKit */ = {
 			isa = PBXGroup;
 			children = (
+				890BC5981FF9F4320004015F /* waveShader.fsh */,
 				8946D1181FD8F65A0049084F /* Info.plist */,
 				8946D1061FD8F65A0049084F /* AppDelegate.swift */,
 				8946D10E1FD8F65A0049084F /* GameViewController.swift */,
@@ -203,6 +206,7 @@
 			files = (
 				8946D1121FD8F65A0049084F /* Main.storyboard in Resources */,
 				89D1208C1FE312A30065B588 /* MagicParticles.sks in Resources */,
+				890BC5991FF9F4320004015F /* waveShader.fsh in Resources */,
 				8946D1141FD8F65A0049084F /* Assets.xcassets in Resources */,
 				89E0C2E11FEB4F3C0070AC3B /* BubbleParticles.sks in Resources */,
 				8946D1171FD8F65A0049084F /* LaunchScreen.storyboard in Resources */,

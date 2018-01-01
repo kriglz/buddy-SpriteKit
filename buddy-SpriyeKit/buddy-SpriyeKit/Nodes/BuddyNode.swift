@@ -70,11 +70,11 @@ class BuddyNode: SKSpriteNode {
         if !isWalking {
             
             //Sets walking action to nil.
-//            physicsBody?.velocity.dx = 0.0
+            physicsBody?.velocity.dx = 0.0
             removeAction(forKey: walkingActionKey)
             texture = SKTexture(imageNamed: "buddyStill")
             timeSinceLastStop = 0.0
-            
+            walkingSpeed = 144.0
             
         //Else - Adds walking action.
         } else {
@@ -85,19 +85,26 @@ class BuddyNode: SKSpriteNode {
                 
                 //Initial one time slower action.
                 let startingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
-                                                                       timePerFrame: frameTime * 1.5, // = 0.12
+                                                                       timePerFrame: frameTime, // = 0.08
                                                                        resize: false,
                                                                        restore: false),
-                                                      count: 1)
+                                                      count: 3)
                 
-                //Main walking action.
-                let walkingAction = SKAction.repeatForever( SKAction.animate(with: buddyWalkingFrame,
-                                     timePerFrame: frameTime,
-                                     resize: false,
-                                     restore: false)
-                )
+                //Walking action.
+                let walkingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
+                                                                      timePerFrame: frameTime / 1.2, // = 0.067
+                                                                      resize: false,
+                                                                      restore: false),
+                                                     count: 8)
                 
-                let actions = SKAction.sequence([startingAction, walkingAction])
+                //Walking action.
+                let runningAction = SKAction.repeatForever( SKAction.animate(with: buddyWalkingFrame,
+                                                                             timePerFrame: frameTime / 1.4, // = 0.067
+                    resize: false,
+                    restore: false))
+                
+                
+                let actions = SKAction.sequence([startingAction, walkingAction, runningAction])
                 
                 
                 run(actions, withKey: walkingActionKey)
@@ -107,11 +114,14 @@ class BuddyNode: SKSpriteNode {
             timeSinceLastStop += deltaTime
             
             var walkingDeltaX: CGFloat {
-                if timeSinceLastStop < 0.96 {
-                    walkingSpeed = 96.0
-                    return walkingSpeed * CGFloat(deltaTime)
-                } else {
+                if timeSinceLastStop < 2.56 {                           // Staring to walk.
                     walkingSpeed = 144.0
+                    return walkingSpeed * CGFloat(deltaTime)
+                } else if timeSinceLastStop < 6.823 {                   // Walking walk.
+                    walkingSpeed = 216.0
+                    return walkingSpeed * CGFloat(deltaTime)
+                } else {                                                // Running action.
+                    walkingSpeed = 324.0
                     return walkingSpeed * CGFloat(deltaTime)
                 }
             }
