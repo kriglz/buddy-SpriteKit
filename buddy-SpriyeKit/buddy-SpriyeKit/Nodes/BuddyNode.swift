@@ -27,7 +27,7 @@ class BuddyNode: SKSpriteNode {
     
     ///Creates a new buddy node.
     public static func newInstance(size: CGSize) -> BuddyNode {
-        let buddy = BuddyNode(imageNamed: "buddyStill")
+        let buddy = BuddyNode(imageNamed: "buddyWalk4")//buddyStill")
         
         if let buddyTexture = buddy.texture {
             //Adding physics body of shape of still buddy.
@@ -35,6 +35,7 @@ class BuddyNode: SKSpriteNode {
             buddy.size = buddySize
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)
+
             buddy.physicsBody?.allowsRotation = false
             buddy.zPosition = zPositionBuddy
             
@@ -75,7 +76,8 @@ class BuddyNode: SKSpriteNode {
             texture = SKTexture(imageNamed: "buddyStill")
             timeSinceLastStop = 0.0
             walkingSpeed = 144.0
-            
+            physicsBody = SKPhysicsBody(texture: self.texture!, alphaThreshold: 0.1, size: size)
+
         //Else - Adds walking action.
         } else {
             
@@ -90,6 +92,8 @@ class BuddyNode: SKSpriteNode {
                                                                        restore: false),
                                                       count: 3)
                 
+                
+                
                 //Walking action.
                 let walkingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
                                                                       timePerFrame: frameTime / 1.2, // = 0.067
@@ -103,14 +107,11 @@ class BuddyNode: SKSpriteNode {
                     resize: false,
                     restore: false))
                 
-                
                 let actions = SKAction.sequence([startingAction, walkingAction, runningAction])
-                
                 
                 run(actions, withKey: walkingActionKey)
             }
-            
-            
+                        
             timeSinceLastStop += deltaTime
             
             var walkingDeltaX: CGFloat {
@@ -126,7 +127,7 @@ class BuddyNode: SKSpriteNode {
                 }
             }
             
-
+            
             //Moves the buddy position by `walkingDeltaX`.
             switch direction {
             case .left:
@@ -134,17 +135,23 @@ class BuddyNode: SKSpriteNode {
                    position.x -= walkingDeltaX
                 }
                 xScale = -1
-            
+                physicsBody = SKPhysicsBody(texture: texture!, alphaThreshold: 0.1, size: CGSize(width: -size.width, height: size.height))
+
             case .right:
                 if isMoving {
                     position.x += walkingDeltaX
                 }
                 xScale = 1
-                
+                physicsBody = SKPhysicsBody(texture: texture!, alphaThreshold: 0.1, size: CGSize(width: size.width, height: size.height))
+
             case .none:
                 break
             }
+            
+
         }
+        
+
     }
     
     var isMoving = false
