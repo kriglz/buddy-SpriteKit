@@ -129,17 +129,16 @@ class BuddyNode: SKSpriteNode {
                         
             timeSinceLastStop += deltaTime
             
+            if timeSinceLastStop < 2.56 {                           // Staring to walk.
+                walkingSpeed = 144.0
+            } else if timeSinceLastStop < 6.823 {                   // Walking walk.
+                walkingSpeed = 216.0
+            } else {                                                // Running action.
+                walkingSpeed = 324.0
+            }
+            
             var walkingDeltaX: CGFloat {
-                if timeSinceLastStop < 2.56 {                           // Staring to walk.
-                    walkingSpeed = 144.0
-                    return walkingSpeed * CGFloat(deltaTime)
-                } else if timeSinceLastStop < 6.823 {                   // Walking walk.
-                    walkingSpeed = 216.0
-                    return walkingSpeed * CGFloat(deltaTime)
-                } else {                                                // Running action.
-                    walkingSpeed = 324.0
-                    return walkingSpeed * CGFloat(deltaTime)
-                }
+                return walkingSpeed * CGFloat(deltaTime)
             }
             
             
@@ -171,7 +170,7 @@ class BuddyNode: SKSpriteNode {
 
     }
     
-    var isMoving = false
+    public var isMoving = false
     
      
     ///Sets destination point after touch action happens.

@@ -154,7 +154,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                
             }
             
-            if buddy.position.x < self.size.width / 2 {
+            if buddy.position.x <= self.size.width / 2 {
                 centerCameraOnPoint(point: buddy.position)
                 controlButtons.centerOnPoint(point: cameraNode.position, in: size)
                 buddy.isMoving = false
@@ -166,10 +166,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //Emits particles
 //            emitBuddysParticles()
             
-        } else {
+        }
+//        else {
             //Removes particles
 //            removeBuddysParticles()
-        }
+//        }
         
         
         self.lastUpdateTime = currentTime
