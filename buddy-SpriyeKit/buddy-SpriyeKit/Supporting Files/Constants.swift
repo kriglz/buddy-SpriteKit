@@ -15,7 +15,6 @@ let FishCategory: UInt32 = 0x1 << 4
 let FishFoodCategory: UInt32 = 0x1 << 5
 let SandCategory: UInt32 = 0x1 << 6
 
-
 let xScaleForSceneSize: CGFloat = 3.0
 
 //For buttons
