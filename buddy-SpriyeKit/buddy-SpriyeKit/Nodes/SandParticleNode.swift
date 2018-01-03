@@ -33,8 +33,8 @@ class SandParticleNode: SKSpriteNode {
     
     public func animation(){
         
-        let fade = SKAction.fadeOut(withDuration: 1)
-        let wait = SKAction.wait(forDuration: 1)
+        let fade = SKAction.fadeOut(withDuration: 1.5)
+        let wait = SKAction.wait(forDuration: 1.5)
         let remove = SKAction.run { [weak self] in
             self?.removeFromParent()
         }
