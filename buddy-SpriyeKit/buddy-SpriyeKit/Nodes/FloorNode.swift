@@ -69,19 +69,19 @@ class FloorNode: SKSpriteNode {
     
     
     
-    private var particleNumber = 7
+    private var particleNumber = 8
     
     public func addSandParticles(at point: CGPoint){
         particleNumber += 1
         
-        if particleNumber == 8 {
-            
+        if particleNumber == 9 {
+        
             let sandnode = SandParticleNode().newInstance(in: size)
             sandnode.name = "sand"
-            sandnode.position = CGPoint(x: point.x, y: point.y + 3)
+            sandnode.position = CGPoint(x: point.x, y: point.y + 5)
             addChild(sandnode)
             sandnode.animation()
-            
+        
             // Resets particla number
             particleNumber = 0
         }
