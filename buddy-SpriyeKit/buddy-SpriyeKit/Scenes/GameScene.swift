@@ -313,6 +313,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
+        //Checks if buddy was hit.
+//        if contact.bodyA.categoryBitMask == FloorCategory || contact.bodyB.categoryBitMask == FloorCategory {
+//            
+//            handleFloorCollision(contact: contact)
+//            return
+//        }
+        
         //Checks if fish was hit.
         if contact.bodyA.categoryBitMask == FishCategory || contact.bodyB.categoryBitMask == FishCategory {
             
@@ -336,9 +343,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             buddy.removeAllActions()
        
         case FloorCategory:
-            
             if buddy.isWalking {
-                
                 floor.addSandParticles(at: contact.contactPoint)
             }
             
@@ -347,6 +352,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+//    private func handleFloorCollision(contact: SKPhysicsContact) {
+//        var otherBody: SKPhysicsBody
+//
+//        if contact.bodyA.categoryBitMask == FloorCategory {
+//            otherBody = contact.bodyB
+//        } else {
+//            otherBody = contact.bodyA
+//        }
+//
+//        switch otherBody.categoryBitMask {
+////        case SandCategory:
+////            otherBody.node?.removeAllActions()
+////            otherBody.node?.removeFromParent()
+//
+//        default:
+//            break
+//        }
+//    }
+    
     private func handleFishCollision(contact: SKPhysicsContact) {
         var otherBody: SKPhysicsBody
         var fishBody: SKPhysicsBody

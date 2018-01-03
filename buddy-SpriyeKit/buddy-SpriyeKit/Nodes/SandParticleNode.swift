@@ -16,13 +16,14 @@ class SandParticleNode: SKSpriteNode {
         
         if let sandTexture = sandParticle.texture {
             //Adding physics body of shape of still buddy.
-            let sandParticleSize = CGSize(width: 5, height: 5)
+            let randSize = Int(arc4random_uniform(3))
+            let sandParticleSize = CGSize(width: 5 + randSize, height: 5 + randSize)
             sandParticle.size = sandParticleSize
-            
-            sandParticle.physicsBody = SKPhysicsBody.init(texture: sandTexture, alphaThreshold: 0.1, size: sandParticleSize)
-//            sandParticle.physicsBody?.allowsRotation = false
-//            sandParticle.zPosition = zPositionBuddy
-//
+            sandParticle.zPosition = zPositionWater - 1
+
+            sandParticle.physicsBody = SKPhysicsBody.init(texture: sandTexture, alphaThreshold: 0.1, size: CGSize(width: sandParticleSize.width * 0.3, height: sandParticleSize.height * 0.3))
+
+
             //Adding contactTestBitMask for buddy.
             sandParticle.physicsBody?.categoryBitMask = SandCategory
             sandParticle.physicsBody?.contactTestBitMask = FloorCategory
@@ -32,7 +33,7 @@ class SandParticleNode: SKSpriteNode {
     
     public func animation(){
         
-        let drop = SKAction.run(SKAction.move(by: CGVector(dx: 0, dy: 0.01), duration: 1), onChildWithName: "sand")
+        let drop = SKAction.applyImpulse(CGVector(dx: 0, dy: 0.012), duration: 0.1)
         let wait = SKAction.wait(forDuration: 1)
         let remove = SKAction.run { [weak self] in
             self?.removeFromParent()
