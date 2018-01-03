@@ -10,29 +10,32 @@ import SpriteKit
 
 class ControlButtons: SKNode {
     
-    ///Button to go to left.
+    /// Node which describes selected button.
+    private(set) var direction: Direction = .none
+    
+    /// Button to go to left.
     private var goLeftButton: SKSpriteNode!
     private let goLeftButtonTexture = SKTexture(imageNamed: "buttonLeft")
     
-    ///Button to go to right.
+    /// Button to go to right.
     private var goRightButton: SKSpriteNode!
     private let goRightButtonTexture = SKTexture(imageNamed: "buttonRight")
     
-    ///Button night mode.
+    /// Button night mode.
     private var nightModeButton: SKSpriteNode!
     private let nightModeButtonTexture = SKTexture(imageNamed: "buttonNightMode")
 
-    
-    
-    ///Button to go to menu screen.
+    /// Button to go to menu screen.
     private var menuButton: SKSpriteNode!
     private let menuButtonTexture = SKTexture(imageNamed: "buttonMenu")
-    ///Defines if menu button is pressed.
+    /// Defines if menu button is pressed.
     private(set) var isMenuButtonPressed = false
-    ///Function for menu button.
+    /// Function for menu button.
     public var menuButtonAction: (() -> ())?
     
+
     
+    /// Created control buttons.
     public func setup(size: CGSize){
         let buttonSize = CGSize(width: size.width / 17.74, height: size.height / 10.51)
         
@@ -41,7 +44,6 @@ class ControlButtons: SKNode {
         goLeftButton.zPosition = zPositionControl
         goLeftButton.alpha = alphaDefault
         addChild(goLeftButton)
-
         
         goRightButton = SKSpriteNode(texture: goRightButtonTexture)
         goRightButton.size = buttonSize
@@ -54,12 +56,11 @@ class ControlButtons: SKNode {
         nightModeButton.zPosition = zPositionControl
         nightModeButton.alpha = alphaDefault
         addChild(nightModeButton)
-        
- 
     }
     
     
     
+    /// Decides which button was touched.
     private func getButton(for point: CGPoint) {
 
         ///Point which is touch point converted to left button coordinate system.
@@ -68,13 +69,11 @@ class ControlButtons: SKNode {
         pointLeft.x += goLeftButton.frame.origin.x + goLeftButton.size.width / 2
         pointLeft.y += goLeftButton.frame.origin.y + goLeftButton.size.height / 2
        
-
         ///Point which is touch point converted to left button coordinate system.
         var pointRight = goRightButton.convert(point, from: parent!)
         //Adding button origin and half size to make point and button coordinate systems completely equal.
         pointRight.x += goRightButton.frame.origin.x + goRightButton.size.width / 2
         pointRight.y += goRightButton.frame.origin.y + goRightButton.size.height / 2
-        
         
         //Checks if either one button was touched.
         //Only one button can be touched at a time.
@@ -93,17 +92,13 @@ class ControlButtons: SKNode {
         }
     }
     
-    ///Node which describes selected button.
-    private(set) var direction: Direction = .none
+   
   
-    
     public func touchBegan(at point: CGPoint){
-        
         getButton(for: point)
     }
     
     public func touchMoved(to point: CGPoint){
-        
         getButton(for: point)
     }
     
@@ -112,7 +107,6 @@ class ControlButtons: SKNode {
         goRightButton.alpha = alphaDefault
         goLeftButton.alpha = alphaDefault
     }
-    
     
     
     

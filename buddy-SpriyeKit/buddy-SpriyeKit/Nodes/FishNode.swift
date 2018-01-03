@@ -24,10 +24,18 @@ class FishNode: SKSpriteNode {
     
     private let fishScaleConstant = CGFloat(drand48())
     public var isSeekingFishFood = false
-    
     public let emitter = SKEmitterNode(fileNamed: "BubbleParticles.sks")
-
-    ///Creates new fish node.
+    public var fishSpeed: CGFloat = 0
+    /// Fish movement direction.
+    private var direction: Direction = .left
+    // Buddy properties:
+    private var buddyDirection: Direction?
+    private var buddySpeed: CGFloat?
+    
+    private var currentTime: TimeInterval = 0.0
+    
+    
+    /// Creates new fish node.
     public func newInstance(size: CGSize, randFishNumber: UInt32) -> FishNode {
         
         let fish = FishNode(imageNamed: "fish\(randFishNumber)")
@@ -41,14 +49,12 @@ class FishNode: SKSpriteNode {
                 y: size.height / 5 - 100 * fishScaleConstant)
             fish.zPosition = zPositionFish + fishScaleConstant
         }
-                
         return fish
     }
     
     
     
-    
-    ///Adds physics body to the fish.
+    /// Adds physics body to the fish.
     public func addPhysicsBody(){
         physicsBody = SKPhysicsBody.init(texture: SKTexture(imageNamed: "fishPB"), size: size)
 
@@ -62,8 +68,7 @@ class FishNode: SKSpriteNode {
     
     
     
-    
-    ///Adds swim animation to the fish.
+    /// Adds swim animation to the fish.
     public func swim(randFishNumber: UInt32){
         
         var fishFrame = fishSwimFrame2
@@ -86,21 +91,11 @@ class FishNode: SKSpriteNode {
     }
     
     
-    public var fishSpeed: CGFloat = 0
-
-    ///Fish movement direction.
-    private var direction: Direction = .left
     
-    //Buddy properties.
-    private var buddyDirection: Direction?
-    private var buddySpeed: CGFloat?
-    
-    private var currentTime: TimeInterval = 0.0
-    
-    ///Adds swim-move action to the fish. For GAME SCENE.
+    /// Adds swim-move action to the fish. For GAME SCENE.
     public func move(deltaTime: TimeInterval, in frameSize: CGSize){
        
-        //Changes fish "swing" - y position.
+        // Changes fish "swing" - y position.
         currentTime += deltaTime
         
         if currentTime > 2 {
@@ -112,17 +107,16 @@ class FishNode: SKSpriteNode {
         } else if currentTime > 1 && currentTime <= 2 {
             position.y += 0.1
         }
-        
-        
-        
+
         
         var newFishSpeed = fishSpeed
     
-        //Moves fish in different speed if buddy moves too.
+        // Moves fish in different speed if buddy moves too.
         if let buddySpeed = buddySpeed,
             let buddyDirection = buddyDirection {
             
             switch buddyDirection {
+                
             case .right:
                 if direction == .left {
                     newFishSpeed += buddySpeed / 4
@@ -142,7 +136,7 @@ class FishNode: SKSpriteNode {
             }
         }
         
-        ///Value which shows how much x is changed every `deltaTime`.
+        /// Value which shows how much x is changed every `deltaTime`.
         let deltaX: CGFloat = newFishSpeed * CGFloat(deltaTime)
         
         switch direction {
@@ -165,10 +159,11 @@ class FishNode: SKSpriteNode {
             break
         }
         
-        
         buddyDirection = nil
         buddySpeed = nil
     }
+    
+    
     
     @objc func moveTheFish(notification: Notification) -> Void {
         
@@ -178,6 +173,8 @@ class FishNode: SKSpriteNode {
         buddyDirection = buddysDirection as? Direction
         buddySpeed = buddysSpeed as? CGFloat
     }
+    
+    
     
     public func fadeInOut(){
         
@@ -198,7 +195,7 @@ class FishNode: SKSpriteNode {
     
     
     
-    ///Adds swim-move action to the fish. For WATER SCENE.
+    /// Adds swim-move action to the fish. For WATER SCENE.
     public func moveAround(in size: CGSize){
         
         let deltaX = size.width / 4
@@ -223,12 +220,12 @@ class FishNode: SKSpriteNode {
                                                       moveBackToPointAnimation,
                                                       flipAnimation])
         
-        
         run(SKAction.repeatForever(sequenceOfAnimations), withKey: fishMoveAroundActionKey)
     }
     
     
-    ///Adds food following action to the fish.
+    
+    /// Adds food following action to the fish.
     public func seekFood(node: FoodNode){
         
         if node.position.x > self.position.x {
@@ -247,7 +244,8 @@ class FishNode: SKSpriteNode {
     }
     
     
-    ///Moves fish to new destination after food seeking.
+    
+    /// Moves fish to new destination after food seeking.
     public func moveToNewDestination(in size: CGSize){
         
         let marginY = size.height / 3

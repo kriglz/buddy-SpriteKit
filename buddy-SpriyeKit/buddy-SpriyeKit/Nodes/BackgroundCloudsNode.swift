@@ -10,27 +10,24 @@ import SpriteKit
 
 class BackgroundCloudsNode: SKSpriteNode {
 
-    ///Cloud movement direction.
+    /// Cloud movement direction.
     private var direction: Direction = .right
     
     private var buddySpeed: CGFloat?
     private var buddyDirection: Direction?
+
     
-    
-    
-    
-    ///Creates a new cloud node.
+    /// Creates a new cloud node.
     public static func newInstance(size: CGSize) -> (BackgroundCloudsNode, CGFloat) {
         
-        //Inits cloud node
+        // Inits cloud node
         let cloudImageNumber = arc4random_uniform(5) + 1
         let cloud = BackgroundCloudsNode(imageNamed: "skyClouds\(cloudImageNumber)")
-        
         let sizeScale = drand48()
 
         if cloud.texture != nil {
             
-            //Adding physics body of shape of still buddy.
+            // Adding physics body of shape of still buddy.
             let cloudSize = CGSize(width: size.width * CGFloat(sizeScale) / 20, height: size.height * CGFloat(sizeScale) / 16)
             cloud.size = cloudSize
             
@@ -44,7 +41,6 @@ class BackgroundCloudsNode: SKSpriteNode {
             let randomInitPositionX = CGFloat(arc4random_uniform(UInt32(size.width)))
             let cloudInitPosition = CGPoint(x: randomInitPositionX, y: randomInitPositionY)
             cloud.position = cloudInitPosition
-            
             cloud.zPosition = zPositionClouds
         }
         
@@ -52,21 +48,20 @@ class BackgroundCloudsNode: SKSpriteNode {
         
         return (cloud, cloudSpeed)
     }
-    
-
-
 
     
-    ///Moves the cloud.
+    
+    /// Moves the cloud.
     public func moveTheCloud(deltaTime: TimeInterval, speed: CGFloat, in frameSize: CGSize){
         
         var cloudSpeed: CGFloat = speed
         
-        //Moves clouds in different speed if buddy moves too.
+        // Moves clouds in different speed if buddy moves too.
         if let buddySpeed = buddySpeed,
             let buddyDirection = buddyDirection {
             
             switch buddyDirection {
+                
             case .right:
                 cloudSpeed += buddySpeed / 5.4
             case .left:
@@ -76,14 +71,15 @@ class BackgroundCloudsNode: SKSpriteNode {
             }
         }
 
-        ///Value which shows how much x is changed every `deltaTime`.
+        /// Value which shows how much x is changed every `deltaTime`.
         let deltaX: CGFloat = cloudSpeed * CGFloat(deltaTime)
         
-        //Move sprite based on speed
+        // Move sprite based on speed
         var newPosition: CGPoint = CGPoint.zero
         newPosition = position
         
         switch direction {
+            
         case .right:
             newPosition.x -= deltaX
             position = newPosition
@@ -100,13 +96,12 @@ class BackgroundCloudsNode: SKSpriteNode {
             break
         }
         
-        
         buddyDirection = nil
         buddySpeed = nil
     }
     
     
-    ///Moves the clouds relative to the buddy movement.
+    /// Moves the clouds relative to the buddy movement.
     @objc func moveTheClouds(notification: Notification) -> Void {
         
         guard let bDirection = notification.userInfo!["DirectionToMove"],

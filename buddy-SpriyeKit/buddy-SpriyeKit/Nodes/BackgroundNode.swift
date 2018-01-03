@@ -22,7 +22,6 @@ class BackgroundNode: SKNode {
     var direction: Direction = .none
     var buddysSpeed: CGFloat = 0.0
 
-
     var horizonGrass: SKSpriteNode!
     var horizonGrassAfterFrame: SKSpriteNode!
     var horizonGrassBeforeFrame: SKSpriteNode!
@@ -38,10 +37,10 @@ class BackgroundNode: SKNode {
     
 
     
-    ///Initialize the background nodes.
+    /// Initialize the background nodes.
     public func setup(size: CGSize){
         
-        //Makes background nodes observe notification about buddy movements.
+        // Makes background nodes observe notification about buddy movements.
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
             object: nil,
@@ -50,7 +49,7 @@ class BackgroundNode: SKNode {
         
      
         
-        //Init of horizon grass.
+        // Init of horizon grass.
         let horizonGrassSize = CGSize(width: size.width, height: size.height * yForGrassHorizon + 20)
         
         horizonGrass = SKSpriteNode(texture: SKTexture(imageNamed: "horizonGrass"))
@@ -71,7 +70,7 @@ class BackgroundNode: SKNode {
         
         
         
-        //Init of mountains.
+        // Init of mountains.
         let mountainsSize = CGSize(width: size.width, height: size.height * yForMountains)
         
         mountains = SKSpriteNode(texture: SKTexture(imageNamed: "mountains"))
@@ -92,7 +91,7 @@ class BackgroundNode: SKNode {
         
         
         
-        //Init of mountiansBack.
+        // Init of mountiansBack.
         mountainsBack = SKSpriteNode(texture: SKTexture(imageNamed: "mountainsBack"))
         mountainsBack.size = mountains.size
         mountainsBack.position = mountains.position
@@ -111,9 +110,7 @@ class BackgroundNode: SKNode {
         
         
         
-        //Below stuff is not moving yet.
-
-        //Init of sky.
+        // Init of sky.
         let skySize = CGSize(width: size.width, height: size.height * yForSky)
         
         let sky = SKSpriteNode(texture: SKTexture(imageNamed: "sky"))
@@ -129,7 +126,7 @@ class BackgroundNode: SKNode {
     
     
     
-    ///Moves the background if notification from buddy has been received.
+    /// Moves the background if notification from buddy has been received.
     @objc func moveTheBackground( notification: Notification) -> Void {
         
         guard let buddyDirection = notification.userInfo!["DirectionToMove"],
@@ -139,7 +136,6 @@ class BackgroundNode: SKNode {
         direction = buddyDirection as! Direction
         buddysSpeed = buddySpeed as! CGFloat
         let dt = deltaTime as! TimeInterval
-        
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
         
@@ -151,20 +147,19 @@ class BackgroundNode: SKNode {
     
     
     
-    ///Sets the movement direction and speed.
+    /// Sets the movement direction and speed.
     func moveSprite(sprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
         
-        //Loop cycle for both sprite and dublicate
+        // Loop cycle for both sprite and dublicate
         for spriteToMove in [sprite, afterSprite] {
             
             switch direction {
-                
             case .right:
                 
                 spriteToMove.position.x -= byDeltaX
                 spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
 
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                // If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.maxX <= 0.0 {
                     spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
@@ -174,7 +169,7 @@ class BackgroundNode: SKNode {
                 spriteToMove.position.x += byDeltaX
                 spriteToMove.position.x = (spriteToMove.position.x * 10).rounded(.toNearestOrAwayFromZero) / 10
 
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                // If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.minX >= spriteToMove.size.width {
                     spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }

@@ -17,11 +17,9 @@ class FloorNode: SKSpriteNode {
     private let runWavesKey = "runWaves"
     private var isWaveRunning = false
     
-    
     var direction: Direction = .none
     var buddysSpeed: CGFloat = 0.0
 
-    
     private let waterWaveFrame = [
         SKTexture(imageNamed: "wave1"),
         SKTexture(imageNamed: "wave2"),
@@ -31,6 +29,7 @@ class FloorNode: SKSpriteNode {
     ]
     
     
+    /// Created a water/sand node.
     public func setup(size: CGSize){
         
         //Makes background nodes observe notification about camera movements.
@@ -68,28 +67,19 @@ class FloorNode: SKSpriteNode {
     }
     
     
-    
-    private var particleNumber = 11
-    
+
+    /// Adds sand particles for walking buddy.
     public func addSandParticles(at point: CGPoint){
-        particleNumber += 1
-        
-        if particleNumber == 12 {
-        
-            let sandnode = SandParticleNode().newInstance(in: size)
-            sandnode.name = "sand"
-            sandnode.position = CGPoint(x: point.x, y: point.y + 5)
-            addChild(sandnode)
-            sandnode.animation()
-        
-            // Resets particla number
-            particleNumber = 0
-        }
+        let sandnode = SandParticleNode().newInstance(in: size)
+        sandnode.name = "sand"
+        sandnode.position = CGPoint(x: point.x, y: point.y + 8)
+        addChild(sandnode)
+        sandnode.animation()
     }
     
     
     
-    ///Moves the background if notification from camera has been received.
+    /// Moves the background if notification from camera has been received.
     @objc func moveTheFloor( notification: Notification) -> Void {
         
         guard let buddyDirection = notification.userInfo!["DirectionToMove"],
@@ -107,18 +97,14 @@ class FloorNode: SKSpriteNode {
     
     
     
-    
-    ///Sets the movement direction and speed.
+    /// Sets the movement direction and speed.
     func moveSprite(sprite: SKSpriteNode, afterSprite: SKSpriteNode, byDeltaX: CGFloat){
 
-
-        //Loop cycle for both sprite and dublicate
+        // Loop cycle for both sprite and dublicate
         for spriteToMove in [sprite, afterSprite] {
-
             switch direction {
                 
             case .right:
-                
                 for item in self["sand"] {
                     item.position.x -= byDeltaX
                 }
@@ -126,14 +112,12 @@ class FloorNode: SKSpriteNode {
                 spriteToMove.position.x -= byDeltaX
                 spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 
-
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                // If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.maxX <= 0.0 {
                     spriteToMove.position.x += 2 * spriteToMove.size.width
                 }
 
             case .left:
-
                 for item in self["sand"] {
                     item.position.x += byDeltaX
                 }
@@ -141,7 +125,7 @@ class FloorNode: SKSpriteNode {
                 spriteToMove.position.x += byDeltaX
                 spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 
-                //If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
+                // If the sprite is off screen (i. e. rightmost edge is farther left than scen's leftmost edge)
                 if spriteToMove.frame.minX >= spriteToMove.size.width {
                     spriteToMove.position.x -= 2 * spriteToMove.size.width
                 }
@@ -152,19 +136,9 @@ class FloorNode: SKSpriteNode {
         }
     }
     
-
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ///Adds running wave animation to the sprite.
+  
+    /// Adds running wave animation to the sprite.
     public func runWaves(){
         guard isWaveRunning else {
 

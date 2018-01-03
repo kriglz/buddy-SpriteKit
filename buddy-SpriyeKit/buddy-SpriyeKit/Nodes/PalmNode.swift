@@ -10,20 +10,19 @@ import SpriteKit
 
 class PalmNode: SKSpriteNode {
     
+    var direction: Direction = .none
+    var buddysSpeed: CGFloat = 0.0
+    
     public static func newInstance(size: CGSize) -> PalmNode {
         
         let randomSite = arc4random_uniform(2)
-        
         let palmImageNumber = arc4random_uniform(2) + 1
         let palm = PalmNode(imageNamed: "palm\(palmImageNumber)")
-        
         let scaleConstant = CGFloat(drand48())
-        
         
         if palm.texture != nil {
             let sizeWidth = size.width / 12.42 * ( 1 - (1.0 - scaleConstant) * 0.4)
             let sizeHeight = size.height / 4.32 * ( 1 - (1.0 - scaleConstant) * 0.4)
-
             palm.size = CGSize(width: sizeWidth, height: sizeHeight)
             
             let yPosition =  size.height / 2 + 10.0 + 5 * (1 - scaleConstant)
@@ -33,17 +32,13 @@ class PalmNode: SKSpriteNode {
             } else {
                 xPosition -= CGFloat(arc4random_uniform(200)) + 200.0
             }
-
             palm.position = CGPoint(x: xPosition, y: yPosition)
+            
             palm.zPosition = zPositionPalm + scaleConstant
         }
-        
         return palm
     }
     
-    
-    var direction: Direction = .none
-    var buddysSpeed: CGFloat = 0.0
     
     @objc func moveThePalm(notification: Notification) -> Void {
         
@@ -54,7 +49,6 @@ class PalmNode: SKSpriteNode {
         direction = buddyDirection as! Direction
         buddysSpeed = buddySpeed as! CGFloat
         let dt = deltaTime as! TimeInterval
-        
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt) / horizonSpeedConstant
         
@@ -131,7 +125,6 @@ class PalmNode: SKSpriteNode {
         let warpGeometryGrid3 = SKWarpGeometryGrid(columns: 2, rows: 5,
                                                    sourcePositions: sourcePositions,
                                                    destinationPositions: destinationPositions3)
-
         
         let randTime = drand48() + 1.0
         let randTime2 = randTime * 2

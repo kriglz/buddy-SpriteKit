@@ -10,8 +10,7 @@ import SpriteKit
 
 class BuddyNode: SKSpriteNode {
     
-    
-    ///String which defines walking action.
+    /// String which defines walking action.
     private let walkingActionKey = "action_walking"
     private let buddyWalkingFrame = [
         SKTexture(imageNamed: "buddyWalk1"),
@@ -23,22 +22,33 @@ class BuddyNode: SKSpriteNode {
         SKTexture(imageNamed: "buddyWalk7"),
         SKTexture(imageNamed: "buddyWalk8")
     ]
-  
+
+    ///Defines walking direction or stop position as `.none`.
+    private var direction: Direction = .none
+    /// Shows if buddy is moving / in walking action.
+    private(set) var isWalking: Bool = false
+    /// Buddy node walking speed relative to the ground in POINTS per SEC.
+    private(set) var walkingSpeed: CGFloat = 144.0
+    /// Calculates time since lasts stop to manage when the speed needs to increase.
+    private var timeSinceLastStop: Double = 0.0
+    /// Defines if buddy is moving in the view.
+    public var isMoving = false
+
     
-    ///Creates a new buddy node.
+    /// Creates a new buddy node.
     public static func newInstance(size: CGSize) -> BuddyNode {
-        let buddy = BuddyNode(imageNamed: "buddyWalk4")//buddyStill")
+        let buddy = BuddyNode(imageNamed: "buddyStill")
         
         if let buddyTexture = buddy.texture {
-            //Adding physics body of shape of still buddy.
             let buddySize = CGSize(width: size.width / 8.15 / 1.1, height: size.height / 2.65 / 1.1)
             buddy.size = buddySize
             
+            // Adds physics body of shape of still buddy.
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)
             buddy.physicsBody?.allowsRotation = false
             buddy.zPosition = zPositionBuddy
             
-            //Adding contactTestBitMask for buddy.
+            // Adds contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory
             buddy.physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
         }
@@ -46,7 +56,8 @@ class BuddyNode: SKSpriteNode {
     }
     
     
-    ///Adds physics body to the buddy.
+    
+    /// Adds physics body to the buddy.
     private func addPhysicsBoddy(){
         
         physicsBody?.allowsRotation = false
@@ -57,29 +68,11 @@ class BuddyNode: SKSpriteNode {
         physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
     }
     
-    
-    ///Defines walking direction or stop position as `.none`.
-    private var direction: Direction = .none
-    
-    
-    /// Shows if buddy is moving / in walking action.
-    private(set) var isWalking: Bool = false
-    
-    /// Buddy node walking speed relative to the ground in POINTS per SEC.
-    private(set) var walkingSpeed: CGFloat = 144.0
-    
-    
-    /// Calculates time since lasts stop to manage when the speed needs to increase.
-    private var timeSinceLastStop: Double = 0.0
-    
-    
-    
-    ///Updates skater on the screen.
-    public func update(deltaTime: TimeInterval){
-        
 
-        
-        //Cheks if buddy needs to walk.
+
+    /// Updates skater on the screen.
+    public func update(deltaTime: TimeInterval){
+        // Cheks if buddy needs to walk.
         if !isWalking {
             
             //Sets walking action to nil.
@@ -92,35 +85,30 @@ class BuddyNode: SKSpriteNode {
             physicsBody = SKPhysicsBody(texture: self.texture!, alphaThreshold: 0.1, size: size)
             addPhysicsBoddy()
             
-        //Else - Adds walking action.
+        // Else - Adds walking action.
         } else {
             zRotation = 0
 
             if action(forKey: walkingActionKey) == nil {
-                
                 let frameTime = Double(walkingSpeed) * deltaTime / 30.0
                 
-                //Initial one time slower action.
+                // Initial one time slower action.
                 let startingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
                                                                        timePerFrame: frameTime, // = 0.08
                                                                        resize: false,
                                                                        restore: false),
                                                       count: 3)
-                
-                
-                
-                //Walking action.
+                // Walking action.
                 let walkingAction = SKAction.repeat( SKAction.animate(with: buddyWalkingFrame,
                                                                       timePerFrame: frameTime / 1.2, // = 0.067
                                                                       resize: false,
                                                                       restore: false),
                                                      count: 8)
-                
-                //Walking action.
+                // Walking action.
                 let runningAction = SKAction.repeatForever( SKAction.animate(with: buddyWalkingFrame,
-                                                                             timePerFrame: frameTime / 1.4, // = 0.067
-                    resize: false,
-                    restore: false))
+                                                                             timePerFrame: frameTime / 1.4,
+                                                                             resize: false,
+                                                                             restore: false))
                 
                 let actions = SKAction.sequence([startingAction, walkingAction, runningAction])
                 
@@ -141,9 +129,9 @@ class BuddyNode: SKSpriteNode {
                 return walkingSpeed * CGFloat(deltaTime)
             }
             
-            
-            //Moves the buddy position by `walkingDeltaX`.
+            // Moves the buddy position by `walkingDeltaX`.
             switch direction {
+                
             case .left:
                 if isMoving {
                    position.x -= walkingDeltaX
@@ -163,17 +151,12 @@ class BuddyNode: SKSpriteNode {
             case .none:
                 break
             }
-            
-
         }
-        
-
     }
     
-    public var isMoving = false
     
      
-    ///Sets destination point after touch action happens.
+    /// Sets destination point after touch action happens.
     public func walk(_ towards: Direction){
         direction = towards
         
@@ -187,7 +170,7 @@ class BuddyNode: SKSpriteNode {
     
     
     
-    ///Updates destiantion and position, after buddy is initiated.
+    /// Updates destiantion and position, after buddy is initiated.
     public func updatePosition(point: CGPoint){
         direction = .none
         position = point
