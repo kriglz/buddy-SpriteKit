@@ -148,11 +148,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 buddy.isMoving = true
             }
             
-            //Emits particles
+            // Emits particles
 //            emitBuddysParticles()
         }
 //        else {
-            //Removes particles
+            // Removes particles
 //            removeBuddysParticles()
 //        }
         

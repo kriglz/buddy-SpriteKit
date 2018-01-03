@@ -160,7 +160,7 @@ class BuddyNode: SKSpriteNode {
     public func walk(_ towards: Direction){
         direction = towards
         
-        //Updates state of buddy - walking / non-walking .
+        // Updates state of buddy - walking / non-walking .
         if direction == .none {
             isWalking = false
         } else {

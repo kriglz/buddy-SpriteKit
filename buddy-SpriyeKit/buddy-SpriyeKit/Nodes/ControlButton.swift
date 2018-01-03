@@ -63,20 +63,20 @@ class ControlButtons: SKNode {
     /// Decides which button was touched.
     private func getButton(for point: CGPoint) {
 
-        ///Point which is touch point converted to left button coordinate system.
+        /// Point which is touch point converted to left button coordinate system.
         var pointLeft = goLeftButton.convert(point, from: parent!)
-        //Adding button origin and half size to make point and button coordinate systems completely equal.
+        // Adding button origin and half size to make point and button coordinate systems completely equal.
         pointLeft.x += goLeftButton.frame.origin.x + goLeftButton.size.width / 2
         pointLeft.y += goLeftButton.frame.origin.y + goLeftButton.size.height / 2
        
-        ///Point which is touch point converted to left button coordinate system.
+        /// Point which is touch point converted to left button coordinate system.
         var pointRight = goRightButton.convert(point, from: parent!)
-        //Adding button origin and half size to make point and button coordinate systems completely equal.
+        // Adding button origin and half size to make point and button coordinate systems completely equal.
         pointRight.x += goRightButton.frame.origin.x + goRightButton.size.width / 2
         pointRight.y += goRightButton.frame.origin.y + goRightButton.size.height / 2
         
-        //Checks if either one button was touched.
-        //Only one button can be touched at a time.
+        // Checks if either one button was touched.
+        // Only one button can be touched at a time.
             if goLeftButton.frame.contains(pointLeft) {
             direction = .left
             goLeftButton.alpha = alphaPressed

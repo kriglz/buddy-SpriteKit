@@ -32,14 +32,14 @@ class FloorNode: SKSpriteNode {
     /// Created a water/sand node.
     public func setup(size: CGSize){
         
-        //Makes background nodes observe notification about camera movements.
+        // Makes background nodes observe notification about camera movements.
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name(rawValue: cameraMoveNotificationKey),
             object: nil,
             queue: nil,
             using: moveTheFloor)
         
-        //Init of ground grass - the walking surface.
+        // Init of ground grass - the walking surface.
         let groundSize = CGSize(width: size.width, height: size.height * yForGrass)
         
         floorSprite = SKSpriteNode(texture: waterWaveFrame[1])
