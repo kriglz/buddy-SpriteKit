@@ -48,7 +48,7 @@ class FloorNode: SKSpriteNode {
         floorSprite.position = CGPoint(x: floorSprite.size.width / 2, y: floorSprite.size.height / 2)
         floorSprite.zPosition = zPositionWater
         
-        floorSprite.physicsBody = SKPhysicsBody(texture: waterWaveFrame[1], alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 7))
+        floorSprite.physicsBody = SKPhysicsBody(texture: waterWaveFrame[1], alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 9))
         floorSprite.physicsBody?.isDynamic = false
         floorSprite.physicsBody?.categoryBitMask = FloorCategory
         floorSprite.physicsBody?.contactTestBitMask = BuddyCategory
@@ -60,13 +60,41 @@ class FloorNode: SKSpriteNode {
         floorSpriteAfterFrame.position = CGPoint(x: floorSprite.position.x + floorSprite.size.width, y: floorSprite.position.y)
         floorSpriteAfterFrame.zPosition = floorSprite.zPosition
         
+        floorSpriteAfterFrame.physicsBody = SKPhysicsBody(texture: waterWaveFrame[1], alphaThreshold: 0.2, size: CGSize(width: floorSprite.size.width, height: floorSprite.size.height - 5))
+        floorSpriteAfterFrame.physicsBody?.isDynamic = false
+        floorSpriteAfterFrame.physicsBody?.categoryBitMask = FloorCategory
+        floorSpriteAfterFrame.physicsBody?.contactTestBitMask = BuddyCategory
+        
         addChild(floorSpriteAfterFrame)
     }
     
     
     
+    private var particleNumber = 7
     
-    
+    public func addSandParticles(at point: CGPoint){
+        
+        particleNumber += 1
+        
+        if particleNumber == 8 {
+            
+            let sandnode = SandParticleNode().newInstance(in: size)
+            
+            //SKSpriteNode.init(color: .black, size: CGSize(width: 5, height: 5))
+            
+            sandnode.name = "sand"
+            sandnode.position = point
+            sandnode.zPosition = zPositionWater + 1
+            
+            addChild(sandnode)
+            
+            sandnode.animation()
+            
+            
+            // Resets particla number
+            particleNumber = 0
+        }
+    }
     
     
     
@@ -99,7 +127,11 @@ class FloorNode: SKSpriteNode {
             switch direction {
                 
             case .right:
-
+                
+                for item in self["sand"] {
+                    item.position.x -= byDeltaX
+                }
+                
                 spriteToMove.position.x -= byDeltaX
                 spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 
@@ -111,6 +143,10 @@ class FloorNode: SKSpriteNode {
 
             case .left:
 
+                for item in self["sand"] {
+                    item.position.x += byDeltaX
+                }
+                
                 spriteToMove.position.x += byDeltaX
                 spriteToMove.position.x = spriteToMove.position.x.rounded(.toNearestOrAwayFromZero)
 

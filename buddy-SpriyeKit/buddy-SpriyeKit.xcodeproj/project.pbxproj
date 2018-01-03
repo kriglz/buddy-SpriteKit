@@ -28,6 +28,7 @@
 		89E0C2E11FEB4F3C0070AC3B /* BubbleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */; };
 		89E5B25C1FE897CA0000C647 /* PalmNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E5B25B1FE897CA0000C647 /* PalmNode.swift */; };
 		89EC73121FE9CD8500014A65 /* FishNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC73111FE9CD8500014A65 /* FishNode.swift */; };
+		89F254E01FFC6256008ADE87 /* SandParticleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F254DF1FFC6256008ADE87 /* SandParticleNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		89E0C2E01FEB4F3C0070AC3B /* BubbleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BubbleParticles.sks; sourceTree = "<group>"; };
 		89E5B25B1FE897CA0000C647 /* PalmNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalmNode.swift; sourceTree = "<group>"; };
 		89EC73111FE9CD8500014A65 /* FishNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishNode.swift; sourceTree = "<group>"; };
+		89F254DF1FFC6256008ADE87 /* SandParticleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandParticleNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				892FFFE21FEF33C0006ED63F /* FoodNode.swift */,
 				898CE30C1FDA1746001CF189 /* BuddyNode.swift */,
 				89B6BA571FE0486200AC5CB1 /* FloorNode.swift */,
+				89F254DF1FFC6256008ADE87 /* SandParticleNode.swift */,
 				895A62D01FDF02EA004A78C5 /* ControlButton.swift */,
 			);
 			path = Nodes;
@@ -224,6 +227,7 @@
 				898CE30F1FDA1888001CF189 /* Constants.swift in Sources */,
 				89EC73121FE9CD8500014A65 /* FishNode.swift in Sources */,
 				898CE30D1FDA1746001CF189 /* BuddyNode.swift in Sources */,
+				89F254E01FFC6256008ADE87 /* SandParticleNode.swift in Sources */,
 				89D1208F1FE342230065B588 /* ParticleNode.swift in Sources */,
 				89B6BA581FE0486200AC5CB1 /* FloorNode.swift in Sources */,
 				895A62D11FDF02EA004A78C5 /* ControlButton.swift in Sources */,

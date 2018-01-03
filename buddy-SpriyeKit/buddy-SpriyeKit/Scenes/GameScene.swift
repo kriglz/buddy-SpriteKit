@@ -164,11 +164,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
             
             //Emits particles
-            emitBuddysParticles()
+//            emitBuddysParticles()
             
         } else {
             //Removes particles
-            removeBuddysParticles()
+//            removeBuddysParticles()
         }
         
         
@@ -335,6 +335,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case WorldCategory:
             buddy.removeAllActions()
        
+        case FloorCategory:
+            
+            if buddy.isWalking {
+                
+                floor.addSandParticles(at: contact.contactPoint)
+            }
+            
         default:
             break
         }

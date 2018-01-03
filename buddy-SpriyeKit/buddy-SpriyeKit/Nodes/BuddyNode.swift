@@ -35,17 +35,27 @@ class BuddyNode: SKSpriteNode {
             buddy.size = buddySize
             
             buddy.physicsBody = SKPhysicsBody.init(texture: buddyTexture, alphaThreshold: 0.1, size: buddySize)
-
             buddy.physicsBody?.allowsRotation = false
             buddy.zPosition = zPositionBuddy
             
             //Adding contactTestBitMask for buddy.
             buddy.physicsBody?.categoryBitMask = BuddyCategory
-            buddy.physicsBody?.contactTestBitMask = WorldCategory | FloorCategory            
+            buddy.physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
         }
         return buddy
     }
     
+    
+    ///Adds physics body to the buddy.
+    private func addPhysicsBoddy(){
+        
+        physicsBody?.allowsRotation = false
+        zPosition = zPositionBuddy
+        
+        //Adding contactTestBitMask for buddy.
+        physicsBody?.categoryBitMask = BuddyCategory
+        physicsBody?.contactTestBitMask = WorldCategory | FloorCategory
+    }
     
     
     ///Defines walking direction or stop position as `.none`.
@@ -67,6 +77,8 @@ class BuddyNode: SKSpriteNode {
     ///Updates skater on the screen.
     public func update(deltaTime: TimeInterval){
         
+
+        
         //Cheks if buddy needs to walk.
         if !isWalking {
             
@@ -76,11 +88,14 @@ class BuddyNode: SKSpriteNode {
             texture = SKTexture(imageNamed: "buddyStill")
             timeSinceLastStop = 0.0
             walkingSpeed = 144.0
+            
             physicsBody = SKPhysicsBody(texture: self.texture!, alphaThreshold: 0.1, size: size)
-
+            addPhysicsBoddy()
+            
         //Else - Adds walking action.
         } else {
-            
+            zRotation = 0
+
             if action(forKey: walkingActionKey) == nil {
                 
                 let frameTime = Double(walkingSpeed) * deltaTime / 30.0
@@ -136,6 +151,7 @@ class BuddyNode: SKSpriteNode {
                 }
                 xScale = -1
                 physicsBody = SKPhysicsBody(texture: texture!, alphaThreshold: 0.1, size: CGSize(width: -size.width, height: size.height))
+                addPhysicsBoddy()
 
             case .right:
                 if isMoving {
@@ -143,6 +159,7 @@ class BuddyNode: SKSpriteNode {
                 }
                 xScale = 1
                 physicsBody = SKPhysicsBody(texture: texture!, alphaThreshold: 0.1, size: CGSize(width: size.width, height: size.height))
+                addPhysicsBoddy()
 
             case .none:
                 break
