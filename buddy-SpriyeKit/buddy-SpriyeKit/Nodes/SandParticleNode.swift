@@ -17,12 +17,12 @@ class SandParticleNode: SKSpriteNode {
         if let sandTexture = sandParticle.texture {
             //Adding physics body of shape of still buddy.
             let randSize = Int(arc4random_uniform(3))
-            let sandParticleSize = CGSize(width: 9 + randSize, height: 9 + randSize)
+            let sandParticleSize = CGSize(width: 8 + randSize, height: 8 + randSize)
             sandParticle.size = sandParticleSize
             sandParticle.zPosition = zPositionWater + 1
 
             sandParticle.physicsBody = SKPhysicsBody.init(texture: sandTexture, alphaThreshold: 0.1, size: CGSize(width: sandParticleSize.width * 0.5, height: sandParticleSize.height * 0.5))
-            sandParticle.physicsBody?.restitution = 0.05
+            sandParticle.physicsBody?.restitution = 0.5
 
             //Adding contactTestBitMask for buddy.
             sandParticle.physicsBody?.categoryBitMask = SandCategory
