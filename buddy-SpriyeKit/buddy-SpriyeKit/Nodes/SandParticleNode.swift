@@ -21,7 +21,7 @@ class SandParticleNode: SKSpriteNode {
             sandParticle.size = sandParticleSize
             sandParticle.zPosition = zPositionWater - 1
 
-            sandParticle.physicsBody = SKPhysicsBody.init(texture: sandTexture, alphaThreshold: 0.1, size: CGSize(width: sandParticleSize.width * 0.4, height: sandParticleSize.height * 0.4))
+            sandParticle.physicsBody = SKPhysicsBody.init(texture: sandTexture, alphaThreshold: 0.1, size: CGSize(width: sandParticleSize.width * 0.5, height: sandParticleSize.height * 0.5))
             
 
             //Adding contactTestBitMask for buddy.

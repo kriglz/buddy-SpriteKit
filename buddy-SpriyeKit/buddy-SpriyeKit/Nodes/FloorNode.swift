@@ -69,12 +69,12 @@ class FloorNode: SKSpriteNode {
     
     
     
-    private var particleNumber = 8
+    private var particleNumber = 11
     
     public func addSandParticles(at point: CGPoint){
         particleNumber += 1
         
-        if particleNumber == 9 {
+        if particleNumber == 12 {
         
             let sandnode = SandParticleNode().newInstance(in: size)
             sandnode.name = "sand"
@@ -101,7 +101,7 @@ class FloorNode: SKSpriteNode {
         let dt = deltaTime as! TimeInterval
         
         let deltaX: CGFloat = buddysSpeed * CGFloat(dt)
-        
+                
         moveSprite(sprite: floorSprite, afterSprite: floorSpriteAfterFrame, byDeltaX: deltaX)
     }
     
