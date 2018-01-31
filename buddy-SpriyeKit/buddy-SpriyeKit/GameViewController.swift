@@ -25,9 +25,9 @@ class GameViewController: UIViewController {
             view.presentScene(gameSceneNode)
             view.ignoresSiblingOrder = true
 //            view.showsPhysics = true
-            view.showsFPS = true
-            view.showsNodeCount = true
-        } 
+//            view.showsFPS = true
+//            view.showsNodeCount = true
+        }
     }
 
     override var shouldAutorotate: Bool {
